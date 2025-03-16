@@ -1,0 +1,186 @@
+﻿<Window x:Class="PokedexExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PokedexExplorer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid>
+        <StackPanel Margin="0,0,0,0">
+            <StackPanel Name="NameStack" Orientation="Horizontal">
+                <Label Content="NAME:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+            </StackPanel>
+            <StackPanel Name="TypeStack" Orientation="Horizontal">
+                <Label Content="TYPE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <ComboBox Name="Type1ComboBox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="70">
+                    <ComboBoxItem>Any</ComboBoxItem>
+                    <ComboBoxItem>Bug</ComboBoxItem>
+                    <ComboBoxItem>Dark</ComboBoxItem>
+                    <ComboBoxItem>Dragon</ComboBoxItem>
+                    <ComboBoxItem>Electric</ComboBoxItem>
+                    <ComboBoxItem>Fairy</ComboBoxItem>
+                    <ComboBoxItem>Fighting</ComboBoxItem>
+                    <ComboBoxItem>Fire</ComboBoxItem>
+                    <ComboBoxItem>Flying</ComboBoxItem>
+                    <ComboBoxItem>Ghost</ComboBoxItem>
+                    <ComboBoxItem>Grass</ComboBoxItem>
+                    <ComboBoxItem>Ground</ComboBoxItem>
+                    <ComboBoxItem>Ice</ComboBoxItem>
+                    <ComboBoxItem>Normal</ComboBoxItem>
+                    <ComboBoxItem>Poison</ComboBoxItem>
+                    <ComboBoxItem>Psychic</ComboBoxItem>
+                    <ComboBoxItem>Rock</ComboBoxItem>
+                    <ComboBoxItem>Steel</ComboBoxItem>
+                    <ComboBoxItem>Water</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Name="Type2ComboBox" Margin="10,0,0,0" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <ComboBoxItem>Any</ComboBoxItem>
+                    <ComboBoxItem>Bug</ComboBoxItem>
+                    <ComboBoxItem>Dark</ComboBoxItem>
+                    <ComboBoxItem>Dragon</ComboBoxItem>
+                    <ComboBoxItem>Electric</ComboBoxItem>
+                    <ComboBoxItem>Fairy</ComboBoxItem>
+                    <ComboBoxItem>Fighting</ComboBoxItem>
+                    <ComboBoxItem>Fire</ComboBoxItem>
+                    <ComboBoxItem>Flying</ComboBoxItem>
+                    <ComboBoxItem>Ghost</ComboBoxItem>
+                    <ComboBoxItem>Grass</ComboBoxItem>
+                    <ComboBoxItem>Ground</ComboBoxItem>
+                    <ComboBoxItem>Ice</ComboBoxItem>
+                    <ComboBoxItem>Normal</ComboBoxItem>
+                    <ComboBoxItem>Poison</ComboBoxItem>
+                    <ComboBoxItem>Psychic</ComboBoxItem>
+                    <ComboBoxItem>Rock</ComboBoxItem>
+                    <ComboBoxItem>Steel</ComboBoxItem>
+                    <ComboBoxItem>Water</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Name="GenerationStack" Orientation="Horizontal">
+                <Label Content="GENERATION:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                    <ComboBoxItem>Any</ComboBoxItem>
+                    <ComboBoxItem Tag="1">Generation 1 (Kanto)</ComboBoxItem>
+                    <ComboBoxItem Tag="2">Generation 2 (Johto)</ComboBoxItem>
+                    <ComboBoxItem Tag="3">Generation 3 (Hoenn)</ComboBoxItem>
+                    <ComboBoxItem Tag="4">Generation 4 (Sinoh)</ComboBoxItem>
+                    <ComboBoxItem Tag="5">Generation 5 (Unova)</ComboBoxItem>
+                    <ComboBoxItem Tag="6">Generation 6 (Kalos)</ComboBoxItem>
+                    <ComboBoxItem Tag="7">Generation 7 (Alola)</ComboBoxItem>
+                    <ComboBoxItem Tag="8">Generation 8 (Galar)</ComboBoxItem>
+                    <ComboBoxItem Tag="9">Generation 9 (Paldea)</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Name="MoveStack" Orientation="Horizontal">
+                <Label Content="MOVE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <TextBox x:Name="KnowsMoveTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+            </StackPanel>
+            <StackPanel Name="AbilityStack" Orientation="Horizontal">
+                <Label Content="ABILITY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <TextBox x:Name="AbilityTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+            </StackPanel>
+            <StackPanel Name="LegendaryStack" Orientation="Horizontal">
+                <Label Content="LEGENDARY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
+                <ComboBox Name="LegendaryComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                    <ComboBoxItem>Any</ComboBoxItem>
+                    <ComboBoxItem>Legendary</ComboBoxItem>
+                    <ComboBoxItem>Mythical</ComboBoxItem>
+                    <ComboBoxItem>None</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <Expander Name="AppearanceExpander" Header="APPEARANCE" ExpandDirection="Down" IsExpanded="True" FontWeight="Bold" FontSize="14">
+                <StackPanel Name="AppearanceStack">
+                    <StackPanel Name="AppearanceColorStack" Orientation="Horizontal">
+                        <Label Content="COLOR:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <ComboBox Name="AppearanceColorComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBoxItem Tag="Any">Any</ComboBoxItem>
+                            <ComboBoxItem Tag="white">White</ComboBoxItem>
+                            <ComboBoxItem Tag="gray">Gray</ComboBoxItem>
+                            <ComboBoxItem Tag="black">Black</ComboBoxItem>
+                            <ComboBoxItem Tag="red">Red</ComboBoxItem>
+                            <ComboBoxItem Tag="green">Green</ComboBoxItem>
+                            <ComboBoxItem Tag="blue">Blue</ComboBoxItem>
+                            <ComboBoxItem Tag="yellow">Yellow</ComboBoxItem>
+                            <ComboBoxItem Tag="pink">Pink</ComboBoxItem>
+                            <ComboBoxItem Tag="brown">Brown</ComboBoxItem>
+                            <ComboBoxItem Tag="purple">Purple</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Name="AppearanceShapeStack" Orientation="Horizontal">
+                        <Label Content="SHAPE:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <ComboBox Name="AppearanceShapeComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBoxItem Tag="Any">Any</ComboBoxItem>
+                            <ComboBoxItem Tag="armor">Armor</ComboBoxItem>
+                            <ComboBoxItem Tag="arms">Arms</ComboBoxItem>
+                            <ComboBoxItem Tag="ball">Ball</ComboBoxItem>
+                            <ComboBoxItem Tag="blob">Blob</ComboBoxItem>
+                            <ComboBoxItem Tag="bug wings">Bug Wings</ComboBoxItem>
+                            <ComboBoxItem Tag="fish">Fish</ComboBoxItem>
+                            <ComboBoxItem Tag="heads">Heads</ComboBoxItem>
+                            <ComboBoxItem Tag="humanoid">Humanoid</ComboBoxItem>
+                            <ComboBoxItem Tag="legs">Legs</ComboBoxItem>
+                            <ComboBoxItem Tag="quadruped">Quadruped</ComboBoxItem>
+                            <ComboBoxItem Tag="squiggle">Squiggle</ComboBoxItem>
+                            <ComboBoxItem Tag="upright">Upright</ComboBoxItem>
+                            <ComboBoxItem Tag="tentacles">Tentacles</ComboBoxItem>
+                            <ComboBoxItem Tag="wings">Wings</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="HEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="WEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Expander Name="StatsExpander" Header="STATS" ExpandDirection="Down" IsExpanded="True" FontWeight="Bold" FontSize="14">
+                <StackPanel Name="StatsStack">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="HP:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="ATTACK:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="DEFENSE:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="SP. ATT.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="SP. DEF.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Content="SPEED:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                        <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
+                        <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </Grid>
+</Window>
