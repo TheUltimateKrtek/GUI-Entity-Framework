@@ -626,10 +626,14 @@ public class PokemonDbContext : DbContext
 ### Creating the database
 Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
 #### Migrate
-To synchronize our database model with Postgre, we will use the method `DbContext.Database.Migrate();`. This will update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the exiating table is different.
+To synchronize our database model with Postgre, we will use the method `DbContext.Database.Migrate();`. This will update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the existing table is different.
+```csharp
+//TODO: Write the class DatabaseInitHandler
+```
 #### MainWindow
 In our MainWindow class, created at WPF initialization, we will add the following code. This code runs at startup.
 ```csharp
+//TODO: Write the code
 ```
 
 # Retrieving data from PokéAPI
@@ -644,3 +648,47 @@ We will split this class into two parts:
 - Retrieving data from PokéAPI
 - Processing and reformatting data
 
+### PokeAPIFetcher
+We will create a class PokeAPIFetcher, which will fetch and process data and return objects in the form of our defined classes model. This part of the code is not important for our tutorial, so you can just copy-paste the final code. We will explain it anyways.
+
+#### Retrieving data
+PokéAPI uses a JSON format with a NoSQL-type database. This format is good for storing the complex data Pokémon has. However, we will process it and drop data unimportant to us. We also want to show how to add data to our database.
+
+##### Retrieving a JSON object
+We will use this simple method to retrieve a JSON file.
+
+```csharp
+//TODO: Retrieve a JSON file using a method RetrieveJSON(string name, int? id = 0).
+```
+
+##### Retrieving entry count
+Using the method from before, we can start with processing data. First, we want to find the total number of entries.
+
+```csharp
+//TODO: Find the count using a method GetCount(string name)
+```
+
+#### Processing data
+
+##### Ability
+
+##### Move
+
+##### PokemonSpecies
+
+##### Pokemon
+
+##### EvolutionChain
+
+##### PokemonMove
+
+#### Combining everything
+
+# Populating the database
+Now that we have our data, we can start populating the database. We will use our next class, `DatabaseInitHandler`.
+
+#### Insert
+Inserting an entry to our table is straight-forward. All we need is an object and a table to insert it to. We will add a method `Insert(object data)` to the `DatabaseInitHandler` class.
+```csharp
+//TODO: Add Insert to Database
+```
