@@ -42,15 +42,5 @@ namespace PokedexExplorer.Model
         [Required]
         public string Type { get; set; }
         public string? Description { get; set; }
-
-        public Move(int id, string name, int pp, int priority, string target, string type)
-        {
-            ID = id;
-            Name = name;
-            PP = pp;
-            Priority = priority;
-            Target = target;
-            Type = type;
-        }
     }
 }

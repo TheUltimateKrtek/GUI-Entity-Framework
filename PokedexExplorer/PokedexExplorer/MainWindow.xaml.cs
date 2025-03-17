@@ -23,22 +23,27 @@ public partial class MainWindow : Window
 {
     int currentColumnCount;
     PokemonDbContext context;
-    
+
+    DatabaseInitHandler databaseInitHandler;
+
     public MainWindow()
     {
         InitializeComponent();
         this.currentColumnCount = 1;
-        context = new PokemonDbContext();
+        context = new PokemonDbContext("skyre", "");
         context.Database.Migrate();
+
+        //Add the init handler
+        databaseInitHandler = new DatabaseInitHandler(this, this.context);
+        //Run the init handler
+        databaseInitHandler.Start();
     }
 
-    private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
+    public void NotifyInitProgressChanged()
     {
-        SearchGroup.Width = this.Width;
-        SearchGroup.Height = this.Height;
-        FilteredDataGroup.Width = this.Width - 280;
-        SearchParametersGroup.Height = this.Height;
+        //ItemProgressBar.Maximum = databaseInitHandler.ItemMax;
+        //ItemProgressBar.Value = databaseInitHandler.ItemProgress;
+        //TableProgressBar.Maximum = databaseInitHandler.TableMax;
+        //TableProgressBar.Value = databaseInitHandler.TableProgress;
     }
-
-    
 }

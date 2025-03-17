@@ -12,9 +12,11 @@ namespace PokedexExplorer.Data
 {
     public class PokemonDbContext : DbContext
     {
-        public PokemonDbContext() : base()
+        private string name, password;
+        public PokemonDbContext(string name, string password) : base()
         {
-
+            this.name = name;
+            this.password = password;
         }
         public DbSet<Ability> Ability { get; set; }
         public DbSet<Move> Move { get; set; }
@@ -24,7 +26,7 @@ namespace PokedexExplorer.Data
         public DbSet<PokemonMove> PokemonMove { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=" + this.name + ";Password=" + password + ";Database=postgres;");
         }
     }
 }

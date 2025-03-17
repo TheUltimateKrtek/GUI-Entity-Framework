@@ -82,30 +82,5 @@ namespace PokedexExplorer.Model
         [Required]
         public string PrimaryType { get; set; }
         public string? SecondaryType { get; set; }
-
-        public Pokemon(int iD, int baseExperience, int height, int weight, int order, int species, int hP, int hPEffort, int attack, int attackEffort, int defense, int defenseEffort, int specialAttack, int specialAttackEffort, int specialDefense, int specialDefenseEffort, int speed, int speedEffort, string spriteFrontDefault, string name, string primaryType)
-        {
-            ID = iD;
-            BaseExperience = baseExperience;
-            Height = height;
-            Weight = weight;
-            Order = order;
-            Species = species;
-            HP = hP;
-            HPEffort = hPEffort;
-            Attack = attack;
-            AttackEffort = attackEffort;
-            Defense = defense;
-            DefenseEffort = defenseEffort;
-            SpecialAttack = specialAttack;
-            SpecialAttackEffort = specialAttackEffort;
-            SpecialDefense = specialDefense;
-            SpecialDefenseEffort = specialDefenseEffort;
-            Speed = speed;
-            SpeedEffort = speedEffort;
-            SpriteFrontDefault = spriteFrontDefault;
-            Name = name;
-            PrimaryType = primaryType;
-        }
     }
 }

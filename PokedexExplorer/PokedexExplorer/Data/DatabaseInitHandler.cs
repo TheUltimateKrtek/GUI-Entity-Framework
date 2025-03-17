@@ -13,23 +13,65 @@ namespace PokedexExplorer.Data
 {
     class DatabaseInitHandler
     {
+        private MainWindow window;
         private PokemonDbContext context;
         private Thread thread;
         private int tableProgress, tableMax, itemProgress, itemMax;
+        public int TableProgress
+        {
+            get => tableProgress;
+            private set
+            {
+                this.tableProgress = value;
+                this.window.NotifyInitProgressChanged();
+            }
+        }
+        public int TableMax
+        {
+            get => tableMax;
+            private set
+            {
+                this.tableMax = value;
+                this.window.NotifyInitProgressChanged();
+            }
+        }
+        public int ItemProgress
+        {
+            get => itemProgress;
+            private set
+            {
+                this.itemProgress = value;
+                this.window.NotifyInitProgressChanged();
+            }
+        }
+        public int ItemMax
+        {
+            get => itemMax;
+            private set
+            {
+                this.itemMax = value;
+                this.window.NotifyInitProgressChanged();
+            }
+        }
+        public bool IsRunning { get; private set; }
 
-        public DatabaseInitHandler(PokemonDbContext context) {
-            thread = new Thread(Run);
+        public DatabaseInitHandler(MainWindow window, PokemonDbContext context) {
+            this.window = window;
             this.context = context;
+            thread = new Thread(Run);
         }
 
         public void Start()
         {
+            if (thread.IsAlive) return;
             thread.Start();
         }
 
         private void Run()
         {
-            tableMax = 5;
+            this.IsRunning = true;
+
+            TableMax = 5;
 
             int abilityCount = PokeAPIFetcher.GetCount("ability");
             int moveCount = PokeAPIFetcher.GetCount("move");
@@ -37,40 +79,48 @@ namespace PokedexExplorer.Data
             int pokemonSpeciesCount = PokeAPIFetcher.GetCount("pokemon-species");
             int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
 
-            this.itemMax = abilityCount;
-            this.tableProgress = 0;
-            this.itemProgress = 0;
+            //Ability
+            this.ItemMax = abilityCount;
+            this.TableProgress = 0;
+            this.ItemProgress = 0;
             for (int i = 0; i < abilityCount; i++)
             {
                 Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i));
                 if (ability != null) this.context.Ability.Add(ability);
-                this.itemProgress++;
+                this.ItemProgress++;
             }
 
-            this.itemMax = moveCount;
-            this.tableProgress = 1;
-            this.itemProgress = 0;
+            //Move
+            this.ItemMax = moveCount;
+            this.TableProgress = 1;
+            this.ItemProgress = 0;
             for (int i = 0; i < moveCount; i++)
             {
                 Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i));
                 if (move != null) this.context.Move.Add(move);
-                itemProgress++;
+                ItemProgress++;
             }
 
-            this.itemMax = pokemonSpeciesCount;
-            this.tableProgress = 2;
-            this.itemProgress = 0;
+            //PokemonSpecies
+            this.ItemMax = pokemonSpeciesCount;
+            this.TableProgress = 2;
+            this.ItemProgress = 0;
             for (int i = 0; i < pokemonSpeciesCount; i++)
             {
                 PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i));
                 if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
-                itemProgress++;
+                ItemProgress++;
             }
 
-            this.itemMax = pokemonCount;
-            this.tableProgress = 3;
-            this.itemProgress = 0;
+            //Save changes
+            this.context.SaveChanges();
+
+            //Pokemon
+            this.ItemMax = pokemonCount;
+            this.TableProgress = 3;
+            this.ItemProgress = 0;
             int pokemonMoveIndex = 0;
+            List<PokemonMove> storedPokemonMoves = new List<PokemonMove>();
             for (int i = 0; i < pokemonCount; i++)
             {
                 JsonNode node = PokeAPIFetcher.RetrieveJSON("pokemon", i);
@@ -86,18 +136,25 @@ namespace PokedexExplorer.Data
                             if (pokemonMove != null)
                             {
                                 pokemonMove.ID = pokemonMoveIndex;
-                                this.context.PokemonMove.Add(pokemonMove);
+                                storedPokemonMoves.Add(pokemonMove);
                                 pokemonMoveIndex++;
                             }
                         }
                     }
                 }
-                itemProgress++;
+                ItemProgress++;
             }
+            //Save changes to prepare for inserting PokemonMove entries
+            this.context.SaveChanges();
 
-            this.itemMax = evolutionChainCount;
-            this.tableProgress = 4;
-            this.itemProgress = 0;
+            //PokemonMove
+            this.context.PokemonMove.AddRange(storedPokemonMoves);
+            this.context.SaveChanges();
+
+            //EvolutionChain
+            this.ItemMax = evolutionChainCount;
+            this.TableProgress = 4;
+            this.ItemProgress = 0;
             int evolutionChainIndex = 0;
             for (int i = 0; i < evolutionChainCount; i++)
             {
@@ -114,11 +171,13 @@ namespace PokedexExplorer.Data
                         }
                     }
                 }
-                itemProgress++;
+                ItemProgress++;
             }
 
+            //Save changes
             this.context.SaveChanges();
-        }
 
+            this.IsRunning = false;
+        }
     }
 }

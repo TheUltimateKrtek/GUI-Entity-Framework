@@ -38,12 +38,5 @@ using System.Threading.Tasks;
             public string? TimeOfDay { get; set; }
             public bool? NeedsOverworldRain { get; set; }
             public bool? TurnUpsideDown { get; set; }
-            
-            public EvolutionChain(int id, int evolvesFrom, int evolvesTo)
-            {
-                this.ID = id;
-                this.EvolvesFrom = evolvesFrom;
-                this.EvolvesTo = evolvesTo;
-            }
         }
     }

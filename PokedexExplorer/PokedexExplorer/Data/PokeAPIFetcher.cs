@@ -76,7 +76,9 @@ namespace PokedexExplorer.Data
                     name = nameNode["name"].GetValue<string>();
                 }
 
-                Ability ability = new Ability(id, name);
+                Ability ability = new Ability();
+                ability.ID = id;
+                ability.Name = name;
                 ability.Generation = generation;
                 ability.Effect = effect;
                 ability.ShortEffect = shortEffect;
@@ -130,7 +132,13 @@ namespace PokedexExplorer.Data
                 description = descriptionNode["flavor_text"].GetValue<string>();
             }
 
-            Move move = new Move(id, name, pp, priority, target, type);
+            Move move = new Move();
+            move.ID = id;
+            move.Name = name;
+            move.PP = pp;
+            move.Priority = priority;
+            move.Target = target;
+            move.Type = type;
             move.Accuracy = accuracy;
             move.DamageClass = damageClass;
             move.EfectChance = effectChance;
@@ -202,8 +210,27 @@ namespace PokedexExplorer.Data
             string primaryType = node["types"][0].GetValue<string>();
             string? secondaryType = node["types"].AsArray().Count == 1 ? null : node["types"][1].GetValue<string?>();
 
-            Pokemon pokemon = new Pokemon(id, baseExperience, height, weight, order, species, hp, hpEffort, attack, attackEffort,
-                defense, defenseEffort, specialAttack, specialAttackEffort, specialDefense, specialDefenseEffort, speed, speedEffort, spriteFrontDefault, name, primaryType);
+            Pokemon pokemon = new Pokemon();
+            pokemon.ID = id;
+            pokemon.Name = name;
+            pokemon.BaseExperience = baseExperience;
+            pokemon.Height = height;
+            pokemon.Weight = weight;
+            pokemon.Order = order;
+            pokemon.Species = species;
+            pokemon.HP = hp;
+            pokemon.Attack = attack;
+            pokemon.Defense = defense;
+            pokemon.SpecialAttack = specialAttack;
+            pokemon.SpecialDefense = specialDefense;
+            pokemon.Speed = speed;
+            pokemon.HPEffort = hpEffort;
+            pokemon.AttackEffort = attackEffort;
+            pokemon.DefenseEffort = defenseEffort;
+            pokemon.SpecialAttackEffort = specialAttackEffort;
+            pokemon.SpecialDefenseEffort= specialDefenseEffort;
+            pokemon.SpeedEffort = speedEffort;
+            pokemon.SpriteFrontDefault = spriteFrontDefault;
             pokemon.PrimaryAbility = primaryAbility;
             pokemon.SecondaryAbility = secondaryAbility;
             pokemon.HiddenAbility = hiddenAbility;
@@ -216,6 +243,7 @@ namespace PokedexExplorer.Data
             pokemon.SpriteBackShinyFemale = spriteBackShinyFemale;
             pokemon.Cry = cry;
             pokemon.CryLegacy = cryLegacy;
+            pokemon.PrimaryType = primaryType;
             pokemon.SecondaryType = secondaryType;
             return pokemon;
         }
@@ -264,7 +292,23 @@ namespace PokedexExplorer.Data
                 description = descriptionNode["flavor_text"].GetValue<string>();
             }
 
-            PokemonSpecies species = new PokemonSpecies(id, baseHappiness, captureRate, genderRate, order, generation, nationalPokedexNumber, isBaby, isLegendary, isMythical, color, growthRate, habitat, shape, genera, name);
+            PokemonSpecies species = new PokemonSpecies();
+            species.ID = id;
+            species.Name = name;
+            species.BaseHappiness = baseHappiness;
+            species.CaptureRate = captureRate;
+            species.GenderRate = genderRate;
+            species.Order = order;
+            species.Generation = generation;
+            species.NationalPokedexNumber = nationalPokedexNumber;
+            species.IsBaby = isBaby;
+            species.IsLegendary = isLegendary;
+            species.IsMythical = isMythical;
+            species.Color = color;
+            species.GrowthRate = growthRate;
+            species.Habitat = habitat;
+            species.Shape = shape;
+            species.Genera = genera;
             species.Description = description;
             species.HatchCounter = hatchCounter;
             return species;
@@ -287,8 +331,11 @@ namespace PokedexExplorer.Data
 
                     int id = -1;
 
-                    EvolutionChain chain = new EvolutionChain(id, from, to);
+                    EvolutionChain chain = new EvolutionChain();
 
+                    chain.ID = id;
+                    chain.EvolvesFrom = from;
+                    chain.EvolvesTo = to;
                     chain.Gender = details["gender"].GetValue<int?>();
                     chain.MinBeauty = details["min_beauty"].GetValue<int?>();
                     chain.MinHappiness = details["min_happiness"].GetValue<int?>();
@@ -326,7 +373,10 @@ namespace PokedexExplorer.Data
                 int? levelLearnedAt = m["version_group_details"][index]["level_learned_at"].GetValue<int>();
                 string? learnMethod = m["version_group_details"][index]["learn_method"]["name"].GetValue<string>();
 
-                PokemonMove pm = new PokemonMove(index, pokemon, move);
+                PokemonMove pm = new PokemonMove();
+                pm.ID = -1;
+                pm.Pokemon = pokemon;
+                pm.Move = move;
                 pm.LearnMethod = learnMethod;
                 pm.LevelLearnedAt = levelLearnedAt;
 
