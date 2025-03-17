@@ -281,19 +281,219 @@ namespace PokedexExplorer.Model
 ```
 #### Move
 The Move table contains a list of moves that a Pokémon can perform.
-#TODO: Insert code here
+```csharp
+namespace PokedexExplorer.Model
+{
+    public class Move
+    {
+        [Required]
+        [Key]
+        public int ID { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public int? Accuracy { get; set; }
+        public string? DamageClass { get; set; }
+        public int? EfectChance { get; set; }
+        [Required]
+        public int Generation { get; set; }
+        public string? Ailment { get; set; }
+        public int? AilmentChance { get; set; }
+        public int? CritRate { get; set; }
+        public int? Drain { get; set; }
+        public int? FlinchChance { get; set; }
+        public int? Healing { get; set; }
+        public int? MaxHits { get; set; }
+        public int? MinTurns { get; set; }
+        public int? StatChance { get; set; }
+        public int? Power { get; set; }
+        [Required]
+        public int PP { get; set; }
+        [Required]
+        public int Priority { get; set; }
+        [Required]
+        public string Target { get; set; }
+        [Required]
+        public string Type { get; set; }
+        public string? Description { get; set; }
+    }
+}
+```
 #### Pokemon
 The Pokémon table contains information about the various Pokémon.
-#TODO: Insert code here
+```csharp
+namespace PokedexExplorer.Model
+{
+    public class Pokemon
+    {
+        [Key]
+        [Required]
+        public int ID { get; set; }
+        [Required]
+        public int BaseExperience { get; set; }
+        [Required]
+        public int Height { get; set; }
+        [Required]
+        public int Weight { get; set; }
+        [Required]
+        public int Order { get; set; }
+        [ForeignKey("Ability")]
+        public int? PrimaryAbility { get; set; }
+        [ForeignKey("Ability")]
+        public int? econdaryAbility { get; set; }
+        [ForeignKey("Ability")]
+        public int? HiddenAbility { get; set; }
+        [ForeignKey("PokemonSpecies")]
+        [Required]
+        public int Species { get; set; }
+        [Required]
+        public int HP { get; set; }
+        [Required]
+        public int HPEffort { get; set; }
+        [Required]
+        public int Attack { get; set; }
+        [Required]
+        public int AttackEffort { get; set; }
+        [Required]
+        public int Defense { get; set; }
+        [Required]
+        public int DefenseEffort { get; set; }
+        [Required]
+        public int SpecialAttack { get; set; }
+        [Required]
+        public int SpecialAttackEffort { get; set; }
+        [Required]
+        public int SpecialDefense { get; set; }
+        [Required]
+        public int SpecialDefenseEffort { get; set; }
+        [Required]
+        public int Speed { get; set; }
+        [Required]
+        public int SpeedEffort { get; set; }
+        [Required]
+        public string SpriteFrontDefault { get; set; }
+        public string? SpriteFrontFemale { get; set; }
+        public string? SpriteFrontShinyFemale { get; set; }
+        public string? SpriteFrontShiny { get; set; }
+        public string? SpriteBackDefault { get; set; }
+        public string? SpriteBackFemale { get; set; }
+        public string? SpriteBackShinyFemale { get; set; }
+        public string? SpriteBackShiny { get; set; }
+        public string? Cry { get; set; }
+        public string? CryLegacy { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string PrimaryType { get; set; }
+        public string? SecondaryType { get; set; }
+    }
+}
+```
 #### PokemonSpecies
 The PokemonSpecies table contains information about the Pokémon species. Note, that a species may contain multiple pokémon. An obvious example is Pikachu with its various versions, each having different attributes and stats.
-#TODO: Insert code here
+```csharp
+namespace PokedexExplorer.Model
+{
+    public class PokemonSpecies
+    {
+        [Required]
+        [Key]
+        public int ID { get; set; }
+        [Required]
+        public int BaseHappiness { get; set; }
+        [Required]
+        public int CaptureRate { get; set; }
+        [Required]
+        public int GenderRate { get; set; }
+        public int? HatchCounter { get; set; }
+        [Required]
+        public int Order { get; set; }
+        [Required]
+        public int Generation { get; set; }
+        public int? NationalPokedexNumber { get; set; }
+        [Required]
+        public bool IsBaby { get; set; }
+        [Required]
+        public bool IsLegendary { get; set; }
+        [Required]
+        public bool IsMythical { get; set; }
+        [Required]
+        public string Color { get; set; }
+        [Required]
+        public string GrowthRate { get; set; }
+        [Required]
+        public string Habitat { get; set; }
+        [Required]
+        public string Shape { get; set; }
+        [Required]
+        public string Genera { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string EggGroups { get; set; }
+        [Required]
+        public string Varieties { get; set; }
+        public string? Description { get; set; }
+    }
+}
+```
 #### EvolutionChain
 The EvolutionChain table includes information about a Pokémon’s evolution chain. Pokémon can evolve into various Pokémon, but a Pokémon can only evolve from one other Pokémon. Because of this, the primary key will be the EvolvesTo column.
-#TODO: Insert code here
+```csharp
+    namespace PokedexExplorer.Model
+    {
+        public class EvolutionChain
+        {
+            [Key]
+            [Required]
+            public int ID { get; set; }
+            [ForeignKey("Pokemon")]
+            [Required]
+            public int EvolvesFrom { get; set; }
+            [ForeignKey("Pokemon")]
+            [Required]
+            public int EvolvesTo { get; set; }
+            public int? Gender { get; set; }
+            public int? MinBeauty { get; set; }
+            public int? MinHappiness { get; set; }
+            public int? MinLevel { get; set; }
+            [ForeignKey("Pokemon")]
+            public string? Trade_Species { get; set; }
+            public int? RelativePhysicalStats { get; set; }
+            public string? Item { get; set; }
+            public string? HeldItem { get; set; }
+            [ForeignKey("Move")]
+            public string? KnownMove { get; set; }
+            public string? KnownMoveType { get; set; }
+            public string? Trigger { get; set; }
+            [ForeignKey("Pokemon")]
+            public int? PartySpecies { get; set; }
+            public string? PartyType { get; set; }
+            public string? TimeOfDay { get; set; }
+            public bool? NeedsOverworldRain { get; set; }
+            public bool? TurnUpsideDown { get; set; }
+        }
+    }
+}
+```
 #### PokemonMove
 This table represents our many-to-many relation between a Pokémon and a move it can learn. It will also contain additional information about the way a Pokémon can learn a move. This table connects the Pokemon and the Move tables.
-#TODO: Insert code here
+```csharp
+namespace PokedexExplorer.Model
+{
+    public class PokemonMove
+    {
+        [Key]
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public int pokemon { get; set; }
+        [Required]
+        public int move { get; set; }
+        public int? level_learned_at { get; set; }
+        public string? learn_method { get; set; }
+    }
+}
+```
 ### Indexes
 For the purpose of searching, indexing columns will be beneficial. It will speed up search.
 
