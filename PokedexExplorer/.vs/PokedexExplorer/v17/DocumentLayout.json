@@ -7,28 +7,36 @@
       "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\data\\pokeapifetcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\data\\databaseinithandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\data\\databaseinithandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\evolutionchain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\evolutionchain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\pokemon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\pokemon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\data\\pokemondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\data\\pokemondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\pokemonspecies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\pokemonspecies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\evolutionchain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\evolutionchain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\pokemon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\pokemon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\pokemonmove.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\pokemonmove.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\model\\pokemonspecies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|solutionrelative:pokedexexplorer\\model\\pokemonspecies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A257713E-E3EF-403C-8E8C-FD5EA206C936}|PokedexExplorer\\PokedexExplorer.csproj|c:\\data\\school\\gui\\object_relation_mapping_c-\\gui-entity-framework\\pokedexexplorer\\pokedexexplorer\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -46,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,80 +62,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PokemonSpecies.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonSpecies.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\PokemonSpecies.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonSpecies.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\PokemonSpecies.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAkwCwAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:24:13.722Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PokemonMove.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonMove.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\PokemonMove.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonMove.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\PokemonMove.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:23:31.63Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Pokemon.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Pokemon.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Pokemon.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Pokemon.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\Pokemon.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAowE8AAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:22:15.221Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Move.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Move.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Move.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Move.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\Move.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAUwCIAAAAnAAAAAAAAAA==",
+              "Title": "DatabaseInitHandler.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Data\\DatabaseInitHandler.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Data\\DatabaseInitHandler.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Data\\DatabaseInitHandler.cs",
+              "RelativeToolTip": "PokedexExplorer\\Data\\DatabaseInitHandler.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAACYAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:19:54.75Z",
+              "WhenOpened": "2025-03-17T16:34:39.764Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "EvolutionChain.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\EvolutionChain.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\EvolutionChain.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\EvolutionChain.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\EvolutionChain.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAkwCwAAAAjAAAAAAAAAA==",
+              "Title": "PokemonDbContext.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Data\\PokemonDbContext.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Data\\PokemonDbContext.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Data\\PokemonDbContext.cs",
+              "RelativeToolTip": "PokedexExplorer\\Data\\PokemonDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:18:53.683Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Ability.cs",
-              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Ability.cs",
-              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Ability.cs",
-              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Ability.cs",
-              "RelativeToolTip": "PokedexExplorer\\Model\\Ability.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T13:17:22.432Z",
+              "WhenOpened": "2025-03-17T16:34:24.967Z",
               "EditorCaption": ""
             },
             {
@@ -138,7 +94,7 @@
               "RelativeDocumentMoniker": "PokedexExplorer\\Data\\PokeAPIFetcher.cs",
               "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Data\\PokeAPIFetcher.cs",
               "RelativeToolTip": "PokedexExplorer\\Data\\PokeAPIFetcher.cs",
-              "ViewState": "AgIAAJoAAAAAAAAAAADwv7QAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAADQBAAAAAAAAAAAiwFEBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-17T13:01:31.539Z",
               "EditorCaption": ""
@@ -146,6 +102,84 @@
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "PokemonSpecies.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonSpecies.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\PokemonSpecies.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonSpecies.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\PokemonSpecies.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:24:13.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PokemonMove.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonMove.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\PokemonMove.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\PokemonMove.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\PokemonMove.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:23:31.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Pokemon.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Pokemon.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Pokemon.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Pokemon.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\Pokemon.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAABgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:22:15.221Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Move.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Move.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Move.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Move.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\Move.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAuwA4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:19:54.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EvolutionChain.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\EvolutionChain.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\EvolutionChain.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\EvolutionChain.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\EvolutionChain.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:18:53.683Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Ability.cs",
+              "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Ability.cs",
+              "RelativeDocumentMoniker": "PokedexExplorer\\Model\\Ability.cs",
+              "ToolTip": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\Model\\Ability.cs",
+              "RelativeToolTip": "PokedexExplorer\\Model\\Ability.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T13:17:22.432Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\MainWindow.xaml",
               "RelativeDocumentMoniker": "PokedexExplorer\\MainWindow.xaml",
@@ -156,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Data\\School\\GUI\\Object_relation_mapping_C-\\GUI-Entity-Framework\\PokedexExplorer\\PokedexExplorer\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "PokedexExplorer\\MainWindow.xaml.cs",
@@ -164,8 +198,7 @@
               "RelativeToolTip": "PokedexExplorer\\MainWindow.xaml.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-16T03:50:15.425Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-16T03:50:15.425Z"
             }
           ]
         }

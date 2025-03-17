@@ -47,8 +47,6 @@ namespace PokedexExplorer.Model
         public string Genera { get; set; }
         [Required]
         public string Name { get; set; }
-        public string? EggGroups { get; set; }
-        public string? Varieties { get; set; }
         public string? Description { get; set; }
 
         public PokemonSpecies(int iD, int baseHappiness, int captureRate, int genderRate, int order, int generation, int nationalPokedexNumber, bool isBaby, bool isLegendary, bool isMythical, string color, string growthRate, string habitat, string shape, string genera, string name)

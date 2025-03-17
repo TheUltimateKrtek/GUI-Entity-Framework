@@ -9,8 +9,8 @@ using System.Xml.Linq;
 
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(PokemonMove.Pokemon), IsUnique = true, Name = "IndexPokemonMovePokemon")]
-    [Index(nameof(PokemonMove.Move), IsUnique = true, Name = "IndexPokemonMoveMove")]
+    [Index(nameof(PokemonMove.Pokemon), IsUnique = false, Name = "IndexPokemonMovePokemon")]
+    [Index(nameof(PokemonMove.Move), IsUnique = false, Name = "IndexPokemonMoveMove")]
     public class PokemonMove
     {
         [Key]

@@ -24,12 +24,12 @@ using System.Threading.Tasks;
             public int? MinHappiness { get; set; }
             public int? MinLevel { get; set; }
             [ForeignKey("Pokemon")]
-            public string? Trade_Species { get; set; }
+            public int? TradeSpecies { get; set; }
             public int? RelativePhysicalStats { get; set; }
             public string? Item { get; set; }
             public string? HeldItem { get; set; }
             [ForeignKey("Move")]
-            public string? KnownMove { get; set; }
+            public int? KnownMove { get; set; }
             public string? KnownMoveType { get; set; }
             public string? Trigger { get; set; }
             [ForeignKey("Pokemon")]
