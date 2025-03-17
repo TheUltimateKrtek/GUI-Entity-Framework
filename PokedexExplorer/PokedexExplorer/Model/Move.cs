@@ -20,8 +20,7 @@ namespace PokedexExplorer.Model
         public int? Accuracy { get; set; }
         public string? DamageClass { get; set; }
         public int? EfectChance { get; set; }
-        [Required]
-        public int Generation { get; set; }
+        public int? Generation { get; set; }
         public string? Ailment { get; set; }
         public int? AilmentChance { get; set; }
         public int? CritRate { get; set; }
@@ -29,6 +28,8 @@ namespace PokedexExplorer.Model
         public int? FlinchChance { get; set; }
         public int? Healing { get; set; }
         public int? MaxHits { get; set; }
+        public int? MaxTurns { get; set; }
+        public int? MinHits { get; set; }
         public int? MinTurns { get; set; }
         public int? StatChance { get; set; }
         public int? Power { get; set; }
@@ -41,5 +42,15 @@ namespace PokedexExplorer.Model
         [Required]
         public string Type { get; set; }
         public string? Description { get; set; }
+
+        public Move(int id, string name, int pp, int priority, string target, string type)
+        {
+            ID = id;
+            Name = name;
+            PP = pp;
+            Priority = priority;
+            Target = target;
+            Type = type;
+        }
     }
 }

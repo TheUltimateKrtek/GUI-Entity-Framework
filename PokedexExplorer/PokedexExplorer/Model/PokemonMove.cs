@@ -22,5 +22,12 @@ namespace PokedexExplorer.Model
         public int Move { get; set; }
         public int? LevelLearnedAt { get; set; }
         public string? LearnMethod { get; set; }
+
+        public PokemonMove(int iD, int pokemon, int move)
+        {
+            ID = iD;
+            Pokemon = pokemon;
+            Move = move;
+        }
     }
 }

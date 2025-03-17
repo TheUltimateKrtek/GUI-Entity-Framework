@@ -21,5 +21,11 @@ namespace PokedexExplorer.Model
         public string? ShortEffect { get; set; }
         public string? Description { get; set; }
         public int? Generation { get; set; }
+
+        public Ability(int id, string name)
+        {
+            this.ID = id;
+            this.Name = name;
+        }
     }
 }

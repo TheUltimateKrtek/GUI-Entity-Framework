@@ -19,3 +19,4 @@ C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplor
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\obj\Debug\net9.0-windows\PokedexExplorer.pdb
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\obj\Debug\net9.0-windows\PokedexExplorer.genruntimeconfig.cache
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\obj\Debug\net9.0-windows\ref\PokedexExplorer.dll
+C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\obj\Debug\net9.0-windows\PokedexExplorer.csproj.AssemblyReference.cache
