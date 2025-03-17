@@ -1173,6 +1173,8 @@ namespace PokedexExplorer.Data
 #### Insert
 Inserting an entry to our table is straight-forward. All we need is an object and a table to insert it to. We will fill in the `Run()` method.
 
+Inserting an entry is done by `context.Table.Add(entry);`. As an example, we can insert an ability in the Ability table with `context.Ability.Add(ability);`. We will also make use of the `AddRange(List<T>)` method, which adds multiple values at once. These changes only happen in our "# environment, so we will need to apply them using `context.SaveChanges();`.
+
 ##### Get entry counts
 ```csharp
 int abilityCount = PokeAPIFetcher.GetCount("ability");
@@ -1183,32 +1185,44 @@ int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
 ```
 
 ##### Ability, Move and PokemonSpecies
-Populating the Ability, Move and PokemonSpecies tables is simple. Every entry is created by a single request to the PokeAPIFetcher class. We will simply request the object, and if it exists, we will simply insesrt it.
+Populating the Ability, Move and PokemonSpecies tables is simple. Every entry is created by a single request to the PokeAPIFetcher class. We will simply request the object, and if it exists, we will simply insesrt it. Finally, we will save the changes, so that we can be confident future entries can reference these entries.
 ```csharp
+//Ability
 for (int i = 0; i < abilityCount; i++)
 {
     Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i));
     if (ability != null) this.context.Ability.Add(ability);
 }
 
+//Move
 for (int i = 0; i < moveCount; i++)
 {
     Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i));
     if (move != null) this.context.Move.Add(move);
 }
 
+//PokemonSpecies
 for (int i = 0; i < pokemonSpeciesCount; i++)
 {
     PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i));
     if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
-    itemProgress++;
 }
+
+//Save changes
+this.context.SaveChanges();
 ```
 
 ##### Pokemon and PokemonMove
-Pokemon and PokemonMove tables are both created from the `pokemon` PokéAPI table. We will populate them at the same time, as to minimize the number of PokéAPI requests. We can do this, becauseall moves have already been inserted and any referenced Pokemon is already inserted.
+Pokemon and PokemonMove tables are both created from the `pokemon` PokéAPI table. We will create at the same time, however we will add `PokemonMove` entries after `Pokemon` entries, because `Pokemon` references `Pokemon`. `PokemonMove` also references `Move`, but all `Move` entries have already been inserted.
+
+As for `PokemonMove`, we need to identify them by different IDs, because the two tables don't have the same number of entries. That's what the `pokemonMoveIndex` variable is for.
+
+```csharp
+//TODO
+```
 
 ##### EvolutionChain
+EvolutionChain 
 
 ### Adding data
 We well use our PokeAPI fetcher class to retrieve, process and insert data into our database. We will do this by retrieving the number of entries and tgen looping through every index. We will add entries one by one and then save all changes.
