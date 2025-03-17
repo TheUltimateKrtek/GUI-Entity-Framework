@@ -290,6 +290,12 @@ namespace PokedexExplorer.Model
         public string? ShortEffect { get; set; }
         public string? Description { get; set; }
         public int? Generation { get; set; }
+
+        public Ability(int id, string name)
+        {
+            this.ID = id;
+            this.Name = name;
+        }
     }
 }
 ```
@@ -329,6 +335,17 @@ namespace PokedexExplorer.Model
         [Required]
         public string Type { get; set; }
         public string? Description { get; set; }
+
+        public Move(int iD, string name, int generation, int pp, int priority, string target, string type)
+        {
+            ID = iD;
+            Name = name;
+            Generation = generation;
+            PP = pp;
+            Priority = priority;
+            Target = target;
+            Type = type;
+        }
     }
 }
 ```
@@ -399,6 +416,31 @@ namespace PokedexExplorer.Model
         [Required]
         public string PrimaryType { get; set; }
         public string? SecondaryType { get; set; }
+
+        public Pokemon(int iD, int baseExperience, int height, int weight, int order, int species, int hP, int hPEffort, int attack, int attackEffort, int defense, int defenseEffort, int specialAttack, int specialAttackEffort, int specialDefense, int specialDefenseEffort, int speed, int speedEffort, string spriteFrontDefault, string name, string primaryType)
+        {
+            ID = iD;
+            BaseExperience = baseExperience;
+            Height = height;
+            Weight = weight;
+            Order = order;
+            Species = species;
+            HP = hP;
+            HPEffort = hPEffort;
+            Attack = attack;
+            AttackEffort = attackEffort;
+            Defense = defense;
+            DefenseEffort = defenseEffort;
+            SpecialAttack = specialAttack;
+            SpecialAttackEffort = specialAttackEffort;
+            SpecialDefense = specialDefense;
+            SpecialDefenseEffort = specialDefenseEffort;
+            Speed = speed;
+            SpeedEffort = speedEffort;
+            SpriteFrontDefault = spriteFrontDefault;
+            Name = name;
+            PrimaryType = primaryType;
+        }
     }
 }
 ```
@@ -444,47 +486,72 @@ namespace PokedexExplorer.Model
         public string Name { get; set; }
         [Required]
         public string EggGroups { get; set; }
-        [Required]
         public string Varieties { get; set; }
         public string? Description { get; set; }
+
+        public PokemonSpecies(int iD, int baseHappiness, int captureRate, int genderRate, int order, int generation, int nationalPokedexNumber, bool isBaby, bool isLegendary, bool isMythical, string color, string growthRate, string habitat, string shape, string genera, string name)
+        {
+            ID = iD;
+            BaseHappiness = baseHappiness;
+            CaptureRate = captureRate;
+            GenderRate = genderRate;
+            Order = order;
+            Generation = generation;
+            NationalPokedexNumber = nationalPokedexNumber;
+            IsBaby = isBaby;
+            IsLegendary = isLegendary;
+            IsMythical = isMythical;
+            Color = color;
+            GrowthRate = growthRate;
+            Habitat = habitat;
+            Shape = shape;
+            Genera = genera;
+            Name = name;
+        }
     }
 }
 ```
 #### EvolutionChain
 The EvolutionChain table includes information about a Pokémon’s evolution chain. Pokémon can evolve into various Pokémon, but a Pokémon can only evolve from one other Pokémon. Because of this, the primary key will be the EvolvesTo column.
 ```csharp
-    namespace PokedexExplorer.Model
+namespace PokedexExplorer.Model
+{
+    public class EvolutionChain
     {
-        public class EvolutionChain
+        [Key]
+        [Required]
+        public int ID { get; set; }
+        [ForeignKey("Pokemon")]
+        [Required]
+        public int EvolvesFrom { get; set; }
+        [ForeignKey("Pokemon")]
+        [Required]
+        public int EvolvesTo { get; set; }
+        public int? Gender { get; set; }
+        public int? MinBeauty { get; set; }
+        public int? MinHappiness { get; set; }
+        public int? MinLevel { get; set; }
+        [ForeignKey("Pokemon")]
+        public string? Trade_Species { get; set; }
+        public int? RelativePhysicalStats { get; set; }
+        public string? Item { get; set; }
+        public string? HeldItem { get; set; }
+        [ForeignKey("Move")]
+        public string? KnownMove { get; set; }
+        public string? KnownMoveType { get; set; }
+        public string? Trigger { get; set; }
+        [ForeignKey("Pokemon")]
+        public int? PartySpecies { get; set; }
+        public string? PartyType { get; set; }
+        public string? TimeOfDay { get; set; }
+        public bool? NeedsOverworldRain { get; set; }
+        public bool? TurnUpsideDown { get; set; }
+        
+        public EvolutionChain(int id, int evolvesFrom, int evolvesTo)
         {
-            [Key]
-            [Required]
-            public int ID { get; set; }
-            [ForeignKey("Pokemon")]
-            [Required]
-            public int EvolvesFrom { get; set; }
-            [ForeignKey("Pokemon")]
-            [Required]
-            public int EvolvesTo { get; set; }
-            public int? Gender { get; set; }
-            public int? MinBeauty { get; set; }
-            public int? MinHappiness { get; set; }
-            public int? MinLevel { get; set; }
-            [ForeignKey("Pokemon")]
-            public string? Trade_Species { get; set; }
-            public int? RelativePhysicalStats { get; set; }
-            public string? Item { get; set; }
-            public string? HeldItem { get; set; }
-            [ForeignKey("Move")]
-            public string? KnownMove { get; set; }
-            public string? KnownMoveType { get; set; }
-            public string? Trigger { get; set; }
-            [ForeignKey("Pokemon")]
-            public int? PartySpecies { get; set; }
-            public string? PartyType { get; set; }
-            public string? TimeOfDay { get; set; }
-            public bool? NeedsOverworldRain { get; set; }
-            public bool? TurnUpsideDown { get; set; }
+            this.ID = id;
+            this.EvolvesFrom = evolvesFrom;
+            this.EvolvesTo = evolvesTo;
         }
     }
 }
@@ -505,6 +572,13 @@ namespace PokedexExplorer.Model
         public int Move { get; set; }
         public int? LevelLearnedAt { get; set; }
         public string? LearnMethod { get; set; }
+
+        public PokemonMove(int iD, int pokemon, int move)
+        {
+            ID = iD;
+            Pokemon = pokemon;
+            Move = move;
+        }
     }
 }
 ```
@@ -627,13 +701,36 @@ public class PokemonDbContext : DbContext
 Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
 #### Migrate
 To synchronize our database model with Postgre, we will use the method `DbContext.Database.Migrate();`. This will update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the existing table is different.
-```csharp
-//TODO: Write the class DatabaseInitHandler
-```
 #### MainWindow
 In our MainWindow class, created at WPF initialization, we will add the following code. This code runs at startup.
 ```csharp
-//TODO: Write the code
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using PokedexExplorer.Data;
+using PokedexExplorer.Model;
+
+namespace PokedexExplorer;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
+{
+    PokemonDbContext context;
+    
+    public MainWindow()
+    {
+        InitializeComponent();
+        context = new PokemonDbContext();
+        context.Database.Migrate();
+    }
+}
 ```
 
 # Retrieving data from PokéAPI
@@ -649,23 +746,50 @@ We will split this class into two parts:
 - Processing and reformatting data
 
 ### PokeAPIFetcher
-We will create a class PokeAPIFetcher, which will fetch and process data and return objects in the form of our defined classes model. This part of the code is not important for our tutorial, so you can just copy-paste the final code. We will explain it anyways.
+We will create a class `PokeAPIFetcher` in the `Data` folder, which will fetch and process data and return objects in the form of our defined classes model. This part of the code is not important for our tutorial, so you can just copy-paste the final code. We will explain it anyways.
 
 #### Retrieving data
 PokéAPI uses a JSON format with a NoSQL-type database. This format is good for storing the complex data Pokémon has. However, we will process it and drop data unimportant to us. We also want to show how to add data to our database.
 
 ##### Retrieving a JSON object
-We will use this simple method to retrieve a JSON file.
+We will use this simple method to retrieve a JSON file. This uses PokéAPI's folder structure: `https://pokeapi.co/api/v2/<table>/[<id>]`
 
 ```csharp
-//TODO: Retrieve a JSON file using a method RetrieveJSON(string name, int? id = 0).
+static public JsonNode? RetrieveJSON(string name, int? id = 0)
+{
+    string url = "https://pokeapi.co/api/v2/" + name + "/";
+    if (id != null) url += id + "/";
+
+    using (HttpClient client = new HttpClient())
+    {
+        try
+        {
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            response.EnsureSuccessStatusCode();
+
+            string jsonResponse = response.Content.ReadAsStringAsync().Result;
+
+            return JsonObject.Parse(jsonResponse);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+}
 ```
 
 ##### Retrieving entry count
 Using the method from before, we can start with processing data. First, we want to find the total number of entries.
 
 ```csharp
-//TODO: Find the count using a method GetCount(string name)
+static public int GetCount(string name)
+{
+    JsonNode json = RetrieveJSON(name);
+    if (json == null) return -1;
+    return json["count"].GetValue<int>();
+}
 ```
 
 #### Processing data
