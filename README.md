@@ -623,5 +623,18 @@ public class PokemonDbContext : DbContext
 }
 ```
 
-We also need to create the tables in the actual database.
-#TODO: Insert code here
+### Creating the database
+Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
+
+# Retrieving data from PokéAPI
+*(Note: This section assumes you’re using the code-first approach. This section is not an important part in our tutorial, so you can just copy-paste all the code. This code will be slow to run. We also advise not to run this too often, as the code contained in this section connects to a third-party server. We are not trying to cause the PokéAPI team any problems.)*
+PokéAPI uses a NoSQL-type database. We will need to reformat it to match our PostgreSQL table structure. Now that we have our tables defined, we will create a dedicated class for retrieving data and reformatting it. We will use our classes for output.
+### Be careful
+Be careful, as the PostgreSQL database requires a primary key of one table to exist before another table can reference it. Because of this, we will keep it simple and not use threading.
+### Checking if you’re correct
+We will explain how to retrieve data in later sections. For now, to see your code in action, you can use tools like pgAdmin, which comes bundled with PostgreSQL.
+## Class structure
+We will split this class into two parts:
+- Retrieving data from PokéAPI
+- Processing and reformatting data
+
