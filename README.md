@@ -188,9 +188,9 @@ Replace mydatabase with your preferred name for the database.
 
 ### Setting up a WPF and EF project
 Open Visual Studio (or install it with the WPF extension).
-Create a new WPF project.
+Create a new WPF project. We will name it **PokedexExplorer**.
 Install the Npgsql and Entity Framework libraries using the NuGet Package Manager.
-In the Solution Explorer, create a new folder Models. We will write our tables here. This step is not required, but it helps keep the project clean. Our tutorial will assume this step was taken.
+In the Solution Explorer, under PokedexExplorer, create a new folder **Models**. We will write our tables here. Next, create a folder **Data**. We will put all our data-handling classes there. This step is not required, but it helps keep the project clean. Our tutorial will assume this step was taken.
 
 # Code-First vs. Database-First Approach
 Object-Relational Mappers (ORMs) provide two common approaches for managing the relationship between your application code and the database: code-first and database-first.
@@ -262,7 +262,23 @@ The Required annotation is used to specify non-null values.
 For this tutorial, we want to use the following tables. We will also add the references to them in the PokemonDbContext class, but that will be explained in a later section. We will also provide articles about the Pokémon mechanics in the Pokémon games, but they are not necessary to understand for this tutorial. 
 #### Ability
 The Ability table is a simple table that holds data about the Pokémon abilities.
-#TODO: Insert code here
+```csharp
+namespace PokedexExplorer.Model
+{
+    public class Ability
+    {
+        [Required]
+        [Key]
+        public int ID { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public string? Effect { get; set; }
+        public string? ShortEffect { get; set; }
+        public string? Description { get; set; }
+        public int? Generation { get; set; }
+    }
+}
+```
 #### Move
 The Move table contains a list of moves that a Pokémon can perform.
 #TODO: Insert code here
