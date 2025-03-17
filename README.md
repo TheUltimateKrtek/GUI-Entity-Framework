@@ -314,8 +314,7 @@ namespace PokedexExplorer.Model
         public int? Accuracy { get; set; }
         public string? DamageClass { get; set; }
         public int? EfectChance { get; set; }
-        [Required]
-        public int Generation { get; set; }
+        public int? Generation { get; set; }
         public string? Ailment { get; set; }
         public int? AilmentChance { get; set; }
         public int? CritRate { get; set; }
@@ -323,6 +322,8 @@ namespace PokedexExplorer.Model
         public int? FlinchChance { get; set; }
         public int? Healing { get; set; }
         public int? MaxHits { get; set; }
+        public int? MaxTurns { get; set; }
+        public int? MinHits { get; set; }
         public int? MinTurns { get; set; }
         public int? StatChance { get; set; }
         public int? Power { get; set; }
@@ -336,11 +337,10 @@ namespace PokedexExplorer.Model
         public string Type { get; set; }
         public string? Description { get; set; }
 
-        public Move(int iD, string name, int generation, int pp, int priority, string target, string type)
+        public Move(int iD, string name, int pp, int priority, string target, string type)
         {
             ID = iD;
             Name = name;
-            Generation = generation;
             PP = pp;
             Priority = priority;
             Target = target;
@@ -765,9 +765,7 @@ static public JsonNode? RetrieveJSON(string name, int? id = 0)
         try
         {
             HttpResponseMessage response = client.GetAsync(url).Result;
-
             response.EnsureSuccessStatusCode();
-
             string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
             return JsonObject.Parse(jsonResponse);
@@ -793,6 +791,32 @@ static public int GetCount(string name)
 ```
 
 #### Processing data
+Next, we will add methods to parse JSON data
+
+##### Helper Methods
+Method `GetURLIntValue` will simply retrieve an index from a url.
+```csharp
+static private int GetURLIntValue(string url)
+{
+    string[] split = url.Split('/');
+    return int.Parse(split[split.Length - 1]);
+}
+```
+Method GetEnglishNode will iterate through a language structure and return an english version.
+```csharp
+static private JsonNode GetEnglishNode(JsonNode node)
+{
+    if (node == null) return null;
+    foreach (JsonNode n in node.AsArray())
+    {
+        if (n == null) continue;
+        if (n["language"] == null) continue;
+        if (n["language"]["name"] == null) continue;
+        if (n["language"]["name"].Equals("n")) return n;
+    }
+    return null;
+}
+```
 
 ##### Ability
 
