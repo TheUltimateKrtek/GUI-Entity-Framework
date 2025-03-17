@@ -625,6 +625,12 @@ public class PokemonDbContext : DbContext
 
 ### Creating the database
 Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
+#### Migrate
+To synchronize our database model with Postgre, we will use the method `DbContext.Database.Migrate();`. This will update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the exiating table is different.
+#### MainWindow
+In our MainWindow class, created at WPF initialization, we will add the following code. This code runs at startup.
+```csharp
+```
 
 # Retrieving data from PokéAPI
 *(Note: This section assumes you’re using the code-first approach. This section is not an important part in our tutorial, so you can just copy-paste all the code. This code will be slow to run. We also advise not to run this too often, as the code contained in this section connects to a third-party server. We are not trying to cause the PokéAPI team any problems.)*
