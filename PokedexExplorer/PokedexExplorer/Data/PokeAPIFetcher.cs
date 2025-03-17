@@ -335,8 +335,6 @@ namespace PokedexExplorer.Data
             return list;
         }
 
-
-
         static private int? GetURLIntValue(string url)
         {
             if (url == null) return null;

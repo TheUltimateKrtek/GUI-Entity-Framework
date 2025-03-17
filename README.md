@@ -1130,16 +1130,85 @@ static public List<PokemonMove> ParsePokemonMove(JsonNode pokemonJson)
 ```
 
 # Populating the database
-Now that we have our data, we can start populating the database. We will use our next class, `DatabaseInitHandler`.
+Now that we have our data, we can start populating the database. We will use our next class, `DatabaseInitHandler`. We will ceate a thread-like class for asynchronous download and proccessing.
 ```csharp
-//TODO: Add DatabaseInitHandler
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using PokedexExplorer.Model;
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace PokedexExplorer.Data
+{
+    class DatabaseInitHandler
+    {
+        private PokemonDbContext context;
+        private Thread thread;
+        private int tableProgress, tableMax, itemProgress, itemMax;
+
+        public DatabaseInitHandler(PokemonDbContext context) {
+            thread = new Thread(Run);
+            this.context = context;
+        }
+
+        public void Start()
+        {
+            thread.Start();
+        }
+
+        private void Run()
+        {
+            //Put data fetching code here...
+        }
+    }
+}
+
 ```
 
 #### Insert
-Inserting an entry to our table is straight-forward. All we need is an object and a table to insert it to. We will add a method `Insert(object data)` to the `DatabaseInitHandler` class.
+Inserting an entry to our table is straight-forward. All we need is an object and a table to insert it to. We will fill in the `Run()` method.
+
+##### Get entry counts
 ```csharp
-//TODO: Add Insert to DatabaseInitHandler
+int abilityCount = PokeAPIFetcher.GetCount("ability");
+int moveCount = PokeAPIFetcher.GetCount("move");
+int pokemonCount = PokeAPIFetcher.GetCount("pokemon");
+int pokemonSpeciesCount = PokeAPIFetcher.GetCount("pokemon-species");
+int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
 ```
+
+##### Ability, Move and PokemonSpecies
+Populating the Ability, Move and PokemonSpecies tables is simple. Every entry is created by a single request to the PokeAPIFetcher class. We will simply request the object, and if it exists, we will simply insesrt it.
+```csharp
+for (int i = 0; i < abilityCount; i++)
+{
+    Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i));
+    if (ability != null) this.context.Ability.Add(ability);
+}
+
+for (int i = 0; i < moveCount; i++)
+{
+    Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i));
+    if (move != null) this.context.Move.Add(move);
+}
+
+for (int i = 0; i < pokemonSpeciesCount; i++)
+{
+    PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i));
+    if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
+    itemProgress++;
+}
+```
+
+##### Pokemon and PokemonMove
+Pokemon and PokemonMove tables are both created from the `pokemon` PokéAPI table. We will populate them at the same time, as to minimize the number of PokéAPI requests. We can do this, becauseall moves have already been inserted and any referenced Pokemon is already inserted.
+
+##### EvolutionChain
 
 ### Adding data
 We well use our PokeAPI fetcher class to retrieve, process and insert data into our database. We will do this by retrieving the number of entries and tgen looping through every index. We will add entries one by one and then save all changes.
