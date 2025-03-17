@@ -229,14 +229,28 @@ We’ll be using the default options:
 This class is used as a connection to the database. We will be referencing it a lot, whenever we try to interact with the database.
 
 ```csharp
-using System.Data.Entity;
-using Npgsql;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class PokemonDbContext : DbContext
+namespace Data
 {
-    public PokemonDbContext() : base("name=Host=localhost;Port=5432;Username=postgres;Password=postgre;Database=Pokemon;
-") {
-        
+    public class PokemonDbContext : DbContext
+    {
+        public PokemonDbContext() : base()
+        {
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+        }
     }
 }
 ```
@@ -486,16 +500,89 @@ namespace PokedexExplorer.Model
         [Required]
         public int Id { get; set; }
         [Required]
-        public int pokemon { get; set; }
+        public int Pokemon { get; set; }
         [Required]
-        public int move { get; set; }
-        public int? level_learned_at { get; set; }
-        public string? learn_method { get; set; }
+        public int Move { get; set; }
+        public int? LevelLearnedAt { get; set; }
+        public string? LearnMethod { get; set; }
     }
 }
 ```
 ### Indexes
-For the purpose of searching, indexing columns will be beneficial. It will speed up search.
+For the purpose of searching, indexing columns will be beneficial. It will speed up search. For example, if we were to search by ability name, it would make sense to use indexing for faster searching. We can add an annotation ```[Index(nameof(Ability.Name), IsUnique = true, Name = "IndexAbilityName")]```to the class.
+
+#### Ability
+```csharp
+namespace PokedexExplorer.Model
+{
+    [Index(nameof(Ability.Name), IsUnique = true, Name = "IndexAbilityName")]
+    [Index(nameof(Ability.Generation), IsUnique = false, Name = "IndexAbilityGeneration")]
+    public class Ability
+    {
+        //Code...
+    }
+}
+```
+
+#### Move
+```csharp
+namespace PokedexExplorer.Model
+{
+    [Index(nameof(Move.Name), IsUnique = true, Name = "IndexMoveName")]
+    public class Move
+    {
+        //Code...
+    }
+}
+```
+
+#### Pokemon
+```csharp
+namespace PokedexExplorer.Model
+{
+    [Index(nameof(Pokemon.ID), IsUnique = true, Name = "IndexPokemonID")]
+    [Index(nameof(Pokemon.Name), IsUnique = true, Name = "IndexPokemonName")]
+    [Index(nameof(Pokemon.Height), IsUnique = true, Name = "IndexPokemonHeight")]
+    [Index(nameof(Pokemon.Weight), IsUnique = true, Name = "IndexPokemonWeight")]
+    [Index(nameof(Pokemon.HP), IsUnique = true, Name = "IndexPokemonHp")]
+    [Index(nameof(Pokemon.Attack), IsUnique = true, Name = "IndexPokemonAttack")]
+    [Index(nameof(Pokemon.Defense), IsUnique = true, Name = "IndexPokemonDefense")]
+    [Index(nameof(Pokemon.SpecialAttack), IsUnique = true, Name = "IndexPokemonSpecialAttack")]
+    [Index(nameof(Pokemon.SpecialDefense), IsUnique = true, Name = "IndexPokemonSpecialDefense")]
+    [Index(nameof(Pokemon.Speed), IsUnique = true, Name = "IndexPokemonSpeed")]
+    public class Pokemon
+    {
+        //Code...
+    }
+}
+```
+
+#### PokemonSpecies
+```csharp
+namespace PokedexExplorer.Model
+{
+    [Index(nameof(PokemonSpecies.Name), IsUnique = true, Name = "IndexPokemonName")]
+    [Index(nameof(PokemonSpecies.Generation), IsUnique = true, Name = "IndexPokemonSpeciesGeneration")]
+    public class PokemonSpecies
+    {
+        //Code...
+    }
+}
+
+```
+
+#### PokemonMove
+```csharp
+namespace PokedexExplorer.Model
+{
+    [Index(nameof(PokemonMove.Pokemon), IsUnique = true, Name = "IndexPokemonMovePokemon")]
+    [Index(nameof(PokemonMove.Move), IsUnique = true, Name = "IndexPokemonMoveMove")]
+    public class PokemonMove
+    {
+        //Code...
+    }
+}
+```
 
 ### Updating the PokemonDbContext class
 Now, that we have our classes, we have to update the PokemonDbContext class. Be careful, as foreign keys require the referenced table to be created first. Because of this, we will be creating these tables in the following order:
@@ -505,6 +592,36 @@ Now, that we have our classes, we have to update the PokemonDbContext class. Be 
 - Pokemon (references PokemonSpecies and Ability)
 - EvolutionChain (references Pokemon)
 - PokmeonMove (references Pokemon and Move)
+
+```
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using PokedexExplorer.Model;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public class PokemonDbContext : DbContext
+{
+    public PokemonDbContext() : base()
+    {
+
+    }
+    public DbSet<Ability> Ability { get; set; }
+    public DbSet<Move> Move { get; set; }
+    public DbSet<Pokemon> Pokemon { get; set; }
+    public DbSet<PokemonSpecies> PokemonSpecies { get; set; }
+    public DbSet<PokemonMove> PokemonMove { get; set; }
+    public DbSet<EvolutionChain> EvolutionChain { get; set; }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+    }
+}
+```
 
 We also need to create the tables in the actual database.
 #TODO: Insert code here
