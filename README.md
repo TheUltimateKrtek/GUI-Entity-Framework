@@ -834,9 +834,18 @@ static private JsonNode GetEnglishNode(JsonNode node)
 
 # Populating the database
 Now that we have our data, we can start populating the database. We will use our next class, `DatabaseInitHandler`.
+```csharp
+//TODO: Add DatabaseInitHandler
+```
 
 #### Insert
 Inserting an entry to our table is straight-forward. All we need is an object and a table to insert it to. We will add a method `Insert(object data)` to the `DatabaseInitHandler` class.
 ```csharp
-//TODO: Add Insert to Database
+//TODO: Add Insert to DatabaseInitHandler
+```
+
+### Adding data
+We well use our PokeAPI fetcher class to retrieve, process and insert data into our database. We will do this by retrieving the number of entries and tgen looping through every index. We will add entries one by one and then save all changes.
+```csharp
+//TODO: Add InitData to DatabaseInitHandler
 ```
