@@ -370,7 +370,7 @@ namespace PokedexExplorer.Model
         [ForeignKey("Ability")]
         public int? PrimaryAbility { get; set; }
         [ForeignKey("Ability")]
-        public int? econdaryAbility { get; set; }
+        public int? SecondaryAbility { get; set; }
         [ForeignKey("Ability")]
         public int? HiddenAbility { get; set; }
         [ForeignKey("PokemonSpecies")]
@@ -465,6 +465,7 @@ namespace PokedexExplorer.Model
         public int Order { get; set; }
         [Required]
         public int Generation { get; set; }
+        [Required]
         public int? NationalPokedexNumber { get; set; }
         [Required]
         public bool IsBaby { get; set; }
@@ -484,9 +485,6 @@ namespace PokedexExplorer.Model
         public string Genera { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public string EggGroups { get; set; }
-        public string Varieties { get; set; }
         public string? Description { get; set; }
 
         public PokemonSpecies(int iD, int baseHappiness, int captureRate, int genderRate, int order, int generation, int nationalPokedexNumber, bool isBaby, bool isLegendary, bool isMythical, string color, string growthRate, string habitat, string shape, string genera, string name)
@@ -532,12 +530,12 @@ namespace PokedexExplorer.Model
         public int? MinHappiness { get; set; }
         public int? MinLevel { get; set; }
         [ForeignKey("Pokemon")]
-        public string? Trade_Species { get; set; }
+        public int? TradeSpecies { get; set; }
         public int? RelativePhysicalStats { get; set; }
         public string? Item { get; set; }
         public string? HeldItem { get; set; }
         [ForeignKey("Move")]
-        public string? KnownMove { get; set; }
+        public int? KnownMove { get; set; }
         public string? KnownMoveType { get; set; }
         public string? Trigger { get; set; }
         [ForeignKey("Pokemon")]
@@ -565,7 +563,7 @@ namespace PokedexExplorer.Model
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [Required]
         public int Pokemon { get; set; }
         [Required]
@@ -615,15 +613,15 @@ namespace PokedexExplorer.Model
 namespace PokedexExplorer.Model
 {
     [Index(nameof(Pokemon.ID), IsUnique = true, Name = "IndexPokemonID")]
-    [Index(nameof(Pokemon.Name), IsUnique = true, Name = "IndexPokemonName")]
-    [Index(nameof(Pokemon.Height), IsUnique = true, Name = "IndexPokemonHeight")]
-    [Index(nameof(Pokemon.Weight), IsUnique = true, Name = "IndexPokemonWeight")]
-    [Index(nameof(Pokemon.HP), IsUnique = true, Name = "IndexPokemonHp")]
-    [Index(nameof(Pokemon.Attack), IsUnique = true, Name = "IndexPokemonAttack")]
-    [Index(nameof(Pokemon.Defense), IsUnique = true, Name = "IndexPokemonDefense")]
-    [Index(nameof(Pokemon.SpecialAttack), IsUnique = true, Name = "IndexPokemonSpecialAttack")]
-    [Index(nameof(Pokemon.SpecialDefense), IsUnique = true, Name = "IndexPokemonSpecialDefense")]
-    [Index(nameof(Pokemon.Speed), IsUnique = true, Name = "IndexPokemonSpeed")]
+    [Index(nameof(Pokemon.Name), IsUnique = false, Name = "IndexPokemonName")]
+    [Index(nameof(Pokemon.Height), IsUnique = false, Name = "IndexPokemonHeight")]
+    [Index(nameof(Pokemon.Weight), IsUnique = false, Name = "IndexPokemonWeight")]
+    [Index(nameof(Pokemon.HP), IsUnique = false, Name = "IndexPokemonHp")]
+    [Index(nameof(Pokemon.Attack), IsUnique = false, Name = "IndexPokemonAttack")]
+    [Index(nameof(Pokemon.Defense), IsUnique = false, Name = "IndexPokemonDefense")]
+    [Index(nameof(Pokemon.SpecialAttack), IsUnique = false, Name = "IndexPokemonSpecialAttack")]
+    [Index(nameof(Pokemon.SpecialDefense), IsUnique = false, Name = "IndexPokemonSpecialDefense")]
+    [Index(nameof(Pokemon.Speed), IsUnique = false, Name = "IndexPokemonSpeed")]
     public class Pokemon
     {
         //Code...
@@ -636,7 +634,7 @@ namespace PokedexExplorer.Model
 namespace PokedexExplorer.Model
 {
     [Index(nameof(PokemonSpecies.Name), IsUnique = true, Name = "IndexPokemonName")]
-    [Index(nameof(PokemonSpecies.Generation), IsUnique = true, Name = "IndexPokemonSpeciesGeneration")]
+    [Index(nameof(PokemonSpecies.Generation), IsUnique = false, Name = "IndexPokemonSpeciesGeneration")]
     public class PokemonSpecies
     {
         //Code...
@@ -649,8 +647,8 @@ namespace PokedexExplorer.Model
 ```csharp
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(PokemonMove.Pokemon), IsUnique = true, Name = "IndexPokemonMovePokemon")]
-    [Index(nameof(PokemonMove.Move), IsUnique = true, Name = "IndexPokemonMoveMove")]
+    [Index(nameof(PokemonMove.Pokemon), IsUnique = false, Name = "IndexPokemonMovePokemon")]
+    [Index(nameof(PokemonMove.Move), IsUnique = false, Name = "IndexPokemonMoveMove")]
     public class PokemonMove
     {
         //Code...
@@ -819,18 +817,317 @@ static private JsonNode GetEnglishNode(JsonNode node)
 ```
 
 ##### Ability
+```csharp
+static public Ability ParseAbility(JsonNode node)
+{
+    if (node == null) return null;
+    try
+    {
+        int id = node["id"].GetValue<int>();
+        int generation = node["generation"].GetValue<int>();
+
+        JsonNode effectNode = GetEnglishNode(node["effect_entries"].GetValue<JsonNode>());
+        string effect = null;
+        string shortEffect = null;
+        if (effectNode != null)
+        {
+            effect = effectNode["effect"].GetValue<string>();
+            effect = effectNode["short_effect"].GetValue<string>();
+        }
+
+        JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
+        string description = null;
+        if (descriptionNode != null)
+        {
+            description = descriptionNode["flavor_text"].GetValue<string>();
+        }
+
+        JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
+        string name = node["name"].GetValue<string>();
+        if (nameNode != null)
+        {
+            name = nameNode["name"].GetValue<string>();
+        }
+
+        Ability ability = new Ability(id, name);
+        ability.Generation = generation;
+        ability.Effect = effect;
+        ability.ShortEffect = shortEffect;
+        ability.Description = description;
+        return ability;
+    }
+    catch
+    {
+        return null;
+    }
+}
+```
 
 ##### Move
+```csharp
+static public Move ParseMove(JsonNode node)
+{
+    if (node == null) return null;
+
+    int? accuracy = node["accuracy"].GetValue<int?>();
+    string? damageClass = node["damage_class"]["name"].GetValue<string?>();
+    int? effectChance = node["effectChance"].GetValue<int?>();
+    int? generation = GetURLIntValue(node["generation"]["url"].GetValue<string?>());
+    int id = node["id"].GetValue<int>();
+
+    string? ailment = node["meta"] == null ? null : (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].GetValue<string>());
+    int? ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"].GetValue<int?>();
+    int? critRate = node["meta"] == null ? null : node["meta"]["crit_rate"].GetValue<int?>();
+    int? drain = node["meta"] == null ? null : node["meta"]["drain"].GetValue<int?>();
+    int? flinchChance = node["meta"] == null ? null : node["meta"]["flinch_chance"].GetValue<int?>();
+    int? healing = node["meta"] == null ? null : node["meta"]["healing"].GetValue<int?>();
+    int? maxHits = node["meta"] == null ? null : node["meta"]["max_hits"].GetValue<int?>();
+    int? maxTurns = node["meta"] == null ? null : node["meta"]["max_turns"].GetValue<int?>();
+    int? minHits = node["meta"] == null ? null : node["meta"]["min_hits"].GetValue<int?>();
+    int? minTurns = node["meta"] == null ? null : node["meta"]["min_turns"].GetValue<int?>();
+    int? statChance = node["meta"] == null ? null : node["meta"]["stat_chance"].GetValue<int?>();
+
+    JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
+    string name = node["name"].GetValue<string>();
+    if (nameNode != null)
+    {
+        name = nameNode["name"].GetValue<string>();
+    }
+
+    int? power = node["power"].GetValue<int?>();
+    int pp = node["pp"].GetValue<int>();
+    int priority = node["priority"].GetValue<int>();
+    string target = node["target"].GetValue<string>();
+    string type = node["type"].GetValue<string>();
+
+    JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
+    string description = null;
+    if (descriptionNode != null)
+    {
+        description = descriptionNode["flavor_text"].GetValue<string>();
+    }
+
+    Move move = new Move(id, name, pp, priority, target, type);
+    move.Accuracy = accuracy;
+    move.DamageClass = damageClass;
+    move.EfectChance = effectChance;
+    move.Generation = generation;
+    move.Ailment = ailment;
+    move.AilmentChance = ailmentChance;
+    move.CritRate = critRate;
+    move.Drain = drain;
+    move.FlinchChance = flinchChance;
+    move.Healing = healing;
+    move.MaxHits = maxHits;
+    move.MaxTurns = maxTurns;
+    move.MinHits = minHits;
+    move.MinTurns = minTurns;
+    move.StatChance = statChance;
+    move.Power = power;
+    move.Description = description;
+    return move;
+}
+```
 
 ##### PokemonSpecies
+```csharp
+static public PokemonSpecies ParsePokemonSpecies(JsonNode node)
+{
+    int baseHappiness = node["base_happiness"].GetValue<int>();
+    int captureRate = node["capture_rate"].GetValue<int>();
+    int genderRate = node["gender_rate"].GetValue<int>();
+    int? hatchCounter = node["hatch_counter"].GetValue<int?>();
+    int id = node["id"].GetValue<int>();
+    int order = node["order"].GetValue<int>();
+    bool isBaby = node["is_baby"].GetValue<bool>();
+    bool isLegendary = node["is_legendary"].GetValue<bool>();
+    bool isMythical = node["is_mythical"].GetValue<bool>();
+    string color = node["color"].GetValue<string>();
+    string growthRate = node["growth_rate"].GetValue<string>();
+    string habitat = node["habitat"].GetValue<string>();
+    string shape = node["shape"].GetValue<string>();
+    int generation = node["generation"].GetValue<int>();
+
+    JsonNode generaNode = GetEnglishNode(node["genera"].GetValue<JsonNode>());
+    string genera = "";
+    if (generaNode != null)
+    {
+        genera = generaNode["genus"].GetValue<string>();
+    }
+
+    JsonNode nationalPokedexNumberNode = GetEnglishNode(node["national_pokedex_number"].GetValue<JsonNode>());
+    int nationalPokedexNumber = -1;
+    if (generaNode != null)
+    {
+        nationalPokedexNumber = nationalPokedexNumberNode["entry_number"].GetValue<int>();
+    }
+
+    JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
+    string name = node["name"].GetValue<string>();
+    if (nameNode != null)
+    {
+        name = nameNode["name"].GetValue<string>();
+    }
+
+    JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
+    string? description = null;
+    if (descriptionNode != null)
+    {
+        description = descriptionNode["flavor_text"].GetValue<string>();
+    }
+
+    PokemonSpecies species = new PokemonSpecies(id, baseHappiness, captureRate, genderRate, order, generation, nationalPokedexNumber, isBaby, isLegendary, isMythical, color, growthRate, habitat, shape, genera, name);
+    species.Description = description;
+    species.HatchCounter = hatchCounter;
+    return species;
+}
+```
 
 ##### Pokemon
+```csharp
+static public Pokemon ParsePokemon(JsonNode node)
+{
+    if (node == null) return null;
+
+    int?[] abilities = new int?[] {null, null, null};
+    foreach (JsonNode a in node["abilities"].AsArray())
+    {
+        int? value = GetURLIntValue(a["ability"]["url"].GetValue<string>());
+        int index = a["slot"].GetValue<int>();
+        abilities[index] = value;
+    }
+    int? primaryAbility = abilities[0];
+    int? secondaryAbility = abilities[1];
+    int? hiddenAbility = abilities[2];
+
+    int baseExperience = node["base_experience"].GetValue<int>();
+    int height = node["height"].GetValue<int>();
+    int weight = node["weight"].GetValue<int>();
+    int id = node["id"].GetValue<int>();
+    int order = node["order"].GetValue<int>();
+    string name = node["name"].GetValue<string>();
+
+    string spriteFrontDefault = node["sprite_front_default"].GetValue<string>();
+    string? spriteFrontFemale = node["sprite_front_female"].GetValue<string?>();
+    string? spriteFrontShiny = node["sprite_front_shiny"].GetValue<string?>();
+    string? spriteFrontShinyFemale = node["sprite_front_shiny_female"].GetValue<string?>();
+    string? spriteBackDefault = node["sprite_back_default"].GetValue<string?>();
+    string? spriteBackFemale = node["sprite_back_female"].GetValue<string?>();
+    string? spriteBackShiny = node["sprite_back_shiny"].GetValue<string?>();
+    string? spriteBackShinyFemale = node["sprite_back_shiny_female"].GetValue<string?>();
+
+    int species = node["species"].GetValue<int>();
+
+    string? cry = node["cry"].GetValue<string?>();
+    string? cryLegacy = node["cry"].GetValue<string?>();
+
+    int hp = node["stats"][0]["base_stat"].GetValue<int>();
+    int hpEffort = node["stats"][0]["effort"].GetValue<int>();
+    int attack = node["stats"][1]["base_stat"].GetValue<int>();
+    int attackEffort = node["stats"][1]["effort"].GetValue<int>();
+    int defense = node["stats"][2]["base_stat"].GetValue<int>();
+    int defenseEffort = node["stats"][2]["effort"].GetValue<int>();
+    int specialAttack = node["stats"][3]["base_stat"].GetValue<int>();
+    int specialAttackEffort = node["stats"][3]["effort"].GetValue<int>();
+    int specialDefense = node["stats"][4]["base_stat"].GetValue<int>();
+    int specialDefenseEffort = node["stats"][4]["effort"].GetValue<int>();
+    int speed = node["stats"][5]["base_stat"].GetValue<int>();
+    int speedEffort = node["stats"][5]["effort"].GetValue<int>();
+
+    string primaryType = node["types"][0].GetValue<string>();
+    string? secondaryType = node["types"].AsArray().Count == 1 ? null : node["types"][1].GetValue<string?>();
+
+    Pokemon pokemon = new Pokemon(id, baseExperience, height, weight, order, species, hp, hpEffort, attack, attackEffort,
+        defense, defenseEffort, specialAttack, specialAttackEffort, specialDefense, specialDefenseEffort, speed, speedEffort, spriteFrontDefault, name, primaryType);
+    pokemon.PrimaryAbility = primaryAbility;
+    pokemon.SecondaryAbility = secondaryAbility;
+    pokemon.HiddenAbility = hiddenAbility;
+    pokemon.SpriteFrontFemale = spriteFrontFemale;
+    pokemon.SpriteFrontShiny = spriteFrontShiny;
+    pokemon.SpriteFrontShinyFemale = spriteFrontShinyFemale;
+    pokemon.SpriteBackDefault = spriteBackDefault;
+    pokemon.SpriteBackFemale = spriteBackFemale;
+    pokemon.SpriteBackShiny = spriteBackShiny;
+    pokemon.SpriteBackShinyFemale = spriteBackShinyFemale;
+    pokemon.Cry = cry;
+    pokemon.CryLegacy = cryLegacy;
+    pokemon.SecondaryType = secondaryType;
+    return pokemon;
+}
+```
 
 ##### EvolutionChain
+```csharp
+static public List<EvolutionChain> ParseEvolutionChain(JsonNode node, List<EvolutionChain> list = null)
+{
+    if (list == null)
+    {
+        list = new List<EvolutionChain>();
+        ParseEvolutionChain(node["chain"], list);
+        return list;
+    }
+
+    foreach (JsonNode evolution in node["evolves_to"].AsArray())
+    {
+        foreach (JsonNode details in node["evolution_details"].AsArray())
+        {
+            int from = (int)GetURLIntValue(node["species"]["url"].GetValue<string>());
+            int to = (int)GetURLIntValue(evolution["species"]["url"].GetValue<string>());
+
+            int id = -1;
+
+            EvolutionChain chain = new EvolutionChain(id, from, to);
+
+            chain.Gender = details["gender"].GetValue<int?>();
+            chain.MinBeauty = details["min_beauty"].GetValue<int?>();
+            chain.MinHappiness = details["min_happiness"].GetValue<int?>();
+            chain.MinLevel = details["min_level"].GetValue<int?>();
+            chain.TradeSpecies = GetURLIntValue(details["trade_species"].GetValue<string?>());
+            chain.RelativePhysicalStats = details["relative_physical_stats"].GetValue<int?>();
+            chain.Item = details["item"].GetValue<string?>();
+            chain.HeldItem = details["helpItem"].GetValue<string?>();
+            chain.KnownMove = GetURLIntValue(details["known_move"].GetValue<string?>());
+            chain.KnownMoveType = details["known_move_type"].GetValue<string?>();
+            chain.Trigger = details["trigger"].GetValue<string?>();
+            chain.PartySpecies = GetURLIntValue(details["party_species"].GetValue<string?>());
+            chain.PartyType = details["party_type"].GetValue<string?>();
+            chain.TimeOfDay = details["time_of_day"].GetValue<string?>();
+            chain.NeedsOverworldRain = details["needs_overworld_rain"].GetValue<bool?>();
+            chain.TurnUpsideDown = details["turn_upside_down"].GetValue<bool?>();
+
+            list.Add(chain);
+        }
+
+        ParseEvolutionChain(node, list);
+    }
+    
+    return list;
+}
+```
 
 ##### PokemonMove
+```csharp
+static public List<PokemonMove> ParsePokemonMove(JsonNode pokemonJson)
+{
+    List<PokemonMove> list = new List<PokemonMove>();
 
-#### Combining everything
+    int pokemon = pokemonJson["id"].GetValue<int>();
+    foreach (JsonNode m in pokemonJson["moves"].AsArray())
+    {
+        int index = m["version_group_details"].AsArray().Count() - 1;
+        int move = (int)GetURLIntValue(m["move"]["url"].GetValue<string>());
+        int? levelLearnedAt = m["version_group_details"][index]["level_learned_at"].GetValue<int>();
+        string? learnMethod = m["version_group_details"][index]["learn_method"]["name"].GetValue<string>();
+
+        PokemonMove pm = new PokemonMove(index, pokemon, move);
+        pm.LearnMethod = learnMethod;
+        pm.LevelLearnedAt = levelLearnedAt;
+
+        list.Add(pm);
+    }
+    return list;
+}
+```
 
 # Populating the database
 Now that we have our data, we can start populating the database. We will use our next class, `DatabaseInitHandler`.
