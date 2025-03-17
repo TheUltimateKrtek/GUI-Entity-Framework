@@ -28,6 +28,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.currentColumnCount = 1;
         context = new PokemonDbContext();
+        context.Database.Migrate();
     }
 
     private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
