@@ -1256,7 +1256,7 @@ this.context.SaveChanges();
 ```
 
 ##### EvolutionChain
-
+//TODO: Explain
 ```csharp
 //EvolutionChain
 this.ItemMax = evolutionChainCount;
@@ -1285,8 +1285,5 @@ for (int i = 0; i < evolutionChainCount; i++)
 this.context.SaveChanges();
 ```
 
-### Adding data
-We well use our PokeAPI fetcher class to retrieve, process and insert data into our database. We will do this by retrieving the number of entries and tgen looping through every index. We will add entries one by one and then save all changes.
-```csharp
-//TODO: Add InitData to DatabaseInitHandler
-```
+### Adding UI
+//TODO
