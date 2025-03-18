@@ -1218,11 +1218,72 @@ Pokemon and PokemonMove tables are both created from the `pokemon` PokéAPI tabl
 As for `PokemonMove`, we need to identify them by different IDs, because the two tables don't have the same number of entries. That's what the `pokemonMoveIndex` variable is for.
 
 ```csharp
-//TODO
+//Pokemon
+this.ItemMax = pokemonCount;
+this.TableProgress = 3;
+this.ItemProgress = 0;
+int pokemonMoveIndex = 0;
+List<PokemonMove> storedPokemonMoves = new List<PokemonMove>();
+for (int i = 0; i < pokemonCount; i++)
+{
+    JsonNode node = PokeAPIFetcher.RetrieveJSON("pokemon", i);
+    Pokemon pokemon= PokeAPIFetcher.ParsePokemon(node);
+    List<PokemonMove> pokemonMoves = PokeAPIFetcher.ParsePokemonMove(node);
+    if (pokemon != null)
+    {
+        this.context.Pokemon.Add(pokemon);
+        if (pokemonMoves != null)
+        {
+            foreach (PokemonMove pokemonMove in pokemonMoves)
+            {
+                if (pokemonMove != null)
+                {
+                    pokemonMove.ID = pokemonMoveIndex;
+                    storedPokemonMoves.Add(pokemonMove);
+                    pokemonMoveIndex++;
+                }
+            }
+        }
+    }
+    ItemProgress++;
+}
+//Save changes to prepare for inserting PokemonMove entries
+this.context.SaveChanges();
+
+//PokemonMove
+this.context.PokemonMove.AddRange(storedPokemonMoves);
+this.context.SaveChanges();
 ```
 
 ##### EvolutionChain
-EvolutionChain 
+
+```csharp
+//EvolutionChain
+this.ItemMax = evolutionChainCount;
+this.TableProgress = 4;
+this.ItemProgress = 0;
+int evolutionChainIndex = 0;
+for (int i = 0; i < evolutionChainCount; i++)
+{
+    List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", i));
+    if (evolutionChains != null)
+    {
+        foreach (EvolutionChain chain in evolutionChains)
+        {
+            if (chain != null)
+            {
+                chain.ID = evolutionChainIndex;
+                this.context.EvolutionChain.Add(chain);
+                evolutionChainIndex++;
+            }
+        }
+    }
+    ItemProgress++;
+}
+
+//Save changes
+this.context.SaveChanges();
+```
 
 ### Adding data
 We well use our PokeAPI fetcher class to retrieve, process and insert data into our database. We will do this by retrieving the number of entries and tgen looping through every index. We will add entries one by one and then save all changes.
