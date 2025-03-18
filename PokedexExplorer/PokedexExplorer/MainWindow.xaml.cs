@@ -39,11 +39,19 @@ public partial class MainWindow : Window
         databaseInitHandler.Start();
     }
 
-    public void NotifyInitProgressChanged()
+    public void NotifyInitStarted()
     {
-        //ItemProgressBar.Maximum = databaseInitHandler.ItemMax;
-        //ItemProgressBar.Value = databaseInitHandler.ItemProgress;
-        //TableProgressBar.Maximum = databaseInitHandler.TableMax;
-        //TableProgressBar.Value = databaseInitHandler.TableProgress;
+        FetchGroup.IsEnabled = true;
+        FetchGroup.Visibility = Visibility.Visible;
+    }
+    public void NotifyInitEnded()
+    {
+        FetchGroup.IsEnabled = false;
+        FetchGroup.Visibility = Visibility.Hidden;
+    }
+
+    private void FetchGroupMouseDown(object sender, MouseButtonEventArgs e)
+    {
+
     }
 }

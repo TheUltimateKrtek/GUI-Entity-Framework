@@ -23,7 +23,6 @@ namespace PokedexExplorer.Data
             private set
             {
                 this.tableProgress = value;
-                this.window.NotifyInitProgressChanged();
             }
         }
         public int TableMax
@@ -32,7 +31,6 @@ namespace PokedexExplorer.Data
             private set
             {
                 this.tableMax = value;
-                this.window.NotifyInitProgressChanged();
             }
         }
         public int ItemProgress
@@ -41,7 +39,6 @@ namespace PokedexExplorer.Data
             private set
             {
                 this.itemProgress = value;
-                this.window.NotifyInitProgressChanged();
             }
         }
         public int ItemMax
@@ -50,7 +47,6 @@ namespace PokedexExplorer.Data
             private set
             {
                 this.itemMax = value;
-                this.window.NotifyInitProgressChanged();
             }
         }
         public bool IsRunning { get; private set; }
@@ -64,7 +60,9 @@ namespace PokedexExplorer.Data
         public void Start()
         {
             if (thread.IsAlive) return;
+            this.window.NotifyInitStarted();
             thread.Start();
+            this.window.NotifyInitEnded();
         }
 
         private void Run()

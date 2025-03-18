@@ -193,10 +193,12 @@
                 </StackPanel>
             </ScrollViewer>
         </StackPanel>
-        <StackPanel Name="FetchGroup" Orientation="Vertical" Width="720" Height="100" Background="LightGray" Visibility="Visible">
-            <TextBlock TextAlignment="Center" FontSize="20">Fetching Pokémon data from PokéAPI</TextBlock>
-            <ProgressBar x:Name="TableProgressBar" Minimum="0" Maximum="{Binding Path=databaseInitHandler.TableMax}" Value="{Binding Path=databaseInitHandler.TableProgress}" Height="20" Width="700" Margin="0,10,0,0"/>
-            <ProgressBar x:Name="ItemProgressBar" Minimum="0" Maximum="{Binding Path=databaseInitHandler.ItemMax}" Value="{Binding Path=databaseInitHandler.ItemProgress}" Height="20" Width="700" Margin="0,10,0,0"/>
-        </StackPanel>
+        <Grid Name="FetchGroup" Width="800" Height="600" Background="#DFFFFFFF" IsEnabled="False" Visibility="Hidden" MouseDown="FetchGroupMouseDown">
+            <StackPanel Orientation="Vertical" Width="720" Height="100" Background="#FFFFFF" Visibility="Visible">
+                <TextBlock TextAlignment="Center" FontSize="20">Fetching Pokémon data from PokéAPI</TextBlock>
+                <ProgressBar x:Name="TableProgressBar" Minimum="0" Maximum="{Binding databaseInitHandler.TableMax}" Value="{Binding databaseInitHandler.TableProgress}" Height="20" Width="700" Margin="0,10,0,0"/>
+                <ProgressBar x:Name="ItemProgressBar" Minimum="0" Maximum="{Binding databaseInitHandler.ItemMax}" Value="{Binding databaseInitHandler.ItemProgress}" Height="20" Width="700" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
