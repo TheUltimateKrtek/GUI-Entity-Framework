@@ -698,7 +698,12 @@ public class PokemonDbContext : DbContext
 ### Creating the database
 Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
 #### Migrate
-To synchronize our database model with Postgre, we will use the method `DbContext.Database.Migrate();`. This will update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the existing table is different.
+To synchronize our database model with Postgre, we can use the method `DbContext.Database.Migrate();`. This would update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the existing table is different.
+#### Execute SQL
+We can also execute raw SQL code.
+```csharp
+context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+```
 #### MainWindow
 In our MainWindow class, created at WPF initialization, we will add the following code. This code runs at startup.
 ```csharp
@@ -726,7 +731,11 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         context = new PokemonDbContext();
-        context.Database.Migrate();
+        try
+        {
+            context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+        }
+        catch { }
     }
 }
 ```
@@ -753,45 +762,33 @@ PokéAPI uses a JSON format with a NoSQL-type database. This format is good for 
 We will use this simple method to retrieve a JSON file. This uses PokéAPI's folder structure: `https://pokeapi.co/api/v2/<table>/[<id>]`
 
 ```csharp
-static public JsonNode? RetrieveJSON(string name, int? id = 0)
+static public JObject RetrieveJSON(string name, int? id = null)
 {
     string url = "https://pokeapi.co/api/v2/" + name + "/";
     if (id != null) url += id + "/";
+    else url += "?limit = 100000";
 
     using (HttpClient client = new HttpClient())
     {
         try
         {
             HttpResponseMessage response = client.GetAsync(url).Result;
+            Console.WriteLine($"Status Code: {response.StatusCode}");
             response.EnsureSuccessStatusCode();
             string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
-            return JsonObject.Parse(jsonResponse);
+            return JObject.Parse(jsonResponse);
         }
-        catch
+        catch (HttpRequestException e)
         {
+            Debug.WriteLine("HTTP Error: " + name + (id == null ? "" : " " + id));
             return null;
         }
     }
 }
 ```
 
-##### Retrieving entry count
-Using the method from before, we can start with processing data. First, we want to find the total number of entries.
-
-```csharp
-static public int GetCount(string name)
-{
-    JsonNode json = RetrieveJSON(name);
-    if (json == null) return -1;
-    return json["count"].GetValue<int>();
-}
-```
-
-#### Processing data
-Next, we will add methods to parse JSON data
-
-##### Helper Methods
+##### Get source ID
 Method `GetURLIntValue` will simply retrieve an index from a url.
 ```csharp
 static private int GetURLIntValue(string url)
@@ -800,6 +797,27 @@ static private int GetURLIntValue(string url)
     return int.Parse(split[split.Length - 1]);
 }
 ```
+
+##### Retrieving entries
+Using the method from before, we can start with processing data. First, we want to find the total number of entries.
+
+```csharp
+static public List<int> GetEntries(string name)
+{
+    JObject json = RetrieveJSON(name);
+    if (json == null) return [];
+    List<int> entries = [];
+    foreach (JToken t in json["results"])
+    {
+        entries.Add((int)GetURLIntValue(t["url"].ToString()));
+    }
+    return entries;
+}
+```
+
+#### Processing data
+Next, we will add methods to parse JSON data
+
 Method GetEnglishNode will iterate through a language structure and return an english version.
 ```csharp
 static private JsonNode GetEnglishNode(JsonNode node)
@@ -818,46 +836,53 @@ static private JsonNode GetEnglishNode(JsonNode node)
 
 ##### Ability
 ```csharp
-static public Ability ParseAbility(JsonNode node)
+static public Ability ParseAbility(JObject node)
 {
     if (node == null) return null;
+    string at = "";
     try
     {
-        int id = node["id"].GetValue<int>();
-        int generation = node["generation"].GetValue<int>();
-
-        JsonNode effectNode = GetEnglishNode(node["effect_entries"].GetValue<JsonNode>());
-        string effect = null;
-        string shortEffect = null;
+        int id = node["id"]?.ToObject<int>() ?? - 1;
+        int generation = GetURLIntValue(node["generation"]["url"].ToString()) ?? 0;
+        
+        at = "effect_entries: " + node["effect_entries"];
+        JObject effectNode = GetEnglishNode(node["effect_entries"]?.ToObject<JArray>() ?? null);
+        string effect = "No effect description.";
+        string shortEffect = "No short effect description.";
         if (effectNode != null)
         {
-            effect = effectNode["effect"].GetValue<string>();
-            effect = effectNode["short_effect"].GetValue<string>();
+            effect = effectNode["effect"]?.ToString() ?? "No effect description.";
+            shortEffect = effectNode["short_effect"]?.ToString() ?? "No short effect description.";
         }
 
-        JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
-        string description = null;
+        at = "flavor_text_entries: " + node["flavor_text_entries"];
+        JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
+        string description = "No description.";
         if (descriptionNode != null)
         {
-            description = descriptionNode["flavor_text"].GetValue<string>();
+            description = descriptionNode["flavor_text"].ToObject<string>();
         }
 
-        JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
-        string name = node["name"].GetValue<string>();
+        at = "names: " + node["names"];
+        JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
+        string name = node["name"]?.ToObject<string>() ?? "<unknown>";
         if (nameNode != null)
         {
-            name = nameNode["name"].GetValue<string>();
+            name = nameNode["name"].ToObject<string>();
         }
 
-        Ability ability = new Ability(id, name);
+        Ability ability = new Ability();
+        ability.ID = id;
+        ability.Name = name;
         ability.Generation = generation;
         ability.Effect = effect;
         ability.ShortEffect = shortEffect;
         ability.Description = description;
         return ability;
     }
-    catch
+    catch (Exception e)
     {
+        throw new Exception(at, e);
         return null;
     }
 }
@@ -865,49 +890,55 @@ static public Ability ParseAbility(JsonNode node)
 
 ##### Move
 ```csharp
-static public Move ParseMove(JsonNode node)
+static public Move ParseMove(JObject node)
 {
     if (node == null) return null;
 
-    int? accuracy = node["accuracy"].GetValue<int?>();
-    string? damageClass = node["damage_class"]["name"].GetValue<string?>();
-    int? effectChance = node["effectChance"].GetValue<int?>();
-    int? generation = GetURLIntValue(node["generation"]["url"].GetValue<string?>());
-    int id = node["id"].GetValue<int>();
+    int? accuracy = node["accuracy"]?.ToObject<int?>() ?? null;
+    string? damageClass = node["damage_class"]["name"].ToObject<string?>();
+    int? effectChance = node["effectChance"]?.ToObject<int?>() ?? null;
+    int? generation = GetURLIntValue(node["generation"]["url"]?.ToObject<string?>() ?? null);
+    int id = node["id"]?.ToObject<int>() ?? -1;
 
-    string? ailment = node["meta"] == null ? null : (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].GetValue<string>());
-    int? ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"].GetValue<int?>();
-    int? critRate = node["meta"] == null ? null : node["meta"]["crit_rate"].GetValue<int?>();
-    int? drain = node["meta"] == null ? null : node["meta"]["drain"].GetValue<int?>();
-    int? flinchChance = node["meta"] == null ? null : node["meta"]["flinch_chance"].GetValue<int?>();
-    int? healing = node["meta"] == null ? null : node["meta"]["healing"].GetValue<int?>();
-    int? maxHits = node["meta"] == null ? null : node["meta"]["max_hits"].GetValue<int?>();
-    int? maxTurns = node["meta"] == null ? null : node["meta"]["max_turns"].GetValue<int?>();
-    int? minHits = node["meta"] == null ? null : node["meta"]["min_hits"].GetValue<int?>();
-    int? minTurns = node["meta"] == null ? null : node["meta"]["min_turns"].GetValue<int?>();
-    int? statChance = node["meta"] == null ? null : node["meta"]["stat_chance"].GetValue<int?>();
+    string? ailment = node["meta"] == null ? null : (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].ToObject<string>());
+    int? ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"].ToObject<int?>();
+    int? critRate = node["meta"] == null ? null : node["meta"]["crit_rate"].ToObject<int?>();
+    int? drain = node["meta"] == null ? null : node["meta"]["drain"].ToObject<int?>();
+    int? flinchChance = node["meta"] == null ? null : node["meta"]["flinch_chance"].ToObject<int?>();
+    int? healing = node["meta"] == null ? null : node["meta"]["healing"].ToObject<int?>();
+    int? maxHits = node["meta"] == null ? null : node["meta"]["max_hits"].ToObject<int?>();
+    int? maxTurns = node["meta"] == null ? null : node["meta"]["max_turns"].ToObject<int?>();
+    int? minHits = node["meta"] == null ? null : node["meta"]["min_hits"].ToObject<int?>();
+    int? minTurns = node["meta"] == null ? null : node["meta"]["min_turns"].ToObject<int?>();
+    int? statChance = node["meta"] == null ? null : node["meta"]["stat_chance"].ToObject<int?>();
 
-    JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
-    string name = node["name"].GetValue<string>();
+    JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
+    string name = node["name"]?.ToObject<string>() ?? "<unknown>";
     if (nameNode != null)
     {
-        name = nameNode["name"].GetValue<string>();
+        name = nameNode["name"]?.ToObject<string>() ?? "<unknown>";
     }
 
-    int? power = node["power"].GetValue<int?>();
-    int pp = node["pp"].GetValue<int>();
-    int priority = node["priority"].GetValue<int>();
-    string target = node["target"].GetValue<string>();
-    string type = node["type"].GetValue<string>();
+    int? power = node["power"]?.ToObject<int?>() ?? null;
+    int pp = node["pp"]?.ToObject<int>() ?? -1;
+    int priority = node["priority"]?.ToObject<int>() ?? -1;
+    string target = node["target"]?["name"]?.ToObject<string>() ?? null;
+    string type = node["type"]?["name"]?.ToObject<string>() ?? "normal";
 
-    JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
+    JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
     string description = null;
     if (descriptionNode != null)
     {
-        description = descriptionNode["flavor_text"].GetValue<string>();
+        description = descriptionNode["flavor_text"]?.ToObject<string>() ?? null;
     }
 
-    Move move = new Move(id, name, pp, priority, target, type);
+    Move move = new Move();
+    move.ID = id;
+    move.Name = name;
+    move.PP = pp;
+    move.Priority = priority;
+    move.Target = target;
+    move.Type = type;
     move.Accuracy = accuracy;
     move.DamageClass = damageClass;
     move.EfectChance = effectChance;
@@ -1175,37 +1206,40 @@ Inserting an entry to our table is straight-forward. All we need is an object an
 
 Inserting an entry is done by `context.Table.Add(entry);`. As an example, we can insert an ability in the Ability table with `context.Ability.Add(ability);`. We will also make use of the `AddRange(List<T>)` method, which adds multiple values at once. These changes only happen in our "# environment, so we will need to apply them using `context.SaveChanges();`.
 
-##### Get entry counts
+##### Get entry ids
 ```csharp
-int abilityCount = PokeAPIFetcher.GetCount("ability");
-int moveCount = PokeAPIFetcher.GetCount("move");
-int pokemonCount = PokeAPIFetcher.GetCount("pokemon");
-int pokemonSpeciesCount = PokeAPIFetcher.GetCount("pokemon-species");
-int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
+List<int> abilityIndexes = PokeAPIFetcher.GetEntries("ability");
+List<int> moveIndexes = PokeAPIFetcher.GetEntries("ability");
+List<int> pokemonIndexes = PokeAPIFetcher.GetEntries("ability");
+List<int> pokemonSpeciesIndexes = PokeAPIFetcher.GetEntries("ability");
+List<int> evolutionChainIndexes = PokeAPIFetcher.GetEntries("ability");
 ```
 
 ##### Ability, Move and PokemonSpecies
 Populating the Ability, Move and PokemonSpecies tables is simple. Every entry is created by a single request to the PokeAPIFetcher class. We will simply request the object, and if it exists, we will simply insesrt it. Finally, we will save the changes, so that we can be confident future entries can reference these entries.
 ```csharp
 //Ability
-for (int i = 0; i < abilityCount; i++)
+foreach (int id in abilityIndexes)
 {
-    Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i));
+    Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", id));
     if (ability != null) this.context.Ability.Add(ability);
+    this.ItemProgress++;
 }
 
 //Move
-for (int i = 0; i < moveCount; i++)
+foreach (int id in moveIndexes)
 {
-    Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i));
+    Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", id));
     if (move != null) this.context.Move.Add(move);
+    ItemProgress++;
 }
 
 //PokemonSpecies
-for (int i = 0; i < pokemonSpeciesCount; i++)
+foreach (int id in pokemonSpeciesIndexes)
 {
-    PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i));
+    PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", id));
     if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
+    ItemProgress++;
 }
 
 //Save changes
@@ -1219,14 +1253,11 @@ As for `PokemonMove`, we need to identify them by different IDs, because the two
 
 ```csharp
 //Pokemon
-this.ItemMax = pokemonCount;
-this.TableProgress = 3;
-this.ItemProgress = 0;
-int pokemonMoveIndex = 0;
+int pokemonMoveIndex = 1;
 List<PokemonMove> storedPokemonMoves = new List<PokemonMove>();
-for (int i = 0; i < pokemonCount; i++)
+foreach (int id in pokemonIndexes)
 {
-    JsonNode node = PokeAPIFetcher.RetrieveJSON("pokemon", i);
+    JObject node = PokeAPIFetcher.RetrieveJSON("pokemon", id);
     Pokemon pokemon= PokeAPIFetcher.ParsePokemon(node);
     List<PokemonMove> pokemonMoves = PokeAPIFetcher.ParsePokemonMove(node);
     if (pokemon != null)
@@ -1259,13 +1290,10 @@ this.context.SaveChanges();
 //TODO: Explain
 ```csharp
 //EvolutionChain
-this.ItemMax = evolutionChainCount;
-this.TableProgress = 4;
-this.ItemProgress = 0;
-int evolutionChainIndex = 0;
-for (int i = 0; i < evolutionChainCount; i++)
+int evolutionChainIndex = 1;
+foreach (int id in evolutionChainIndexes)
 {
-    List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", i));
+    List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", id));
     if (evolutionChains != null)
     {
         foreach (EvolutionChain chain in evolutionChains)
@@ -1311,7 +1339,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.currentColumnCount = 1;
         context = new PokemonDbContext("skyre", "");
-        context.Database.Migrate();
+        context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
 
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);
@@ -1548,5 +1576,6 @@ namespace PokedexExplorer.Data
         }
     }
 }
-
 ```
+
+And, let's run!
