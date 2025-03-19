@@ -35,3 +35,4 @@ C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplor
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\bin\Debug\net9.0-windows\Npgsql.dll
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\bin\Debug\net9.0-windows\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\obj\Debug\net9.0-windows\PokedexE.03FB57C1.Up2Date
+C:\Data\School\GUI\Object_relation_mapping_C-\GUI-Entity-Framework\PokedexExplorer\PokedexExplorer\bin\Debug\net9.0-windows\Newtonsoft.Json.dll

@@ -22,9 +22,9 @@ namespace PokedexExplorer;
 public partial class MainWindow : Window
 {
     int currentColumnCount;
-    PokemonDbContext context;
 
-    DatabaseInitHandler databaseInitHandler;
+    private readonly PokemonDbContext context;
+    public DatabaseInitHandler Handler {  get; private set; }
 
     public MainWindow()
     {
@@ -34,20 +34,9 @@ public partial class MainWindow : Window
         context.Database.Migrate();
 
         //Add the init handler
-        databaseInitHandler = new DatabaseInitHandler(this, this.context);
+        Handler = new DatabaseInitHandler(this, this.context);
         //Run the init handler
-        databaseInitHandler.Start();
-    }
-
-    public void NotifyInitStarted()
-    {
-        FetchGroup.IsEnabled = true;
-        FetchGroup.Visibility = Visibility.Visible;
-    }
-    public void NotifyInitEnded()
-    {
-        FetchGroup.IsEnabled = false;
-        FetchGroup.Visibility = Visibility.Hidden;
+        Handler.Start();
     }
 
     private void FetchGroupMouseDown(object sender, MouseButtonEventArgs e)
