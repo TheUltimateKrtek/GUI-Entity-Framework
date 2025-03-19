@@ -15,6 +15,8 @@ using PokedexExplorer.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Runtime.InteropServices.JavaScript;
+using System.DirectoryServices;
 
 namespace PokedexExplorer.Data
 {
@@ -22,8 +24,9 @@ namespace PokedexExplorer.Data
     {
         static public JObject RetrieveJSON(string name, int? id = null)
         {
-            string url = "https://pokeapi.co/api/v2/" + name + "/";
-            if (id != null) url += id + "/";
+            string url = "https://pokeapi.co/api/v2/" + name;
+            if (id != null) url += "/" + id + "/";
+            else url += "?limit=10&offset=100";
 
             using (HttpClient client = new HttpClient())
             {
@@ -38,16 +41,23 @@ namespace PokedexExplorer.Data
                 }
                 catch (HttpRequestException e)
                 {
+                    Debug.WriteLine("HTTP Error: " + name + (id == null ? "" : " " + id));
                     return null;
                 }
             }
         }
 
-        static public int GetCount(string name)
+        static public List<int> GetEntries(string name)
         {
             JObject json = RetrieveJSON(name);
-            if (json == null) return -1;
-            return json["count"].ToObject<int>();
+            if (json == null) return [];
+            List<int> entries = [];
+            foreach (JToken t in json["results"])
+            {
+                entries.Add((int)GetURLIntValue(t["url"].ToString()));
+            }
+            return entries;
+
         }
 
         static public Ability ParseAbility(JObject node)
@@ -132,8 +142,8 @@ namespace PokedexExplorer.Data
             int? power = node["power"]?.ToObject<int?>() ?? null;
             int pp = node["pp"]?.ToObject<int>() ?? -1;
             int priority = node["priority"]?.ToObject<int>() ?? -1;
-            string target = node["target"]?.ToObject<string>() ?? null;
-            string type = node["type"]?.ToObject<string>() ?? "normal";
+            string target = node["target"]?["name"]?.ToObject<string>() ?? null;
+            string type = node["type"]?["name"]?.ToObject<string>() ?? "normal";
 
             JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
             string description = null;
@@ -177,7 +187,7 @@ namespace PokedexExplorer.Data
             {
                 int? value = GetURLIntValue(a["ability"]["url"]?.ToObject<string>() ?? null);
                 int index = a["slot"].ToObject<int>();
-                abilities[index] = value;
+                abilities[index - 1] = value;
             }
             int? primaryAbility = abilities[0];
             int? secondaryAbility = abilities[1];
@@ -190,19 +200,19 @@ namespace PokedexExplorer.Data
             int order = node["order"].ToObject<int>();
             string name = node["name"].ToObject<string>();
 
-            string spriteFrontDefault = node["sprite_front_default"].ToObject<string>();
-            string? spriteFrontFemale = node["sprite_front_female"].ToObject<string?>();
-            string? spriteFrontShiny = node["sprite_front_shiny"].ToObject<string?>();
-            string? spriteFrontShinyFemale = node["sprite_front_shiny_female"].ToObject<string?>();
-            string? spriteBackDefault = node["sprite_back_default"].ToObject<string?>();
-            string? spriteBackFemale = node["sprite_back_female"].ToObject<string?>();
-            string? spriteBackShiny = node["sprite_back_shiny"].ToObject<string?>();
-            string? spriteBackShinyFemale = node["sprite_back_shiny_female"].ToObject<string?>();
+            string spriteFrontDefault = node["sprites"]["front_default"].ToObject<string>();
+            string? spriteFrontFemale = node["sprites"]["front_female"]?.ToObject<string?>() ?? null;
+            string? spriteFrontShiny = node["sprites"]["front_shiny"]?.ToObject<string?>() ?? null;
+            string? spriteFrontShinyFemale = node["sprites"]["front_shiny_female"]?.ToObject<string?>() ?? null;
+            string? spriteBackDefault = node["sprites"]["back_default"]?.ToObject<string?>() ?? null;
+            string? spriteBackFemale = node["sprites"]["back_female"]?.ToObject<string?>() ?? null;
+            string? spriteBackShiny = node["sprites"]["back_shiny"]?.ToObject<string?>() ?? null;
+            string? spriteBackShinyFemale = node["sprites"]["back_shiny_female"]?.ToObject<string?>() ?? null;
 
-            int species = node["species"].ToObject<int>();
+            int species = (int)GetURLIntValue(node["species"]?["url"]?.ToObject<string>());
 
-            string? cry = node["cry"].ToObject<string?>();
-            string? cryLegacy = node["cry"].ToObject<string?>();
+            string? cry = node["cries"]["latest"].ToObject<string?>();
+            string? cryLegacy = node["cries"]?["legacy"]?.ToObject<string?>() ?? null;
 
             int hp = node["stats"][0]["base_stat"].ToObject<int>();
             int hpEffort = node["stats"][0]["effort"].ToObject<int>();
@@ -217,8 +227,8 @@ namespace PokedexExplorer.Data
             int speed = node["stats"][5]["base_stat"].ToObject<int>();
             int speedEffort = node["stats"][5]["effort"].ToObject<int>();
 
-            string primaryType = node["types"][0].ToObject<string>();
-            string? secondaryType = node["types"].ToObject<JArray>().Count == 1 ? null : node["types"][1].ToObject<string?>();
+            string primaryType = node["types"][0]["type"]["name"].ToObject<string>();
+            string? secondaryType = node["types"].ToObject<JArray>().Count == 1 ? null : node["types"][1]["type"]["name"].ToObject<string?>();
 
             Pokemon pokemon = new Pokemon();
             pokemon.ID = id;
@@ -268,11 +278,11 @@ namespace PokedexExplorer.Data
             bool isBaby = node["is_baby"].ToObject<bool>();
             bool isLegendary = node["is_legendary"].ToObject<bool>();
             bool isMythical = node["is_mythical"].ToObject<bool>();
-            string color = node["color"].ToObject<string>();
-            string growthRate = node["growth_rate"].ToObject<string>();
-            string habitat = node["habitat"].ToObject<string>();
-            string shape = node["shape"].ToObject<string>();
-            int generation = node["generation"].ToObject<int>();
+            string color = node["color"]?["name"]?.ToObject<string>() ?? null;
+            string growthRate = node["growth_rate"]?["name"]?.ToObject<string>() ?? null;
+            string habitat = node["habitat"]?["name"]?.ToObject<string>() ?? null;
+            string shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
+            int generation = (int)GetURLIntValue(node["generation"]?["url"]?.ToObject<string>() ?? null);
 
             JObject generaNode = GetEnglishNode(node["genera"]?.ToObject<JArray>() ?? null);
             string genera = "";
@@ -281,11 +291,13 @@ namespace PokedexExplorer.Data
                 genera = generaNode["genus"].ToObject<string>();
             }
 
-            JObject nationalPokedexNumberNode = GetEnglishNode(node["national_pokedex_number"]?.ToObject<JArray>() ?? null);
             int nationalPokedexNumber = -1;
-            if (generaNode != null)
+            foreach (JToken t in node["pokedex_numbers"])
             {
-                nationalPokedexNumber = nationalPokedexNumberNode["entry_number"].ToObject<int>();
+                if (t["pokedex"]["name"].Equals("national"))
+                {
+                    nationalPokedexNumber = (int)GetURLIntValue(t["url"].ToString());
+                }
             }
 
             JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
@@ -325,6 +337,7 @@ namespace PokedexExplorer.Data
         }
         static public List<EvolutionChain> ParseEvolutionChain(JObject node, List<EvolutionChain> list = null)
         {
+            if (node == null) return [];
             if (list == null)
             {
                 list = new List<EvolutionChain>();
@@ -334,8 +347,9 @@ namespace PokedexExplorer.Data
 
             foreach (JObject evolution in node["evolves_to"]?.ToObject<JArray>() ?? null)
             {
-                foreach (JObject details in node["evolution_details"]?.ToObject<JArray>())
+                foreach (JObject details in evolution["evolution_details"]?.ToObject<JArray>())
                 {
+                    if (details == null) continue;
                     int from = (int)GetURLIntValue(node["species"]["url"].ToObject<string>());
                     int to = (int)GetURLIntValue(evolution["species"]["url"].ToObject<string>());
 
@@ -346,27 +360,34 @@ namespace PokedexExplorer.Data
                     chain.ID = id;
                     chain.EvolvesFrom = from;
                     chain.EvolvesTo = to;
-                    chain.Gender = details["gender"].ToObject<int?>();
-                    chain.MinBeauty = details["min_beauty"].ToObject<int?>();
-                    chain.MinHappiness = details["min_happiness"].ToObject<int?>();
-                    chain.MinLevel = details["min_level"].ToObject<int?>();
-                    chain.TradeSpecies = GetURLIntValue(details["trade_species"].ToObject<string?>());
-                    chain.RelativePhysicalStats = details["relative_physical_stats"].ToObject<int?>();
-                    chain.Item = details["item"].ToObject<string?>();
-                    chain.HeldItem = details["helpItem"].ToObject<string?>();
-                    chain.KnownMove = GetURLIntValue(details["known_move"].ToObject<string?>());
-                    chain.KnownMoveType = details["known_move_type"].ToObject<string?>();
-                    chain.Trigger = details["trigger"].ToObject<string?>();
-                    chain.PartySpecies = GetURLIntValue(details["party_species"].ToObject<string?>());
-                    chain.PartyType = details["party_type"].ToObject<string?>();
-                    chain.TimeOfDay = details["time_of_day"].ToObject<string?>();
-                    chain.NeedsOverworldRain = details["needs_overworld_rain"].ToObject<bool?>();
-                    chain.TurnUpsideDown = details["turn_upside_down"].ToObject<bool?>();
+                    chain.Gender = details["gender"]?.ToObject<int?>() ?? null;
+                    chain.MinBeauty = details["min_beauty"]?.ToObject<int?>() ?? null;
+                    chain.MinHappiness = details["min_happiness"]?.ToObject<int?>() ?? null;
+                    chain.MinLevel = details["min_level"]?.ToObject<int?>() ?? null;
+                    if(details["trade_species"] != null && details["trade_species"] is JObject)
+                        chain.TradeSpecies = GetURLIntValue(details["trade_species"]["url"]?.ToObject<string?>() ?? null);
+                    chain.RelativePhysicalStats = details["relative_physical_stats"]?.ToObject<int?>() ?? null;
+                    if (details["item"] != null && details["item"] is JObject)
+                        chain.Item = details["item"]["name"]?.ToObject<string?>() ?? null;
+                    if (details["held_item"] != null && details["held_item"] is JObject)
+                        chain.HeldItem = details["held_item"]["name"]?.ToObject<string?>() ?? null;
+                    if (details["known_move"] != null && details["known_move"] is JObject)
+                        chain.KnownMove = GetURLIntValue(details["known_move"]?["url"]?.ToObject<string?>() ?? null);
+                    if (details["known_move_type"] != null && details["known_move_type"] is JObject)
+                        chain.KnownMoveType = details["known_move_type"]["name"]?.ToObject<string?>() ?? null;
+                    chain.Trigger = details["trigger"]?["name"]?.ToObject<string?>() ?? null;
+                    if (details["party_species"] != null && details["party_species"] is JObject)
+                        chain.PartySpecies = GetURLIntValue(details["party_species"] == null ? null : details["party_species"]["url"]?.ToObject<string?>() ?? null);
+                    if (details["party_type"] != null && details["party_type"] is JObject)
+                        chain.PartyType = details["party_type"]["name"]?.ToObject<string?>() ?? null;
+                    chain.TimeOfDay = details["time_of_day"]?.ToObject<string?>() ?? null;
+                    chain.NeedsOverworldRain = details["needs_overworld_rain"]?.ToObject<bool?>() ?? false;
+                    chain.TurnUpsideDown = details["turn_upside_down"]?.ToObject<bool?>() ?? false;
 
                     list.Add(chain);
                 }
 
-                ParseEvolutionChain(node, list);
+                ParseEvolutionChain(evolution, list);
             }
 
             return list;
@@ -381,7 +402,7 @@ namespace PokedexExplorer.Data
                 int index = (m["version_group_details"]?.ToObject<JArray>().Count() ?? 1) - 1;
                 int move = (int)GetURLIntValue(m["move"]["url"].ToObject<string>());
                 int? levelLearnedAt = m["version_group_details"][index]["level_learned_at"].ToObject<int>();
-                string? learnMethod = m["version_group_details"][index]["learn_method"]["name"].ToObject<string>();
+                string? learnMethod = m["version_group_details"][index]["move_learn_method"]["name"].ToObject<string>();
 
                 PokemonMove pm = new PokemonMove();
                 pm.ID = -1;
@@ -413,5 +434,6 @@ namespace PokedexExplorer.Data
             }
             return null;
         }
+        
     }
 }

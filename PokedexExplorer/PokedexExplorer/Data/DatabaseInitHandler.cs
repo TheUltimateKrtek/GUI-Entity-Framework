@@ -106,42 +106,41 @@ namespace PokedexExplorer.Data
 
             TableMax = 5;
 
-            int abilityCount = PokeAPIFetcher.GetCount("ability");
-            int moveCount = PokeAPIFetcher.GetCount("move");
-            int pokemonCount = PokeAPIFetcher.GetCount("pokemon");
-            int pokemonSpeciesCount = PokeAPIFetcher.GetCount("pokemon-species");
-            int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
+            List<int> abilityIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> moveIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> pokemonIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> pokemonSpeciesIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> evolutionChainIndexes = PokeAPIFetcher.GetEntries("ability");
 
             //Ability
-            this.ItemMax = abilityCount;
+            this.ItemMax = abilityIndexes.Count;
             this.TableProgress = 0;
             this.ItemProgress = 0;
-            for (int i = 0; i < abilityCount; i++)
+            foreach (int id in abilityIndexes)
             {
-                Debug.WriteLine(i + " / " + abilityCount);
-                Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i + 1));
+                Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", id));
                 if (ability != null) this.context.Ability.Add(ability);
                 this.ItemProgress++;
             }
 
             //Move
-            this.ItemMax = moveCount;
+            this.ItemMax = moveIndexes.Count;
             this.TableProgress = 1;
             this.ItemProgress = 0;
-            for (int i = 0; i < moveCount; i++)
+            foreach (int id in moveIndexes)
             {
-                Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i + 1));
+                Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", id));
                 if (move != null) this.context.Move.Add(move);
                 ItemProgress++;
             }
 
             //PokemonSpecies
-            this.ItemMax = pokemonSpeciesCount;
+            this.ItemMax = pokemonSpeciesIndexes.Count;
             this.TableProgress = 2;
             this.ItemProgress = 0;
-            for (int i = 0; i < pokemonSpeciesCount; i++)
+            foreach (int id in pokemonSpeciesIndexes)
             {
-                PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i + 1));
+                PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", id));
                 if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
                 ItemProgress++;
             }
@@ -150,14 +149,14 @@ namespace PokedexExplorer.Data
             this.context.SaveChanges();
 
             //Pokemon
-            this.ItemMax = pokemonCount;
+            this.ItemMax = pokemonIndexes.Count;
             this.TableProgress = 3;
             this.ItemProgress = 0;
             int pokemonMoveIndex = 1;
             List<PokemonMove> storedPokemonMoves = new List<PokemonMove>();
-            for (int i = 0; i < pokemonCount; i++)
+            foreach (int id in pokemonIndexes)
             {
-                JObject node = PokeAPIFetcher.RetrieveJSON("pokemon", i + 1);
+                JObject node = PokeAPIFetcher.RetrieveJSON("pokemon", id);
                 Pokemon pokemon= PokeAPIFetcher.ParsePokemon(node);
                 List<PokemonMove> pokemonMoves = PokeAPIFetcher.ParsePokemonMove(node);
                 if (pokemon != null)
@@ -180,19 +179,19 @@ namespace PokedexExplorer.Data
             }
             //Save changes to prepare for inserting PokemonMove entries
             this.context.SaveChanges();
-
+            
             //PokemonMove
             this.context.PokemonMove.AddRange(storedPokemonMoves);
             this.context.SaveChanges();
 
             //EvolutionChain
-            this.ItemMax = evolutionChainCount;
+            this.ItemMax = evolutionChainIndexes.Count;
             this.TableProgress = 4;
             this.ItemProgress = 0;
             int evolutionChainIndex = 1;
-            for (int i = 0; i < evolutionChainCount; i++)
+            foreach (int id in evolutionChainIndexes)
             {
-                List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", i + 1));
+                List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", id));
                 if (evolutionChains != null)
                 {
                     foreach (EvolutionChain chain in evolutionChains)

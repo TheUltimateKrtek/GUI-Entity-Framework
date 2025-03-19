@@ -11,15 +11,15 @@ using System.Xml.Linq;
 namespace PokedexExplorer.Model
 {
     [Index(nameof(Pokemon.ID), IsUnique = true, Name = "IndexPokemonID")]
-    [Index(nameof(Pokemon.Name), IsUnique = true, Name = "IndexPokemonName")]
-    [Index(nameof(Pokemon.Height), IsUnique = true, Name = "IndexPokemonHeight")]
-    [Index(nameof(Pokemon.Weight), IsUnique = true, Name = "IndexPokemonWeight")]
-    [Index(nameof(Pokemon.HP), IsUnique = true, Name = "IndexPokemonHp")]
-    [Index(nameof(Pokemon.Attack), IsUnique = true, Name = "IndexPokemonAttack")]
-    [Index(nameof(Pokemon.Defense), IsUnique = true, Name = "IndexPokemonDefense")]
-    [Index(nameof(Pokemon.SpecialAttack), IsUnique = true, Name = "IndexPokemonSpecialAttack")]
-    [Index(nameof(Pokemon.SpecialDefense), IsUnique = true, Name = "IndexPokemonSpecialDefense")]
-    [Index(nameof(Pokemon.Speed), IsUnique = true, Name = "IndexPokemonSpeed")]
+    [Index(nameof(Pokemon.Name), IsUnique = false, Name = "IndexPokemonName")]
+    [Index(nameof(Pokemon.Height), IsUnique = false, Name = "IndexPokemonHeight")]
+    [Index(nameof(Pokemon.Weight), IsUnique = false, Name = "IndexPokemonWeight")]
+    [Index(nameof(Pokemon.HP), IsUnique = false, Name = "IndexPokemonHp")]
+    [Index(nameof(Pokemon.Attack), IsUnique = false, Name = "IndexPokemonAttack")]
+    [Index(nameof(Pokemon.Defense), IsUnique = false, Name = "IndexPokemonDefense")]
+    [Index(nameof(Pokemon.SpecialAttack), IsUnique = false, Name = "IndexPokemonSpecialAttack")]
+    [Index(nameof(Pokemon.SpecialDefense), IsUnique = false, Name = "IndexPokemonSpecialDefense")]
+    [Index(nameof(Pokemon.Speed), IsUnique = false, Name = "IndexPokemonSpeed")]
     public class Pokemon
     {
         [Key]

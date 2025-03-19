@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.Swift;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices.Swift;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +32,11 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.currentColumnCount = 1;
         context = new PokemonDbContext("skyre", "");
-        context.Database.Migrate();
+        try
+        {
+            context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+        }
+        catch { }
 
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);
