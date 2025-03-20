@@ -587,7 +587,7 @@ For the purpose of searching, indexing columns will be beneficial. It will speed
 ```csharp
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(Ability.Name), IsUnique = true, Name = "IndexAbilityName")]
+    [Index(nameof(Ability.Name), IsUnique = false, Name = "IndexAbilityName")]
     [Index(nameof(Ability.Generation), IsUnique = false, Name = "IndexAbilityGeneration")]
     public class Ability
     {
@@ -633,7 +633,7 @@ namespace PokedexExplorer.Model
 ```csharp
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(PokemonSpecies.Name), IsUnique = true, Name = "IndexPokemonName")]
+    [Index(nameof(PokemonSpecies.Name), IsUnique = false, Name = "IndexPokemonName")]
     [Index(nameof(PokemonSpecies.Generation), IsUnique = false, Name = "IndexPokemonSpeciesGeneration")]
     public class PokemonSpecies
     {
@@ -699,10 +699,29 @@ public class PokemonDbContext : DbContext
 Now, we will need to create the actual database on the server. So far, we have only modeled the schemas.
 #### Migrate
 To synchronize our database model with Postgre, we can use the method `DbContext.Database.Migrate();`. This would update our tables. The `Migrate()` method handles existing tables, however it will throw exceptions if the existing table is different.
-#### Execute SQL
-We can also execute raw SQL code.
 ```csharp
-context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+public MainWindow()
+{
+    InitializeComponent();
+    context = new PokemonDbContext("skyre", "");
+
+    context.Database.Migrate();
+}
+```
+#### Raw SQL
+We can also generate and execute SQL commands. This is done like so:
+```csharp
+public MainWindow()
+{
+    InitializeComponent();
+    context = new PokemonDbContext("skyre", "");
+
+    try
+    {
+        context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+    }
+    catch { }
+}
 ```
 #### MainWindow
 In our MainWindow class, created at WPF initialization, we will add the following code. This code runs at startup.
@@ -1339,7 +1358,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         this.currentColumnCount = 1;
         context = new PokemonDbContext("skyre", "");
-        context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+        context.Database.Migrate();
 
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);
