@@ -28,7 +28,6 @@ namespace PokedexExplorer.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=" + this.name + ";Password=" + password + ";Database=postgres;");
-            Debug.WriteLine("OnConfiguring");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,7 +38,6 @@ namespace PokedexExplorer.Data
             modelBuilder.Entity<PokemonSpecies>().ToTable("PokemonSpecies");
             modelBuilder.Entity<EvolutionChain>().ToTable("EvolutionChain");
             modelBuilder.Entity<PokemonMove>().ToTable("PokemonMove");
-            Debug.WriteLine("OnModelCreating");
         }
     }
 }

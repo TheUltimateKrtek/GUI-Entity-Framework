@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(Move.Name), IsUnique = true, Name = "IndexMoveName")]
+    [Index(nameof(Move.Name), IsUnique = false, Name = "IndexMoveName")]
     public class Move
     {
         [Required]

@@ -22,7 +22,6 @@ namespace PokedexExplorer;
 /// </summary>
 public partial class MainWindow : Window
 {
-    int currentColumnCount;
 
     private readonly PokemonDbContext context;
     public DatabaseInitHandler Handler {  get; private set; }
@@ -30,13 +29,17 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        this.currentColumnCount = 1;
         context = new PokemonDbContext("skyre", "");
+
         try
         {
             context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+            Debug.WriteLine("Created tables!");
         }
-        catch { }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
 
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);

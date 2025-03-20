@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 
 namespace PokedexExplorer.Data
 {
@@ -107,10 +108,10 @@ namespace PokedexExplorer.Data
             TableMax = 5;
 
             List<int> abilityIndexes = PokeAPIFetcher.GetEntries("ability");
-            List<int> moveIndexes = PokeAPIFetcher.GetEntries("ability");
-            List<int> pokemonIndexes = PokeAPIFetcher.GetEntries("ability");
-            List<int> pokemonSpeciesIndexes = PokeAPIFetcher.GetEntries("ability");
-            List<int> evolutionChainIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> moveIndexes = PokeAPIFetcher.GetEntries("move");
+            List<int> pokemonIndexes = PokeAPIFetcher.GetEntries("pokemon");
+            List<int> pokemonSpeciesIndexes = PokeAPIFetcher.GetEntries("pokemon-species");
+            List<int> evolutionChainIndexes = PokeAPIFetcher.GetEntries("evolution-chain");
 
             //Ability
             this.ItemMax = abilityIndexes.Count;
@@ -121,7 +122,12 @@ namespace PokedexExplorer.Data
                 Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", id));
                 if (ability != null) this.context.Ability.Add(ability);
                 this.ItemProgress++;
+                Debug.WriteLine("Added ability " + ability.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
+
+            //Save changes
+            this.context.SaveChanges();
 
             //Move
             this.ItemMax = moveIndexes.Count;
@@ -132,7 +138,12 @@ namespace PokedexExplorer.Data
                 Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", id));
                 if (move != null) this.context.Move.Add(move);
                 ItemProgress++;
+                Debug.WriteLine("Added move " + move.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
+
+            //Save changes
+            this.context.SaveChanges();
 
             //PokemonSpecies
             this.ItemMax = pokemonSpeciesIndexes.Count;
@@ -143,6 +154,8 @@ namespace PokedexExplorer.Data
                 PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", id));
                 if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
                 ItemProgress++;
+                Debug.WriteLine("Added pokemonSpecies " + pokemonSpecies.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
 
             //Save changes
@@ -176,6 +189,8 @@ namespace PokedexExplorer.Data
                     }
                 }
                 ItemProgress++;
+                Debug.WriteLine("Added pokemon " + pokemon.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
             //Save changes to prepare for inserting PokemonMove entries
             this.context.SaveChanges();
@@ -201,6 +216,8 @@ namespace PokedexExplorer.Data
                             chain.ID = evolutionChainIndex;
                             this.context.EvolutionChain.Add(chain);
                             evolutionChainIndex++;
+                            Debug.WriteLine("Added evolutionChains " + chain.ID + "(" + id + ")");
+                            this.context.SaveChanges();
                         }
                     }
                 }

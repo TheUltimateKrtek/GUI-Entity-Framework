@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(PokemonSpecies.Name), IsUnique = true, Name = "IndexPokemonName")]
+    [Index(nameof(PokemonSpecies.Name), IsUnique = false, Name = "IndexPokemonName")]
     [Index(nameof(PokemonSpecies.Generation), IsUnique = false, Name = "IndexPokemonSpeciesGeneration")]
     public class PokemonSpecies
     {

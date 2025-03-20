@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PokedexExplorer.Model
 {
-    [Index(nameof(Ability.Name), IsUnique = true, Name = "IndexAbilityName")]
+    [Index(nameof(Ability.Name), IsUnique = false, Name = "IndexAbilityName")]
     [Index(nameof(Ability.Generation), IsUnique = false, Name = "IndexAbilityGeneration")]
     public class Ability
     {

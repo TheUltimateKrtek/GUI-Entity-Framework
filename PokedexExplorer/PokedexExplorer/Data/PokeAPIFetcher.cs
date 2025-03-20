@@ -26,7 +26,7 @@ namespace PokedexExplorer.Data
         {
             string url = "https://pokeapi.co/api/v2/" + name;
             if (id != null) url += "/" + id + "/";
-            else url += "?limit=10&offset=100";
+            else url += "?limit=10000&offset=0";
 
             using (HttpClient client = new HttpClient())
             {
@@ -120,17 +120,30 @@ namespace PokedexExplorer.Data
             int? generation = GetURLIntValue(node["generation"]["url"]?.ToObject<string?>() ?? null);
             int id = node["id"]?.ToObject<int>() ?? -1;
 
-            string? ailment = node["meta"] == null ? null : (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].ToObject<string>());
-            int? ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"].ToObject<int?>();
-            int? critRate = node["meta"] == null ? null : node["meta"]["crit_rate"].ToObject<int?>();
-            int? drain = node["meta"] == null ? null : node["meta"]["drain"].ToObject<int?>();
-            int? flinchChance = node["meta"] == null ? null : node["meta"]["flinch_chance"].ToObject<int?>();
-            int? healing = node["meta"] == null ? null : node["meta"]["healing"].ToObject<int?>();
-            int? maxHits = node["meta"] == null ? null : node["meta"]["max_hits"].ToObject<int?>();
-            int? maxTurns = node["meta"] == null ? null : node["meta"]["max_turns"].ToObject<int?>();
-            int? minHits = node["meta"] == null ? null : node["meta"]["min_hits"].ToObject<int?>();
-            int? minTurns = node["meta"] == null ? null : node["meta"]["min_turns"].ToObject<int?>();
-            int? statChance = node["meta"] == null ? null : node["meta"]["stat_chance"].ToObject<int?>();
+            string? ailment = null;
+            int? ailmentChance = null;
+            int? critRate = null;
+            int? drain = null;
+            int? flinchChance = null;
+            int? healing = null;
+            int? maxHits = null;
+            int? maxTurns = null;
+            int? minHits = null;
+            int? minTurns = null;
+            int? statChance = null;
+            if (node["meta"] != null && node["meta"] is JObject)
+            {
+                if (node["meta"]["ailment"] == null && node["meta"]["ailment"] is JObject) ailment = (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].ToObject<string>());
+                ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"]?.ToObject<int?>() ?? null;
+                critRate = node["meta"] == null ? null : node["meta"]["crit_rate"]?.ToObject<int?>() ?? null;
+                drain = node["meta"] == null ? null : node["meta"]["drain"]?.ToObject<int?>() ?? null;
+                flinchChance = node["meta"] == null ? null : node["meta"]["flinch_chance"]?.ToObject<int?>() ?? null;
+                maxHits = node["meta"] == null ? null : node["meta"]["max_hits"]?.ToObject<int?>() ?? null;
+                maxTurns = node["meta"] == null ? null : node["meta"]["max_turns"]?.ToObject<int?>() ?? null;
+                minHits = node["meta"] == null ? null : node["meta"]["min_hits"]?.ToObject<int?>() ?? null;
+                minTurns = node["meta"] == null ? null : node["meta"]["min_turns"]?.ToObject<int?>() ?? null;
+                statChance = node["meta"] == null ? null : node["meta"]["stat_chance"]?.ToObject<int?>() ?? null;
+            }
 
             JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
             string name = node["name"]?.ToObject<string>() ?? "<unknown>";
@@ -140,7 +153,7 @@ namespace PokedexExplorer.Data
             }
 
             int? power = node["power"]?.ToObject<int?>() ?? null;
-            int pp = node["pp"]?.ToObject<int>() ?? -1;
+            int pp = node["pp"].ToObject<int?>() ?? -1;
             int priority = node["priority"]?.ToObject<int>() ?? -1;
             string target = node["target"]?["name"]?.ToObject<string>() ?? null;
             string type = node["type"]?["name"]?.ToObject<string>() ?? "normal";
@@ -269,20 +282,32 @@ namespace PokedexExplorer.Data
         }
         static public PokemonSpecies ParsePokemonSpecies(JObject node)
         {
-            int baseHappiness = node["base_happiness"].ToObject<int>();
-            int captureRate = node["capture_rate"].ToObject<int>();
-            int genderRate = node["gender_rate"].ToObject<int>();
-            int? hatchCounter = node["hatch_counter"].ToObject<int?>();
-            int id = node["id"].ToObject<int>();
-            int order = node["order"].ToObject<int>();
+            if (node == null) return null;
+
+            int baseHappiness = node["base_happiness"]?.ToObject<int?>() ?? -1;
+            int captureRate = node["capture_rate"]?.ToObject<int?>() ?? -1;
+            int genderRate = node["gender_rate"]?.ToObject<int?>() ?? -1;
+            int? hatchCounter = node["hatch_counter"]?.ToObject<int?>() ?? null;
+            int id = node["id"]?.ToObject<int?>() ?? -1;
+            int order = node["order"]?.ToObject<int?>() ?? -1;
             bool isBaby = node["is_baby"].ToObject<bool>();
             bool isLegendary = node["is_legendary"].ToObject<bool>();
             bool isMythical = node["is_mythical"].ToObject<bool>();
-            string color = node["color"]?["name"]?.ToObject<string>() ?? null;
-            string growthRate = node["growth_rate"]?["name"]?.ToObject<string>() ?? null;
-            string habitat = node["habitat"]?["name"]?.ToObject<string>() ?? null;
-            string shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
-            int generation = (int)GetURLIntValue(node["generation"]?["url"]?.ToObject<string>() ?? null);
+            string color = null;
+            if (node["color"] != null && node["color"] is JObject)
+                color = node["color"]?["name"]?.ToObject<string>() ?? null;
+            string growthRate = null;
+            if (node["growth_rate"] != null && node["growth_rate"] is JObject)
+                growthRate = node["growth_rate"]?["name"]?.ToObject<string>() ?? null;
+            string habitat = null;
+            if (node["habitat"] != null && node["habitat"] is JObject)
+                habitat = node["habitat"]?["name"]?.ToObject<string>() ?? null;
+            string shape = null;
+            if (node["shape"] != null && node["shape"] is JObject)
+                shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
+            int generation = -1;
+            if (node["trade_spgenerationecies"] != null && node["generation"] is JObject)
+                generation = (int)GetURLIntValue(node["generation"]?["url"]?.ToObject<string>() ?? null);
 
             JObject generaNode = GetEnglishNode(node["genera"]?.ToObject<JArray>() ?? null);
             string genera = "";
