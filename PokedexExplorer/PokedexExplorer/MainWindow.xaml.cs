@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.CodeDom;
+using System.Diagnostics;
 using System.Runtime.InteropServices.Swift;
 using System.Text;
 using System.Windows;
@@ -22,6 +23,8 @@ namespace PokedexExplorer;
 /// </summary>
 public partial class MainWindow : Window
 {
+    static public readonly bool INITIALIZE_TABLES = false;
+    static public readonly bool INITIALIZE_DATA = false;
 
     private readonly PokemonDbContext context;
     public DatabaseInitHandler Handler {  get; private set; }
@@ -31,20 +34,26 @@ public partial class MainWindow : Window
         InitializeComponent();
         context = new PokemonDbContext("skyre", "");
 
-        try
-        {
-            context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
-            Debug.WriteLine("Created tables!");
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e.Message);
-        }
-
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);
-        //Run the init handler
-        Handler.Start();
+
+        if (INITIALIZE_TABLES)
+        {
+            try
+            {
+                context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+                Debug.WriteLine("Created tables!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        if (INITIALIZE_DATA)
+        {
+            //Run the init handler
+            Handler.Start();
+        }
     }
 
     private void FetchGroupMouseDown(object sender, MouseButtonEventArgs e)

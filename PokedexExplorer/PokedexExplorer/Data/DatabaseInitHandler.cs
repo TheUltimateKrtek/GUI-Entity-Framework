@@ -21,7 +21,7 @@ namespace PokedexExplorer.Data
         private PokemonDbContext context;
         private Thread thread;
         private int tableProgress, tableMax, itemProgress, itemMax;
-        private Visibility uiVisibility;
+        private Visibility uiVisibility = Visibility.Hidden;
         private bool isRunning;
         public int TableProgress
         {
@@ -227,7 +227,7 @@ namespace PokedexExplorer.Data
             //Save changes
             this.context.SaveChanges();
 
-            this.UIVisibility = Visibility.Visible;
+            this.UIVisibility = Visibility.Hidden;
             this.IsRunning = false;
         }
     }

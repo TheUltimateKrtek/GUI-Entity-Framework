@@ -299,9 +299,9 @@ namespace PokedexExplorer.Data
             string growthRate = null;
             if (node["growth_rate"] != null && node["growth_rate"] is JObject)
                 growthRate = node["growth_rate"]?["name"]?.ToObject<string>() ?? null;
-            string habitat = null;
+            string habitat = "none";
             if (node["habitat"] != null && node["habitat"] is JObject)
-                habitat = node["habitat"]?["name"]?.ToObject<string>() ?? null;
+                habitat = node["habitat"]?["name"]?.ToObject<string>() ?? "none";
             string shape = null;
             if (node["shape"] != null && node["shape"] is JObject)
                 shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
@@ -315,6 +315,7 @@ namespace PokedexExplorer.Data
             {
                 genera = generaNode["genus"].ToObject<string>();
             }
+            genera = genera.Replace(" Pokémon", "");
 
             int nationalPokedexNumber = -1;
             foreach (JToken t in node["pokedex_numbers"])
@@ -331,6 +332,7 @@ namespace PokedexExplorer.Data
             {
                 name = nameNode["name"].ToObject<string>();
             }
+            name = name.Replace("♀", "(female)").Replace("♂", "(male)");
 
             JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
             string? description = null;
@@ -338,6 +340,7 @@ namespace PokedexExplorer.Data
             {
                 description = descriptionNode["flavor_text"].ToObject<string>();
             }
+            description = description.Replace("\u2212", "-");
 
             PokemonSpecies species = new PokemonSpecies();
             species.ID = id;

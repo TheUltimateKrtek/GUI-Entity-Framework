@@ -66,8 +66,7 @@ namespace PokedexExplorer.Model
         public int Speed { get; set; }
         [Required]
         public int SpeedEffort { get; set; }
-        [Required]
-        public string SpriteFrontDefault { get; set; }
+        public string? SpriteFrontDefault { get; set; }
         public string? SpriteFrontFemale { get; set; }
         public string? SpriteFrontShinyFemale { get; set; }
         public string? SpriteFrontShiny { get; set; }
