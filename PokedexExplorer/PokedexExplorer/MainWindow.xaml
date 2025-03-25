@@ -5,24 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokedexExplorer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="600" Width="800"
+        ResizeMode="NoResize">
     <Grid Name="PokedexStage">
         <StackPanel Name="PokedexGroup" Orientation="Horizontal" Width="800" Height="600">
             <ScrollViewer Name="FilteredDataGroup" Width="520">
-                <StackPanel Name="SearchDisplayGroup" Orientation="Horizontal" Background="White">
-
-                </StackPanel>
+                <ItemsControl Name="PokemmonDataGrid" ItemsSource="{Binding Data.PokemonGridData}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" ItemWidth="125" ItemHeight="150"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="5">
+                                <StackPanel Width="100" Height="150">
+                                    <Image Source="{Binding SpriteImage}" Width="100" Height="100" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" TextAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding PrimaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding PrimaryColor}"/>
+                                        <TextBlock Text="{Binding SecondaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding SecondaryColor}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </ScrollViewer>
             <ScrollViewer Name="SearchParametersGroup" Width="280">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="0,0,0,0">
                         <StackPanel Name="NameStack" Orientation="Horizontal">
                             <Label Content="NAME:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                            <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedNameTextChanged"/>
                         </StackPanel>
                         <StackPanel Name="TypeStack" Orientation="Horizontal">
                             <Label Content="TYPE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <ComboBox Name="Type1ComboBox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="70">
+                            <ComboBox Name="Type1ComboBox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="70" SelectionChanged="SearchedType1Changed">
                                 <ComboBoxItem>Any</ComboBoxItem>
                                 <ComboBoxItem>Bug</ComboBoxItem>
                                 <ComboBoxItem>Dark</ComboBoxItem>
@@ -43,7 +62,7 @@
                                 <ComboBoxItem>Steel</ComboBoxItem>
                                 <ComboBoxItem>Water</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox Name="Type2ComboBox" Margin="10,0,0,0" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <ComboBox Name="Type2ComboBox" Margin="10,0,0,0" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="SearchedType2Changed">
                                 <ComboBoxItem>Any</ComboBoxItem>
                                 <ComboBoxItem>Bug</ComboBoxItem>
                                 <ComboBoxItem>Dark</ComboBoxItem>
@@ -67,7 +86,7 @@
                         </StackPanel>
                         <StackPanel Name="GenerationStack" Orientation="Horizontal">
                             <Label Content="GENERATION:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedGenerationChanged">
                                 <ComboBoxItem>Any</ComboBoxItem>
                                 <ComboBoxItem Tag="1">Generation 1 (Kanto)</ComboBoxItem>
                                 <ComboBoxItem Tag="2">Generation 2 (Johto)</ComboBoxItem>
@@ -82,15 +101,15 @@
                         </StackPanel>
                         <StackPanel Name="MoveStack" Orientation="Horizontal">
                             <Label Content="MOVE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <TextBox x:Name="KnowsMoveTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                            <TextBox x:Name="KnowsMoveTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedMoveTextChanged"/>
                         </StackPanel>
                         <StackPanel Name="AbilityStack" Orientation="Horizontal">
                             <Label Content="ABILITY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <TextBox x:Name="AbilityTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                            <TextBox x:Name="AbilityTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedAbilityTextChanged"/>
                         </StackPanel>
                         <StackPanel Name="LegendaryStack" Orientation="Horizontal">
                             <Label Content="LEGENDARY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                            <ComboBox Name="LegendaryComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBox Name="LegendaryComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedLegendaryStatusSelectionChanged">
                                 <ComboBoxItem>Any</ComboBoxItem>
                                 <ComboBoxItem>Legendary</ComboBoxItem>
                                 <ComboBoxItem>Mythical</ComboBoxItem>
@@ -101,7 +120,7 @@
                             <StackPanel Name="AppearanceStack">
                                 <StackPanel Name="AppearanceColorStack" Orientation="Horizontal">
                                     <Label Content="COLOR:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <ComboBox Name="AppearanceColorComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                                    <ComboBox Name="AppearanceColorComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedAppearanceColorSelectionChanged">
                                         <ComboBoxItem Tag="Any">Any</ComboBoxItem>
                                         <ComboBoxItem Tag="white">White</ComboBoxItem>
                                         <ComboBoxItem Tag="gray">Gray</ComboBoxItem>
@@ -117,7 +136,7 @@
                                 </StackPanel>
                                 <StackPanel Name="AppearanceShapeStack" Orientation="Horizontal">
                                     <Label Content="SHAPE:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <ComboBox Name="AppearanceShapeComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                                    <ComboBox Name="AppearanceShapeComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedAppearanceShapeSelectionChanged">
                                         <ComboBoxItem Tag="Any">Any</ComboBoxItem>
                                         <ComboBoxItem Tag="armor">Armor</ComboBoxItem>
                                         <ComboBoxItem Tag="arms">Arms</ComboBoxItem>
@@ -137,15 +156,15 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="HEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceHeightMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceHeightMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="WEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceWeightMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceWeightMaxChanged"/>
                                 </StackPanel>
                             </StackPanel>
                         </Expander>
@@ -153,39 +172,39 @@
                             <StackPanel Name="StatsStack">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="HP:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatHPMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatHPMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="ATTACK:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatAttackMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatAttackMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="DEFENSE:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatDefenseMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatDefenseMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="SP. ATT.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialAttackMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialAttackMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="SP. DEF.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialDefenseMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialDefenseMaxChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <Label Content="SPEED:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpeedMinChanged"/>
                                     <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                                    <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpeedMaxChanged"/>
                                 </StackPanel>
                             </StackPanel>
                         </Expander>
