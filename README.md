@@ -923,52 +923,85 @@ static public Move ParseMove(JObject node)
 
 ##### PokemonSpecies
 ```csharp
-static public PokemonSpecies ParsePokemonSpecies(JsonNode node)
+static public PokemonSpecies ParsePokemonSpecies(JObject node)
 {
-    int baseHappiness = node["base_happiness"].GetValue<int>();
-    int captureRate = node["capture_rate"].GetValue<int>();
-    int genderRate = node["gender_rate"].GetValue<int>();
-    int? hatchCounter = node["hatch_counter"].GetValue<int?>();
-    int id = node["id"].GetValue<int>();
-    int order = node["order"].GetValue<int>();
-    bool isBaby = node["is_baby"].GetValue<bool>();
-    bool isLegendary = node["is_legendary"].GetValue<bool>();
-    bool isMythical = node["is_mythical"].GetValue<bool>();
-    string color = node["color"].GetValue<string>();
-    string growthRate = node["growth_rate"].GetValue<string>();
-    string habitat = node["habitat"].GetValue<string>();
-    string shape = node["shape"].GetValue<string>();
-    int generation = node["generation"].GetValue<int>();
+    if (node == null) return null;
 
-    JsonNode generaNode = GetEnglishNode(node["genera"].GetValue<JsonNode>());
+    int baseHappiness = node["base_happiness"]?.ToObject<int?>() ?? -1;
+    int captureRate = node["capture_rate"]?.ToObject<int?>() ?? -1;
+    int genderRate = node["gender_rate"]?.ToObject<int?>() ?? -1;
+    int? hatchCounter = node["hatch_counter"]?.ToObject<int?>() ?? null;
+    int id = node["id"]?.ToObject<int?>() ?? -1;
+    int order = node["order"]?.ToObject<int?>() ?? -1;
+    bool isBaby = node["is_baby"].ToObject<bool>();
+    bool isLegendary = node["is_legendary"].ToObject<bool>();
+    bool isMythical = node["is_mythical"].ToObject<bool>();
+    string color = null;
+    if (node["color"] != null && node["color"] is JObject)
+        color = node["color"]?["name"]?.ToObject<string>() ?? null;
+    string growthRate = null;
+    if (node["growth_rate"] != null && node["growth_rate"] is JObject)
+        growthRate = node["growth_rate"]?["name"]?.ToObject<string>() ?? null;
+    string habitat = "none";
+    if (node["habitat"] != null && node["habitat"] is JObject)
+        habitat = node["habitat"]?["name"]?.ToObject<string>() ?? "none";
+    string shape = null;
+    if (node["shape"] != null && node["shape"] is JObject)
+        shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
+    int generation = -1;
+    if (node["trade_spgenerationecies"] != null && node["generation"] is JObject)
+        generation = (int)GetURLIntValue(node["generation"]?["url"]?.ToObject<string>() ?? null);
+
+    JObject generaNode = GetEnglishNode(node["genera"]?.ToObject<JArray>() ?? null);
     string genera = "";
     if (generaNode != null)
     {
-        genera = generaNode["genus"].GetValue<string>();
+        genera = generaNode["genus"].ToObject<string>();
     }
+    genera = genera.Replace(" Pokémon", "");
 
-    JsonNode nationalPokedexNumberNode = GetEnglishNode(node["national_pokedex_number"].GetValue<JsonNode>());
     int nationalPokedexNumber = -1;
-    if (generaNode != null)
+    foreach (JToken t in node["pokedex_numbers"])
     {
-        nationalPokedexNumber = nationalPokedexNumberNode["entry_number"].GetValue<int>();
+        if (t["pokedex"]["name"].Equals("national"))
+        {
+            nationalPokedexNumber = (int)GetURLIntValue(t["url"].ToString());
+        }
     }
 
-    JsonNode nameNode = GetEnglishNode(node["names"].GetValue<JsonNode>());
-    string name = node["name"].GetValue<string>();
+    JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
+    string name = node["name"].ToObject<string>();
     if (nameNode != null)
     {
-        name = nameNode["name"].GetValue<string>();
+        name = nameNode["name"].ToObject<string>();
     }
+    name = name.Replace("♀", "(female)").Replace("♂", "(male)"); //TODO: Mark Changes
 
-    JsonNode descriptionNode = GetEnglishNode(node["flavor_text_entries"].GetValue<JsonNode>());
+    JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
     string? description = null;
     if (descriptionNode != null)
     {
-        description = descriptionNode["flavor_text"].GetValue<string>();
+        description = descriptionNode["flavor_text"].ToObject<string>();
     }
+    description = description.Replace("\u2212", "-");
 
-    PokemonSpecies species = new PokemonSpecies(id, baseHappiness, captureRate, genderRate, order, generation, nationalPokedexNumber, isBaby, isLegendary, isMythical, color, growthRate, habitat, shape, genera, name);
+    PokemonSpecies species = new PokemonSpecies();
+    species.ID = id;
+    species.Name = name;
+    species.BaseHappiness = baseHappiness;
+    species.CaptureRate = captureRate;
+    species.GenderRate = genderRate;
+    species.Order = order;
+    species.Generation = generation;
+    species.NationalPokedexNumber = nationalPokedexNumber;
+    species.IsBaby = isBaby;
+    species.IsLegendary = isLegendary;
+    species.IsMythical = isMythical;
+    species.Color = color;
+    species.GrowthRate = growthRate;
+    species.Habitat = habitat;
+    species.Shape = shape;
+    species.Genera = genera;
     species.Description = description;
     species.HatchCounter = hatchCounter;
     return species;
@@ -1290,7 +1323,8 @@ We will next update MainWindow.xaml.cs
 ```csharp
 public partial class MainWindow : Window
 {
-    int currentColumnCount;
+    static public readonly bool INITIALIZE_TABLES = false;
+    static public readonly bool INITIALIZE_DATA = false;
 
     private readonly PokemonDbContext context;
     public DatabaseInitHandler Handler {  get; private set; }
@@ -1298,14 +1332,28 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        this.currentColumnCount = 1;
         context = new PokemonDbContext("skyre", "");
-        context.Database.Migrate();
 
         //Add the init handler
         Handler = new DatabaseInitHandler(this, this.context);
-        //Run the init handler
-        Handler.Start();
+
+        if (INITIALIZE_TABLES)
+        {
+            try
+            {
+                context.Database.ExecuteSqlRaw(context.Database.GenerateCreateScript());
+                Debug.WriteLine("Created tables!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        if (INITIALIZE_DATA)
+        {
+            //Run the init handler
+            Handler.Start();
+        }
     }
 
     private void FetchGroupMouseDown(object sender, MouseButtonEventArgs e)
@@ -1332,6 +1380,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
 
 namespace PokedexExplorer.Data
 {
@@ -1341,7 +1390,7 @@ namespace PokedexExplorer.Data
         private PokemonDbContext context;
         private Thread thread;
         private int tableProgress, tableMax, itemProgress, itemMax;
-        private Visibility uiVisibility;
+        private Visibility uiVisibility = Visibility.Hidden;
         private bool isRunning;
         public int TableProgress
         {
@@ -1427,58 +1476,69 @@ namespace PokedexExplorer.Data
 
             TableMax = 5;
 
-            int abilityCount = PokeAPIFetcher.GetCount("ability");
-            int moveCount = PokeAPIFetcher.GetCount("move");
-            int pokemonCount = PokeAPIFetcher.GetCount("pokemon");
-            int pokemonSpeciesCount = PokeAPIFetcher.GetCount("pokemon-species");
-            int evolutionChainCount = PokeAPIFetcher.GetCount("evolution-chain");
+            List<int> abilityIndexes = PokeAPIFetcher.GetEntries("ability");
+            List<int> moveIndexes = PokeAPIFetcher.GetEntries("move");
+            List<int> pokemonIndexes = PokeAPIFetcher.GetEntries("pokemon");
+            List<int> pokemonSpeciesIndexes = PokeAPIFetcher.GetEntries("pokemon-species");
+            List<int> evolutionChainIndexes = PokeAPIFetcher.GetEntries("evolution-chain");
 
             //Ability
-            this.ItemMax = abilityCount;
+            this.ItemMax = abilityIndexes.Count;
             this.TableProgress = 0;
             this.ItemProgress = 0;
-            for (int i = 0; i < abilityCount; i++)
+            foreach (int id in abilityIndexes)
             {
-                Debug.WriteLine(i + " / " + abilityCount);
-                Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", i + 1));
+                Ability ability = PokeAPIFetcher.ParseAbility(PokeAPIFetcher.RetrieveJSON("ability", id));
                 if (ability != null) this.context.Ability.Add(ability);
                 this.ItemProgress++;
+                Debug.WriteLine("Added ability " + ability.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
+
+            //Save changes
+            this.context.SaveChanges();
 
             //Move
-            this.ItemMax = moveCount;
+            this.ItemMax = moveIndexes.Count;
             this.TableProgress = 1;
             this.ItemProgress = 0;
-            for (int i = 0; i < moveCount; i++)
+            foreach (int id in moveIndexes)
             {
-                Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", i + 1));
+                Move move = PokeAPIFetcher.ParseMove(PokeAPIFetcher.RetrieveJSON("move", id));
                 if (move != null) this.context.Move.Add(move);
                 ItemProgress++;
+                Debug.WriteLine("Added move " + move.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
 
+            //Save changes
+            this.context.SaveChanges();
+
             //PokemonSpecies
-            this.ItemMax = pokemonSpeciesCount;
+            this.ItemMax = pokemonSpeciesIndexes.Count;
             this.TableProgress = 2;
             this.ItemProgress = 0;
-            for (int i = 0; i < pokemonSpeciesCount; i++)
+            foreach (int id in pokemonSpeciesIndexes)
             {
-                PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", i + 1));
+                PokemonSpecies pokemonSpecies = PokeAPIFetcher.ParsePokemonSpecies(PokeAPIFetcher.RetrieveJSON("pokemon-species", id));
                 if (pokemonSpecies != null) this.context.PokemonSpecies.Add(pokemonSpecies);
                 ItemProgress++;
+                Debug.WriteLine("Added pokemonSpecies " + pokemonSpecies.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
 
             //Save changes
             this.context.SaveChanges();
 
             //Pokemon
-            this.ItemMax = pokemonCount;
+            this.ItemMax = pokemonIndexes.Count;
             this.TableProgress = 3;
             this.ItemProgress = 0;
             int pokemonMoveIndex = 1;
             List<PokemonMove> storedPokemonMoves = new List<PokemonMove>();
-            for (int i = 0; i < pokemonCount; i++)
+            foreach (int id in pokemonIndexes)
             {
-                JObject node = PokeAPIFetcher.RetrieveJSON("pokemon", i + 1);
+                JObject node = PokeAPIFetcher.RetrieveJSON("pokemon", id);
                 Pokemon pokemon= PokeAPIFetcher.ParsePokemon(node);
                 List<PokemonMove> pokemonMoves = PokeAPIFetcher.ParsePokemonMove(node);
                 if (pokemon != null)
@@ -1498,22 +1558,24 @@ namespace PokedexExplorer.Data
                     }
                 }
                 ItemProgress++;
+                Debug.WriteLine("Added pokemon " + pokemon.ID + "(" + id + ")");
+                this.context.SaveChanges();
             }
             //Save changes to prepare for inserting PokemonMove entries
             this.context.SaveChanges();
-
+            
             //PokemonMove
             this.context.PokemonMove.AddRange(storedPokemonMoves);
             this.context.SaveChanges();
 
             //EvolutionChain
-            this.ItemMax = evolutionChainCount;
+            this.ItemMax = evolutionChainIndexes.Count;
             this.TableProgress = 4;
             this.ItemProgress = 0;
             int evolutionChainIndex = 1;
-            for (int i = 0; i < evolutionChainCount; i++)
+            foreach (int id in evolutionChainIndexes)
             {
-                List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", i + 1));
+                List<EvolutionChain> evolutionChains = PokeAPIFetcher.ParseEvolutionChain(PokeAPIFetcher.RetrieveJSON("evolution-chain", id));
                 if (evolutionChains != null)
                 {
                     foreach (EvolutionChain chain in evolutionChains)
@@ -1523,6 +1585,8 @@ namespace PokedexExplorer.Data
                             chain.ID = evolutionChainIndex;
                             this.context.EvolutionChain.Add(chain);
                             evolutionChainIndex++;
+                            Debug.WriteLine("Added evolutionChains " + chain.ID + "(" + id + ")");
+                            this.context.SaveChanges();
                         }
                     }
                 }
@@ -1532,7 +1596,7 @@ namespace PokedexExplorer.Data
             //Save changes
             this.context.SaveChanges();
 
-            this.UIVisibility = Visibility.Visible;
+            this.UIVisibility = Visibility.Hidden;
             this.IsRunning = false;
         }
     }
