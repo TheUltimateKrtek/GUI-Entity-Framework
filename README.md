@@ -279,6 +279,8 @@ The Ability table is a simple table that holds data about the Pokémon abilities
 ```csharp
 namespace PokedexExplorer.Model
 {
+    [Index(nameof(Ability.Name), IsUnique = false, Name = "IndexAbilityName")]
+    [Index(nameof(Ability.Generation), IsUnique = false, Name = "IndexAbilityGeneration")]
     public class Ability
     {
         [Required]
@@ -290,12 +292,6 @@ namespace PokedexExplorer.Model
         public string? ShortEffect { get; set; }
         public string? Description { get; set; }
         public int? Generation { get; set; }
-
-        public Ability(int id, string name)
-        {
-            this.ID = id;
-            this.Name = name;
-        }
     }
 }
 ```
@@ -304,6 +300,7 @@ The Move table contains a list of moves that a Pokémon can perform.
 ```csharp
 namespace PokedexExplorer.Model
 {
+    [Index(nameof(Move.Name), IsUnique = false, Name = "IndexMoveName")]
     public class Move
     {
         [Required]
@@ -336,16 +333,6 @@ namespace PokedexExplorer.Model
         [Required]
         public string Type { get; set; }
         public string? Description { get; set; }
-
-        public Move(int iD, string name, int pp, int priority, string target, string type)
-        {
-            ID = iD;
-            Name = name;
-            PP = pp;
-            Priority = priority;
-            Target = target;
-            Type = type;
-        }
     }
 }
 ```
@@ -354,6 +341,16 @@ The Pokémon table contains information about the various Pokémon.
 ```csharp
 namespace PokedexExplorer.Model
 {
+    [Index(nameof(Pokemon.ID), IsUnique = true, Name = "IndexPokemonID")]
+    [Index(nameof(Pokemon.Name), IsUnique = false, Name = "IndexPokemonName")]
+    [Index(nameof(Pokemon.Height), IsUnique = false, Name = "IndexPokemonHeight")]
+    [Index(nameof(Pokemon.Weight), IsUnique = false, Name = "IndexPokemonWeight")]
+    [Index(nameof(Pokemon.HP), IsUnique = false, Name = "IndexPokemonHp")]
+    [Index(nameof(Pokemon.Attack), IsUnique = false, Name = "IndexPokemonAttack")]
+    [Index(nameof(Pokemon.Defense), IsUnique = false, Name = "IndexPokemonDefense")]
+    [Index(nameof(Pokemon.SpecialAttack), IsUnique = false, Name = "IndexPokemonSpecialAttack")]
+    [Index(nameof(Pokemon.SpecialDefense), IsUnique = false, Name = "IndexPokemonSpecialDefense")]
+    [Index(nameof(Pokemon.Speed), IsUnique = false, Name = "IndexPokemonSpeed")]
     public class Pokemon
     {
         [Key]
@@ -400,8 +397,7 @@ namespace PokedexExplorer.Model
         public int Speed { get; set; }
         [Required]
         public int SpeedEffort { get; set; }
-        [Required]
-        public string SpriteFrontDefault { get; set; }
+        public string? SpriteFrontDefault { get; set; }
         public string? SpriteFrontFemale { get; set; }
         public string? SpriteFrontShinyFemale { get; set; }
         public string? SpriteFrontShiny { get; set; }
@@ -416,39 +412,17 @@ namespace PokedexExplorer.Model
         [Required]
         public string PrimaryType { get; set; }
         public string? SecondaryType { get; set; }
-
-        public Pokemon(int iD, int baseExperience, int height, int weight, int order, int species, int hP, int hPEffort, int attack, int attackEffort, int defense, int defenseEffort, int specialAttack, int specialAttackEffort, int specialDefense, int specialDefenseEffort, int speed, int speedEffort, string spriteFrontDefault, string name, string primaryType)
-        {
-            ID = iD;
-            BaseExperience = baseExperience;
-            Height = height;
-            Weight = weight;
-            Order = order;
-            Species = species;
-            HP = hP;
-            HPEffort = hPEffort;
-            Attack = attack;
-            AttackEffort = attackEffort;
-            Defense = defense;
-            DefenseEffort = defenseEffort;
-            SpecialAttack = specialAttack;
-            SpecialAttackEffort = specialAttackEffort;
-            SpecialDefense = specialDefense;
-            SpecialDefenseEffort = specialDefenseEffort;
-            Speed = speed;
-            SpeedEffort = speedEffort;
-            SpriteFrontDefault = spriteFrontDefault;
-            Name = name;
-            PrimaryType = primaryType;
-        }
     }
 }
+
 ```
 #### PokemonSpecies
 The PokemonSpecies table contains information about the Pokémon species. Note, that a species may contain multiple pokémon. An obvious example is Pikachu with its various versions, each having different attributes and stats.
 ```csharp
 namespace PokedexExplorer.Model
 {
+    [Index(nameof(PokemonSpecies.Name), IsUnique = false, Name = "IndexPokemonName")]
+    [Index(nameof(PokemonSpecies.Generation), IsUnique = false, Name = "IndexPokemonSpeciesGeneration")]
     public class PokemonSpecies
     {
         [Required]
@@ -486,26 +460,6 @@ namespace PokedexExplorer.Model
         [Required]
         public string Name { get; set; }
         public string? Description { get; set; }
-
-        public PokemonSpecies(int iD, int baseHappiness, int captureRate, int genderRate, int order, int generation, int nationalPokedexNumber, bool isBaby, bool isLegendary, bool isMythical, string color, string growthRate, string habitat, string shape, string genera, string name)
-        {
-            ID = iD;
-            BaseHappiness = baseHappiness;
-            CaptureRate = captureRate;
-            GenderRate = genderRate;
-            Order = order;
-            Generation = generation;
-            NationalPokedexNumber = nationalPokedexNumber;
-            IsBaby = isBaby;
-            IsLegendary = isLegendary;
-            IsMythical = isMythical;
-            Color = color;
-            GrowthRate = growthRate;
-            Habitat = habitat;
-            Shape = shape;
-            Genera = genera;
-            Name = name;
-        }
     }
 }
 ```
@@ -544,13 +498,6 @@ namespace PokedexExplorer.Model
         public string? TimeOfDay { get; set; }
         public bool? NeedsOverworldRain { get; set; }
         public bool? TurnUpsideDown { get; set; }
-        
-        public EvolutionChain(int id, int evolvesFrom, int evolvesTo)
-        {
-            this.ID = id;
-            this.EvolvesFrom = evolvesFrom;
-            this.EvolvesTo = evolvesTo;
-        }
     }
 }
 ```
@@ -559,6 +506,8 @@ This table represents our many-to-many relation between a Pokémon and a move it
 ```csharp
 namespace PokedexExplorer.Model
 {
+    [Index(nameof(PokemonMove.Pokemon), IsUnique = false, Name = "IndexPokemonMovePokemon")]
+    [Index(nameof(PokemonMove.Move), IsUnique = false, Name = "IndexPokemonMoveMove")]
     public class PokemonMove
     {
         [Key]
@@ -570,13 +519,6 @@ namespace PokedexExplorer.Model
         public int Move { get; set; }
         public int? LevelLearnedAt { get; set; }
         public string? LearnMethod { get; set; }
-
-        public PokemonMove(int iD, int pokemon, int move)
-        {
-            ID = iD;
-            Pokemon = pokemon;
-            Move = move;
-        }
     }
 }
 ```
