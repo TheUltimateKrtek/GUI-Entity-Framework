@@ -975,7 +975,7 @@ static public PokemonSpecies ParsePokemonSpecies(JObject node)
     {
         name = nameNode["name"].ToObject<string>();
     }
-    name = name.Replace("♀", "(female)").Replace("♂", "(male)"); //TODO: Mark Changes
+    name = name.Replace("♀", "(female)").Replace("♂", "(male)");
 
     JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
     string? description = null;
@@ -1362,11 +1362,7 @@ public partial class MainWindow : Window
     }
 }
 ```
-We will also update our DatabaseInitHandler class.
-Changes:
-- public
-- extends INotifyPropertyChanged
-```csharp
+We will also update our DatabaseInitHandler class. We will change this class to public and extend it with INotifyPropertyChanged, whihch will allow to update the UI.
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using PokedexExplorer.Model;
@@ -1602,5 +1598,6 @@ namespace PokedexExplorer.Data
     }
 }
 ```
-
 And, let's run!
+
+Right now, all Pokémon data should download and be inserted to the Postgre database.
