@@ -1363,6 +1363,8 @@ public partial class MainWindow : Window
 }
 ```
 We will also update our DatabaseInitHandler class. We will change this class to public and extend it with INotifyPropertyChanged, whihch will allow to update the UI.
+
+```csharp
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using PokedexExplorer.Model;
