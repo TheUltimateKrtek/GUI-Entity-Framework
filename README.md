@@ -8,10 +8,9 @@ Pokémon sprites in this project are retrieved at runtime from PokéAPI GitHub r
 This project demonstrates the use of Entity Framework with PostgreSQL through a Pokémon filtering application. The project consists of two components:
 - A data processing script that retrieves and converts data from PokéAPI into PostgreSQL tables.
 - A filtering app that allows users to search and filter Pokémon by various attributes.
-### The repository contains three versions of the app:
+### The repository contains:
 - The fully completed app
-- The try-it-yourself version, including only the filtering part of the app and UI
-- A bare-minimum version, containing only the UI and methods associated with it
+- A tutorial to make the app from scratch
 
 # What is Entity Framework?
 Entity Framework (EF) is an Object-Relational Mapper (ORM) for .NET applications. It simplifies database interactions by allowing developers to work with databases using C# objects instead of writing SQL queries manually. EF still allows to write SQL queries, so no functionality is lost.
@@ -3012,11 +3011,11 @@ else if (this.Type2 != null && this.Type2.Length > 0)
 ### Ability
 Next, we incorporate filtering based on abilities. This allows users to search for Pokémon whose abilities match the specified criteria.
 
-In the database schema, the Pokemon table has three columns—PrimaryAbility, SecondaryAbility, and HiddenAbility—that reference the ID column in the Ability table. This relationship is defined by foreign keys, which establish a connection between the Pokémon's abilities and their corresponding entries in the Ability table.
+In the database schema, the Pokemon table has three columns—`PrimaryAbility`, `SecondaryAbility`, and `HiddenAbility`—that reference the ID column in the Ability table. This relationship is defined by foreign keys, which establish a connection between the Pokémon's abilities and their corresponding entries in the Ability table.
 ```csharp
 query = query.Where(p => context.Ability.Any(a => (a.ID == p.PrimaryAbility || a.ID == p.SecondaryAbility || a.ID == p.HiddenAbility) && a.Name.StartsWith(this.Ability)));
 ```
-The Any method in LINQ determines if any element in the Ability collection satisfies the given condition. In this case, we check whether an Ability row with Ability.ID matches one of the Pokémon's abilities (PrimaryAbility, SecondaryAbility, or HiddenAbility). If a match is found, we further check if the Ability.Name starts with the provided search string (this.Ability).
+The `Any` method in LINQ determines if any element in the Ability collection satisfies the given condition. In this case, we check whether an Ability row with `Ability.ID` matches one of the Pokémon's abilities (`PrimaryAbility`, `SecondaryAbility`, or `HiddenAbility`). If a match is found, we further check if the `Ability.Name` starts with the provided search string (`this.Ability`).
 
 And, we will wrap this line with safety checks:
 ```csharp
@@ -3048,7 +3047,7 @@ query = query.Where(
 
 ### Try it yourself
 Now, you can these this one yourself.
-#### Generation
+### Generation
 ```
 Pokemon.Species → PokemmonSpecies.ID
 ```
@@ -3063,7 +3062,7 @@ if (this.Generation != null)
 }
 ```
 </details>
-#### Legendary Status
+### Legendary Status
 We are given a search parameter LegendaryStatus, that can have the values:
 ```
 Any
@@ -3091,7 +3090,8 @@ if (this.LegendaryStatus != null && this.LegendaryStatus.Length > 0 && !this.Leg
 }
 ```
 </details>
-#### Apearance: Color and Shape
+
+### Apearance: Color and Shape
 We are given a search parameters `PokemonSpecies.AppearanceColor` and `PokemonSpecies.AppearanceShape`, that have corresponding columns `PokemonSpecies.AppearanceColor` and `PokemonSpecies.AppearanceShape`.
 <details>
     <summary>Code</code> (<i>click to reveal answer</i>)</summary>
@@ -3110,7 +3110,7 @@ if (this.AppearanceShape != null && this.AppearanceShape.Length > 0)
 </details>
 
 
-#### Apearance: Height and Weight
+### Apearance: Height and Weight
 We are given a search parameters `AppearanceHeightMin`, `AppearanceHeightMax`, `AppearanceWeightMin` and `AppearanceWeightMax`, that have corresponding columns `Pokemon.AppearanceHeight` and `Pokemon.AppearanceWeight`.
 We want to check if:
 - A parameter is not null
@@ -3143,7 +3143,7 @@ if (this.AppearanceWeightMax != null)
 ```
 </details>
 
-#### Stats: HP, Attack, Defense, Special Attack, Special defense and Speed
+### Stats: HP, Attack, Defense, Special Attack, Special defense and Speed
 Finally, we want to check for ranges of stats.
 ```
 StatHPMin < Pokemon.HP <= StatHPMax
