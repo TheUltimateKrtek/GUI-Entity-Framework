@@ -2957,6 +2957,7 @@ public void OnQueryUpdated()
 ```
 
 # Searching and Filtering
+###TODO
 To make our queries more versatile and user-driven, we introduce a series of filters that allow for dynamic data retrieval based on specific criteria. These filters refine the results by narrowing down the dataset according to parameters like name, type, or any other attributes of interest. By adding filters, we ensure that users can efficiently search and interact with the data in meaningful ways.
 ### Name
 To implement a straightforward name filter, we write a query that checks if a Pokémon's name starts with the given search string. The search string is stored in the Name property of the PokemonSearch class.
