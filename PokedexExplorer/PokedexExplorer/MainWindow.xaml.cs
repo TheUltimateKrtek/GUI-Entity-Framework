@@ -94,7 +94,7 @@ public partial class MainWindow : Window
     private void SearchedGenerationChanged(object sender, SelectionChangedEventArgs e)
     {
         ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-        string str = selectedItem.Content.ToString();
+        string str = selectedItem.Tag.ToString();
         if (str.Equals("Any")) this.Search.Generation = null;
         else this.Search.Generation = int.Parse(str.ToLower());
     }
@@ -129,17 +129,20 @@ public partial class MainWindow : Window
         ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
         string str = selectedItem.Content.ToString();
         if (str.Equals("Any")) this.Search.AppearanceShape = null;
-        else this.Search.AppearanceShape = str.ToLower();
+        else this.Search.AppearanceShape = str.ToLower().Replace(" ", "-");
 
     }
     private void SearchedAppearanceHeightMinChanged(object sender, TextChangedEventArgs e)
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.AppearanceHeightMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.AppearanceHeightMin = null;
+                return;
+            }
             else this.Search.AppearanceHeightMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -147,16 +150,20 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             ((TextBox)sender).BorderBrush = Brushes.Red;
+            throw new Exception("", ex);
         }
     }
     private void SearchedAppearanceHeightMaxChanged(object sender, TextChangedEventArgs e)
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.AppearanceHeightMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.AppearanceHeightMax = null;
+                return;
+            }
             else this.Search.AppearanceHeightMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -170,10 +177,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.AppearanceWeightMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.AppearanceWeightMin = null;
+                return;
+            }
             else this.Search.AppearanceWeightMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -187,10 +197,12 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.AppearanceWeightMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0) {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.AppearanceWeightMax = null;
+                return;
+            }
             else this.Search.AppearanceWeightMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -204,10 +216,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatHPMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatHPMin = null;
+                return;
+            }
             else this.Search.StatHPMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -221,10 +236,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatHPMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatHPMax = null;
+                return;
+            }
             else this.Search.StatHPMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -238,10 +256,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatAttackMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatAttackMin = null;
+                return;
+            }
             else this.Search.StatAttackMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -255,10 +276,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatAttackMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatAttackMax = null;
+                return;
+            }
             else this.Search.StatAttackMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -272,10 +296,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatDefenseMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatDefenseMin = null;
+                return;
+            }
             else this.Search.StatDefenseMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -290,10 +317,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatDefenseMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatDefenseMax = null;
+                return;
+            }
             else this.Search.StatDefenseMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -308,10 +338,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpecialAttackMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpecialAttackMin = null;
+                return;
+            }
             else this.Search.StatSpecialAttackMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -325,10 +358,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpecialAttackMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpecialAttackMax = null;
+                return;
+            }
             else this.Search.StatSpecialAttackMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -342,10 +378,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpecialDefenseMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpecialDefenseMin = null;
+                return;
+            }
             else this.Search.StatSpecialDefenseMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -359,10 +398,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpecialDefenseMax = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpecialDefenseMax = null;
+                return;
+            }
             else this.Search.StatSpecialDefenseMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -376,10 +418,13 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpeedMin = null;
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpeedMin = null;
+                return;
+            }
             else this.Search.StatSpeedMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
@@ -393,11 +438,14 @@ public partial class MainWindow : Window
     {
         try
         {
-            ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            string str = selectedItem.Content.ToString();
-            if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
-            if (str.Equals("Any")) this.Search.StatSpeedMax = null;
-            else this.Search.StatSpeedMax = int.Parse(str.ToLower());
+            string str = ((TextBox)sender).Text.ToString();
+            if (str != null && str.Length == 0)
+            {
+                ((TextBox)sender).BorderBrush = Brushes.Black;
+                this.Search.StatSpeedMin = null;
+                return;
+            }
+            else this.Search.StatSpeedMin = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
         }

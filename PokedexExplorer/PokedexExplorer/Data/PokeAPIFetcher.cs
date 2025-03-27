@@ -306,7 +306,7 @@ namespace PokedexExplorer.Data
             if (node["shape"] != null && node["shape"] is JObject)
                 shape = node["shape"]?["name"]?.ToObject<string>() ?? null;
             int generation = -1;
-            if (node["trade_spgenerationecies"] != null && node["generation"] is JObject)
+            if (node["generation"] != null && node["generation"] is JObject)
                 generation = (int)GetURLIntValue(node["generation"]?["url"]?.ToObject<string>() ?? null);
 
             JObject generaNode = GetEnglishNode(node["genera"]?.ToObject<JArray>() ?? null);

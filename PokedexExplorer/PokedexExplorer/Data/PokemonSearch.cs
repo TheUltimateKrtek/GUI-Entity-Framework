@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.Swift;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace PokedexExplorer.Data
@@ -289,7 +291,14 @@ namespace PokedexExplorer.Data
 
             if (this.Move != null && this.Move.Length > 0)
             {
-                query = query.Where(p => context.PokemonMove.Any(pm => pm.Pokemon == p.ID && context.Move.Any(m => m.ID == pm.Move && m.Name.StartsWith(this.Move))));
+                query = query.Where(
+                    p => context.PokemonMove.Any(
+                        pm => pm.Pokemon == p.ID &&
+                        context.Move.Any(
+                            m => m.ID == pm.Move && m.Name.StartsWith(this.Move)
+                        )
+                    )
+                );
             }
 
             if (this.Generation != null)
@@ -299,20 +308,20 @@ namespace PokedexExplorer.Data
 
             if (this.LegendaryStatus != null && this.LegendaryStatus.Length > 0 && !this.LegendaryStatus.Equals("Any"))
             {
-                bool isLegendary = this.LegendaryStatus.ToLower().Equals("Legendary");
-                bool isMythical= this.LegendaryStatus.ToLower().Equals("Mythical");
+                bool isLegendary = this.LegendaryStatus.ToLower().Equals("legendary");
+                bool isMythical= this.LegendaryStatus.ToLower().Equals("mythical");
 
-                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.IsLegendary == isLegendary && ps.IsMythical == isMythical));
+                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.IsLegendary == isLegendary && ps.IsMythical == isMythical && p.Species == ps.ID));
             }
 
             if (this.AppearanceColor != null && this.AppearanceColor.Length > 0)
             {
-                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Color == this.AppearanceColor));
+                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Color == this.AppearanceColor && p.Species == ps.ID));
             }
 
             if (this.AppearanceShape != null && this.AppearanceShape.Length > 0)
             {
-                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Shape == this.AppearanceShape));
+                query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Shape == this.AppearanceShape && p.Species == ps.ID));
             }
 
             if (this.AppearanceHeightMin != null)
@@ -321,7 +330,7 @@ namespace PokedexExplorer.Data
             }
             if (this.AppearanceHeightMax != null)
             {
-                query = query.Where(p => p.Height >= this.AppearanceHeightMax);
+                query = query.Where(p => p.Height <= this.AppearanceHeightMax);
             }
 
             if (this.AppearanceWeightMin != null)
@@ -330,7 +339,7 @@ namespace PokedexExplorer.Data
             }
             if (this.AppearanceWeightMax != null)
             {
-                query = query.Where(p => p.Weight >= this.AppearanceWeightMax);
+                query = query.Where(p => p.Weight <= this.AppearanceWeightMax);
             }
 
             if (this.StatHPMin != null)
@@ -390,6 +399,24 @@ namespace PokedexExplorer.Data
             ));
 
             this.window.OnQueryUpdated();
+        }
+    }
+    public class ImageResources
+    {
+        static private readonly Dictionary<string, BitmapImage> _imageCache = new Dictionary<string, BitmapImage>();
+
+        static public BitmapImage GetImage(string url)
+        {
+            if (url == null) return null;
+            if (!_imageCache.ContainsKey(url))
+            {
+                BitmapImage bitmap = new();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+                _imageCache[url] = bitmap;
+            }
+            return _imageCache[url];
         }
     }
     public class PokemonGridData
@@ -456,21 +483,7 @@ namespace PokedexExplorer.Data
             PrimaryType = primaryType.ToUpper();
             SecondaryType = secondaryType?.ToUpper() ?? null;
             SpriteFrontDefault = spriteFrontDefault;
-            SpriteImage = LoadImage(spriteFrontDefault);
-        }
-
-        private BitmapImage? LoadImage(string? imageUrl)
-        {
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                return null;
-            }
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imageUrl, UriKind.Absolute);
-            bitmap.EndInit();
-            return bitmap;
+            SpriteImage = ImageResources.GetImage(spriteFrontDefault);
         }
     }
 }

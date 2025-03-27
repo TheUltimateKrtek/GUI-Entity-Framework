@@ -87,7 +87,7 @@
                         <StackPanel Name="GenerationStack" Orientation="Horizontal">
                             <Label Content="GENERATION:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
                             <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedGenerationChanged">
-                                <ComboBoxItem>Any</ComboBoxItem>
+                                <ComboBoxItem Tag="Any">Any</ComboBoxItem>
                                 <ComboBoxItem Tag="1">Generation 1 (Kanto)</ComboBoxItem>
                                 <ComboBoxItem Tag="2">Generation 2 (Johto)</ComboBoxItem>
                                 <ComboBoxItem Tag="3">Generation 3 (Hoenn)</ComboBoxItem>
