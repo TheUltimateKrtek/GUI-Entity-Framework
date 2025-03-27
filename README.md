@@ -1604,62 +1604,403 @@ And, let's run!
 
 Right now, all Pokémon data should download and be inserted to the Postgre database.
 
+# Setting up the Pokédex Explorer app
+## 
+## Setup
+*Note: You can copy-paste the code, but you should at least know what it does.*
+#### PokemonSearch
+Now, we will create a new class file: `Data/PokemonSearch`. This class will hold all our search parameters and update itself.
+##### 
+```csharp
+namespace PokedexExplorer.Data
+{
+    public class PokemonSearch
+    {
+        private string? _name, _type1, _type2, _ability, _move, _legendaryStatus, _appearanceColor, _appearanceShape;
+        private int? _generation, _appearanceHeightMin, _appearanceHeightMax, _appearanceWeightMin, _appearanceWeightMax;
+        private int? _statHPMin, _statHPMax, _statAttackMin, _statAttackMax, _statDefenseMin, _statDefenseMax;
+        private int? _statSpecialAttackMin, _statSpecialAttackMax, _statSpecialDefenseMin, _statSpecialDefenseMax, _statSpeedMin, _statSpeedMax;
 
-# Creating Queries
-There are two phases to queries - creating the query and running the query. We can run the query with methods like `FirstOrDefault()` or `ToList()`.
-### LINQ
-LINQ (Language Integrated Query) is a powerful feature in Entity Framework that simplifies working with data. It allows easier query creation. We will use the following methods:
-##### Where
-`Where(f)` is a command that accepts a method that returns a bool and filters the data.
+        public string? Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                UpdateQuery();
+            }
+        }
+        public string? Type1
+        {
+            get => _type1;
+            set
+            {
+                _type1 = value;
+                UpdateQuery();
+            }
+        }
+        public string? Type2
+        {
+            get => _type2;
+            set
+            {
+                _type2 = value;
+                UpdateQuery();
+            }
+        }
+        public string? Ability
+        {
+            get => _ability;
+            set
+            {
+                _ability = value;
+                UpdateQuery();
+            }
+        }
+        public string? Move
+        {
+            get => _move;
+            set
+            {
+                _move = value;
+                UpdateQuery();
+            }
+        }
+        public int? Generation
+        {
+            get => _generation;
+            set
+            {
+                _generation = value;
+                UpdateQuery();
+            }
+        }
+        public string? AppearanceColor
+        {
+            get => _appearanceColor;
+            set
+            {
+                _appearanceColor = value;
+                UpdateQuery();
+            }
+        }
+        public string? AppearanceShape
+        {
+            get => _appearanceShape;
+            set
+            {
+                _appearanceShape = value;
+                UpdateQuery();
+            }
+        }
+        public int? AppearanceHeightMin
+        {
+            get => _appearanceHeightMin;
+            set
+            {
+                _appearanceHeightMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? AppearanceHeightMax
+        {
+            get => _appearanceHeightMax;
+            set
+            {
+                _appearanceHeightMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? AppearanceWeightMin
+        {
+            get => _appearanceWeightMin;
+            set
+            {
+                _appearanceWeightMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? AppearanceWeightMax
+        {
+            get => _appearanceWeightMax;
+            set
+            {
+                _appearanceWeightMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatHPMin
+        {
+            get => _statHPMin;
+            set
+            {
+                _statHPMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatHPMax
+        {
+            get => _statHPMax;
+            set
+            {
+                _statHPMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatAttackMin
+        {
+            get => _statAttackMin;
+            set
+            {
+                _statAttackMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatAttackMax
+        {
+            get => _statAttackMax;
+            set
+            {
+                _statAttackMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatDefenseMin
+        {
+            get => _statDefenseMin;
+            set
+            {
+                _statDefenseMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatDefenseMax
+        {
+            get => _statDefenseMax;
+            set
+            {
+                _statDefenseMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpecialAttackMin
+        {
+            get => _statSpecialAttackMin;
+            set
+            {
+                _statSpecialAttackMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpecialAttackMax
+        {
+            get => _statSpecialAttackMax;
+            set
+            {
+                _statSpecialAttackMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpecialDefenseMin
+        {
+            get => _statSpecialDefenseMin;
+            set
+            {
+                _statSpecialDefenseMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpecialDefenseMax
+        {
+            get => _statSpecialDefenseMax;
+            set
+            {
+                _statSpecialDefenseMax = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpeedMin
+        {
+            get => _statSpeedMin;
+            set
+            {
+                _statSpeedMin = value;
+                UpdateQuery();
+            }
+        }
+        public int? StatSpeedMax
+        {
+            get => _statSpeedMax;
+            set
+            {
+                _statSpeedMax = value;
+                UpdateQuery();
+            }
+        }
+        public string? LegendaryStatus
+        {
+            get => _legendaryStatus;
+            set
+            {
+                _legendaryStatus = value;
+                UpdateQuery();
+            }
+        }
 
-##### FirstOrDefault
-`FirstOrDefault()` returns the first row. If the result is empty, a default value is chosen, usually null.
+        public IQueryable<PokemonGridData> Query { get; private set; }
 
-##### ToList
-`ToList()` returns the whole list of values. This method runs the actual query.
+        private PokemonDbContext context;
+        private MainWindow window;
+        public PokemonSearch(PokemonDbContext context, MainWindow window)
+        {
+            this.context = context;
+            this.window = window;
+        }
 
-### Setup
-##### UI
-We will create new UI. We will write the XAML **BEFORE** the loading UI.
-```xaml
-And, let's run!
+        public void Init()
+        {
+            IQueryable<Model.Pokemon> query = context.Pokemon;
 
-Right now, all Pokémon data should download and be inserted to the Postgre database.
+            this.Query = query.Select(p => new PokemonGridData(
+                p.Name,
+                p.PrimaryType,
+                p.SecondaryType,
+                p.SpriteFrontDefault
+            ));
 
+            this.window.OnQueryUpdated();
+        }
+        private void UpdateQuery()
+        {
+            // TODO
 
-# Creating Queries
-There are two phases to queries - creating the query and running the query. We can run the query with methods like `FirstOrDefault()` or `ToList()`.
-### LINQ
-LINQ (Language Integrated Query) is a powerful feature in Entity Framework that simplifies working with data. It allows easier query creation. We will use the following methods:
-##### Where
-`Where(f)` is a command that accepts a method that returns a bool and filters the data.
+            this.window.OnQueryUpdated();
+        }
+    }
+    public class ImageResources
+    {
+        static private readonly Dictionary<string, BitmapImage> _imageCache = new Dictionary<string, BitmapImage>();
 
-##### FirstOrDefault
-`FirstOrDefault()` returns the first row. If the result is empty, a default value is chosen, usually null.
+        static public BitmapImage GetImage(string url)
+        {
+            if (url == null) return null;
+            if (!_imageCache.ContainsKey(url))
+            {
+                BitmapImage bitmap = new();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+                _imageCache[url] = bitmap;
+            }
+            return _imageCache[url];
+        }
+    }
+    public class PokemonGridData
+    {
+        public string Name { get; set; }
+        public string PrimaryColor
+        {
+            get
+            {
+                if (PrimaryType == "NORMAL") return "#A8A77A";
+                if (PrimaryType == "FIRE") return "#EE8130";
+                if (PrimaryType == "WATER") return "#6390F0";
+                if (PrimaryType == "ELECTRIC") return "#F7D02C";
+                if (PrimaryType == "GRASS") return "#7AC74C";
+                if (PrimaryType == "ICE") return "#96D9D6";
+                if (PrimaryType == "FIGHTING") return "#C22E28";
+                if (PrimaryType == "POISON") return "#A33EA1";
+                if (PrimaryType == "GROUND") return "#E2BF65";
+                if (PrimaryType == "FLYING") return "#A98FF3";
+                if (PrimaryType == "PSYCHIC") return "#F95587";
+                if (PrimaryType == "BUG") return "#A6B91A";
+                if (PrimaryType == "ROCK") return "#B6A136";
+                if (PrimaryType == "GHOST") return "#735797";
+                if (PrimaryType == "DRAGON") return "#6F35FC";
+                if (PrimaryType == "DARK") return "#705746";
+                if (PrimaryType == "STEEL") return "#B7B7CE";
+                if (PrimaryType == "FAIRY") return "#D685AD";
+                return "#00FFFFFF"; // Transparent color
+            }
+        }
+        public string SecondaryColor
+        {
+            get
+            {
+                if (SecondaryType == "NORMAL") return "#A8A77A";
+                if (SecondaryType == "FIRE") return "#EE8130";
+                if (SecondaryType == "WATER") return "#6390F0";
+                if (SecondaryType == "ELECTRIC") return "#F7D02C";
+                if (SecondaryType == "GRASS") return "#7AC74C";
+                if (SecondaryType == "ICE") return "#96D9D6";
+                if (SecondaryType == "FIGHTING") return "#C22E28";
+                if (SecondaryType == "POISON") return "#A33EA1";
+                if (SecondaryType == "GROUND") return "#E2BF65";
+                if (SecondaryType == "FLYING") return "#A98FF3";
+                if (SecondaryType == "PSYCHIC") return "#F95587";
+                if (SecondaryType == "BUG") return "#A6B91A";
+                if (SecondaryType == "ROCK") return "#B6A136";
+                if (SecondaryType == "GHOST") return "#735797";
+                if (SecondaryType == "DRAGON") return "#6F35FC";
+                if (PrimaryType == "DARK") return "#705746";
+                if (SecondaryType == "STEEL") return "#B7B7CE";
+                if (SecondaryType == "FAIRY") return "#D685AD";
+                return "#00FFFFFF"; // Transparent color
+            }
+        }
+        public string PrimaryType { get; set; }
+        public string? SecondaryType { get; set; }
+        public string? SpriteFrontDefault { get; set; }
+        public BitmapImage? SpriteImage { get; set; }
 
-##### ToList
-`ToList()` returns the whole list of values. This method runs the actual query.
-
-### Setup
+        public PokemonGridData(string name, string primaryType, string? secondaryType, string? spriteFrontDefault)
+        {
+            Name = name.ToUpper();
+            PrimaryType = primaryType.ToUpper();
+            SecondaryType = secondaryType?.ToUpper() ?? null;
+            SpriteFrontDefault = spriteFrontDefault;
+            SpriteImage = ImageResources.GetImage(spriteFrontDefault);
+        }
+    }
+}
+```
 ##### UI
 We will create new UI. We will write the XAML **BEFORE** the loading UI.
 ```xaml
 <StackPanel Name="PokedexGroup" Orientation="Horizontal" Width="800" Height="600">
     <ScrollViewer Name="FilteredDataGroup" Width="520">
-        <StackPanel Name="SearchDisplayGroup" Orientation="Horizontal" Background="White">
-
-        </StackPanel>
+        <ItemsControl Name="PokemmonDataGrid" ItemsSource="{Binding Data.PokemonGridData}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" ItemWidth="125" ItemHeight="150"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5">
+                        <StackPanel Width="100" Height="150">
+                            <Image Source="{Binding SpriteImage}" Width="100" Height="100" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding PrimaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding PrimaryColor}"/>
+                                <TextBlock Text="{Binding SecondaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding SecondaryColor}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </ScrollViewer>
     <ScrollViewer Name="SearchParametersGroup" Width="280">
         <StackPanel Orientation="Horizontal">
             <StackPanel Margin="0,0,0,0">
                 <StackPanel Name="NameStack" Orientation="Horizontal">
                     <Label Content="NAME:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                    <TextBox x:Name="NameTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedNameTextChanged"/>
                 </StackPanel>
                 <StackPanel Name="TypeStack" Orientation="Horizontal">
                     <Label Content="TYPE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <ComboBox Name="Type1ComboBox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="70">
+                    <ComboBox Name="Type1ComboBox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="70" SelectionChanged="SearchedType1Changed">
                         <ComboBoxItem>Any</ComboBoxItem>
                         <ComboBoxItem>Bug</ComboBoxItem>
                         <ComboBoxItem>Dark</ComboBoxItem>
@@ -1680,7 +2021,7 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                         <ComboBoxItem>Steel</ComboBoxItem>
                         <ComboBoxItem>Water</ComboBoxItem>
                     </ComboBox>
-                    <ComboBox Name="Type2ComboBox" Margin="10,0,0,0" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <ComboBox Name="Type2ComboBox" Margin="10,0,0,0" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="SearchedType2Changed">
                         <ComboBoxItem>Any</ComboBoxItem>
                         <ComboBoxItem>Bug</ComboBoxItem>
                         <ComboBoxItem>Dark</ComboBoxItem>
@@ -1704,7 +2045,7 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                 </StackPanel>
                 <StackPanel Name="GenerationStack" Orientation="Horizontal">
                     <Label Content="GENERATION:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                    <ComboBox Name="GenertionComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedGenerationChanged">
                         <ComboBoxItem>Any</ComboBoxItem>
                         <ComboBoxItem Tag="1">Generation 1 (Kanto)</ComboBoxItem>
                         <ComboBoxItem Tag="2">Generation 2 (Johto)</ComboBoxItem>
@@ -1719,15 +2060,15 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                 </StackPanel>
                 <StackPanel Name="MoveStack" Orientation="Horizontal">
                     <Label Content="MOVE:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <TextBox x:Name="KnowsMoveTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                    <TextBox x:Name="KnowsMoveTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedMoveTextChanged"/>
                 </StackPanel>
                 <StackPanel Name="AbilityStack" Orientation="Horizontal">
                     <Label Content="ABILITY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <TextBox x:Name="AbilityTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25"/>
+                    <TextBox x:Name="AbilityTextBox" TextWrapping="Wrap" Text="" Margin="0,0,0,0" FontSize="18" HorizontalAlignment="Left" Width="150" Height="25" TextChanged="SearchedAbilityTextChanged"/>
                 </StackPanel>
                 <StackPanel Name="LegendaryStack" Orientation="Horizontal">
                     <Label Content="LEGENDARY:" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="100"/>
-                    <ComboBox Name="LegendaryComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                    <ComboBox Name="LegendaryComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedLegendaryStatusSelectionChanged">
                         <ComboBoxItem>Any</ComboBoxItem>
                         <ComboBoxItem>Legendary</ComboBoxItem>
                         <ComboBoxItem>Mythical</ComboBoxItem>
@@ -1738,7 +2079,7 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                     <StackPanel Name="AppearanceStack">
                         <StackPanel Name="AppearanceColorStack" Orientation="Horizontal">
                             <Label Content="COLOR:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <ComboBox Name="AppearanceColorComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBox Name="AppearanceColorComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedAppearanceColorSelectionChanged">
                                 <ComboBoxItem Tag="Any">Any</ComboBoxItem>
                                 <ComboBoxItem Tag="white">White</ComboBoxItem>
                                 <ComboBoxItem Tag="gray">Gray</ComboBoxItem>
@@ -1754,7 +2095,7 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                         </StackPanel>
                         <StackPanel Name="AppearanceShapeStack" Orientation="Horizontal">
                             <Label Content="SHAPE:" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <ComboBox Name="AppearanceShapeComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150">
+                            <ComboBox Name="AppearanceShapeComboBox" Margin="0,0,0,0" VerticalAlignment="Center" Width="150" SelectionChanged="SearchedAppearanceShapeSelectionChanged">
                                 <ComboBoxItem Tag="Any">Any</ComboBoxItem>
                                 <ComboBoxItem Tag="armor">Armor</ComboBoxItem>
                                 <ComboBoxItem Tag="arms">Arms</ComboBoxItem>
@@ -1774,15 +2115,15 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="HEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceHeightMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceHeightMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="WEIGHT:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceWeightMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedAppearanceWeightMaxChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
@@ -1790,39 +2131,39 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
                     <StackPanel Name="StatsStack">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="HP:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatHPMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatHPMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="ATTACK:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatAttackMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatAttackMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="DEFENSE:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatDefenseMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatDefenseMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="SP. ATT.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialAttackMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialAttackMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="SP. DEF.:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialDefenseMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpecialDefenseMaxChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <Label Content="SPEED:" Margin="20,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Width="80"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpeedMinChanged"/>
                             <Label Content="-" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Width="20" Height="25"/>
-                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25"/>
+                            <TextBox Margin="0,0,0,0" VerticalAlignment="Center" Width="65" Height="25" TextChanged="SearchedStatSpeedMaxChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
@@ -1831,10 +2172,527 @@ We will create new UI. We will write the XAML **BEFORE** the loading UI.
     </ScrollViewer>
 </StackPanel>
 ```
+##### MainWindow.xaml.cs
+And finally, we will tie it all together with methods in the MainWindow class. 
+```csharp
+public void OnQueryUpdated()
+{
+    Debug.WriteLine("Updated");
+    List<PokemonGridData> data = Search.Query.ToList();
+    if (data != null) PokemmonDataGrid.ItemsSource = data;
+}
+private void SearchedNameTextChanged(object sender, TextChangedEventArgs e)
+{
+    this.Search.Name = ((TextBox)sender).Text;
+}
+private void SearchedType1Changed(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.Type1 = null;
+    else this.Search.Type1 = str.ToLower();
+}
+private void SearchedType2Changed(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.Type2 = null;
+    else this.Search.Type2 = str.ToLower();
+}
+private void SearchedGenerationChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.Generation = null;
+    else this.Search.Generation = int.Parse(str.ToLower());
+}
+private void SearchedMoveTextChanged(object sender, TextChangedEventArgs e)
+{
+    this.Search.Move = ((TextBox)sender).Text;
 
-##### PokemonSearch
-Now, we will create a new class file: `Data/PokemonSearch`.
+}
+private void SearchedAbilityTextChanged(object sender, TextChangedEventArgs e)
+{
+    this.Search.Ability = ((TextBox)sender).Text;
+
+}
+private void SearchedLegendaryStatusSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.LegendaryStatus = null;
+    else this.Search.LegendaryStatus = str.ToLower();
+
+}
+private void SearchedAppearanceColorSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.AppearanceColor = null;
+    else this.Search.AppearanceColor = str.ToLower();
+
+}
+private void SearchedAppearanceShapeSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.AppearanceShape = null;
+    else this.Search.AppearanceShape = str.ToLower();
+
+}
+private void SearchedAppearanceHeightMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.AppearanceHeightMin = null;
+        else this.Search.AppearanceHeightMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedAppearanceHeightMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.AppearanceHeightMax = null;
+        else this.Search.AppearanceHeightMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedAppearanceWeightMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.AppearanceWeightMin = null;
+        else this.Search.AppearanceWeightMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedAppearanceWeightMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.AppearanceWeightMax = null;
+        else this.Search.AppearanceWeightMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatHPMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatHPMin = null;
+        else this.Search.StatHPMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatHPMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatHPMax = null;
+        else this.Search.StatHPMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatAttackMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatAttackMin = null;
+        else this.Search.StatAttackMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatAttackMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatAttackMax = null;
+        else this.Search.StatAttackMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatDefenseMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatDefenseMin = null;
+        else this.Search.StatDefenseMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+
+}
+private void SearchedStatDefenseMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatDefenseMax = null;
+        else this.Search.StatDefenseMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+
+}
+private void SearchedStatSpecialAttackMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpecialAttackMin = null;
+        else this.Search.StatSpecialAttackMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialAttackMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpecialAttackMax = null;
+        else this.Search.StatSpecialAttackMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialDefenseMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpecialDefenseMin = null;
+        else this.Search.StatSpecialDefenseMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialDefenseMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpecialDefenseMax = null;
+        else this.Search.StatSpecialDefenseMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpeedMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpeedMin = null;
+        else this.Search.StatSpeedMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpeedMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        string str = selectedItem.Content.ToString();
+        if (str != null && str.Length == 0) {((TextBox)sender).BorderBrush = Brushes.Black; return;}
+        if (str.Equals("Any")) this.Search.StatSpeedMax = null;
+        else this.Search.StatSpeedMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+```
+##### Updating the Search Results
+**Parameter Change in the UI**: Any interaction with the user interface (e.g., changing a filter in a dropdown, entering text in a search box) triggers an update in the MainWindow.Search object. This object holds the search parameters that the user adjusts through the UI.
+
+**Property Update in MainWindow.Search**: The changes in the UI are reflected in the properties of MainWindow.Search. These properties are designed to capture and store the updated values provided by the user.
+
+**Calling PokemonSearch.UpdateQuery()**: Once the properties in MainWindow.Search are updated, the method PokemonSearch.UpdateQuery() is invoked. This method is responsible for creating or modifying the query based on the current search parameters. At this stage, the LINQ query is updated to reflect the latest criteria provided by the user.
+
+**Executing MainWindow.OnQueryUpdated()**: After updating the query, the method MainWindow.OnQueryUpdated() is called. This method ensures that the UI reflects the changes by, for instance, refreshing the displayed results or updating other UI components that depend on the query's outcome.
+
+# Creating Queries
+*Note: This section will be talking about the contents of `PokemonSearch.UpdateQuery()` method.*
+
+There are two phases to queries - creating the query and running the query. We can run the query with methods like `FirstOrDefault()` or `ToList()`.
+## LINQ
+LINQ (Language Integrated Query) is a powerful feature in Entity Framework that simplifies working with data. It allows easier query creation.
+### Creating a default "empty" query.
+To retrieve data from the database, we start by defining a query that serves as the foundation for further refinement and execution. In Entity Framework, queries are constructed using LINQ and are deferred until explicitly executed. This means we can build complex queries step-by-step, applying filters, ordering, or projections as needed. In the `PokemonSearch.UpdateQuery()` method, the query begins with a baseline declaration that points to the dataset we want to work with. Let’s break down this first step:
+```csharp
+private void UpdateQuery()
+{
+    IQueryable<Model.Pokemon> query = context.Pokemon;
+
+    // Filters go here...
+    
+    this.window.OnQueryUpdated();
+}
+```
+### Select
+After defining the base query, we now tailor it to retrieve only the columns we need for display in the user interface. The following code snippet demonstrates how we transform the query results into a structured format suitable for the UI.
+
+The `Select()` method is used to project data into a new shape or structure. Instead of fetching entire Pokemon objects, this projection retrieves specific properties: Name, PrimaryType, SecondaryType, and SpriteFrontDefault.
 
 ```csharp
+private void UpdateQuery()
+{
+    IQueryable<Model.Pokemon> query = context.Pokemon;
+
+    // Filters go here...
+
+    this.Query = query.Select(p => new PokemonGridData(
+        p.Name,
+        p.PrimaryType,
+        p.SecondaryType,
+        p.SpriteFrontDefault
+    ));
+
+    this.window.OnQueryUpdated();
+}
+```
+
+This corresponds to our UI definition:
+```xaml
+<ItemsControl Name="PokemmonDataGrid" ItemsSource="{Binding Data.PokemonGridData}">
+    <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" ItemWidth="125" ItemHeight="150"/>
+        </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <Border BorderBrush="Black" BorderThickness="1" Margin="5">
+                <StackPanel Width="100" Height="150">
+                    <Image Source="{Binding SpriteImage}" Width="100" Height="100" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" TextAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding PrimaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding PrimaryColor}"/>
+                        <TextBlock Text="{Binding SecondaryType}" FontWeight="Bold" FontSize="10" Width="50" HorizontalAlignment="Center" TextAlignment="Center" Background="{Binding SecondaryColor}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>
+```
+### ToList
+In the MainWindow class, there is a yet-unexplained method `ToList()`. This will run the actual query.
+Here is the corresponding code:
+```csharp
+public void OnQueryUpdated()
+{
+    Debug.WriteLine("Updated");
+    List<PokemonGridData> data = Search.Query.ToList();
+    if (data != null) PokemmonDataGrid.ItemsSource = data;
+}
+```
+
+# Searching and Filtering
+To make our queries more versatile and user-driven, we introduce a series of filters that allow for dynamic data retrieval based on specific criteria. These filters refine the results by narrowing down the dataset according to parameters like name, type, or any other attributes of interest. By adding filters, we ensure that users can efficiently search and interact with the data in meaningful ways.
+### Name
+To implement a straightforward name filter, we write a query that checks if a Pokémon's name starts with the given search string. The search string is stored in the Name property of the PokemonSearch class.
+```csharp
+query = query.Where(p => p.Name.StartsWith(Name));
+```
+
+The Where method in LINQ is used to filter a dataset based on a specified condition. It takes a predicate (a function that returns a Boolean value) as an argument, and only elements that satisfy this condition are included in the resulting sequence.
+
+This single line of LINQ code translates directly into the following SQL query:
+```sql
+SELECT * FROM "Pokemon"
+WHERE "Name" LIKE 'NamePrefix%';
 
 ```
+Before applying the filter, we also ensure that the search string has been provided (i.e., it is not null and not empty):
+```csharp
+if (Name != null)
+{
+    query = query.Where(p => p.Name.StartsWith(Name));
+}
+```
+### Type
+Next, we can add type filtering. The user can select a typing, and the query will check against either possible typing in the table.
+```csharp
+query = query.Where(p => p.PrimaryType == this.Type1 || p.SecondaryType == this.Type1);
+```
+
+This single line of LINQ code translates directly into the following SQL query:
+```sql
+SELECT * FROM "Pokemon"
+WHERE "PrimaryType" = 'Type1' OR "SecondaryType" = 'Type1';
+
+```
+
+Next, we can add the second selected typing:
+```csharp
+query = query.Where(p => p.PrimaryType == this.Type2 || p.SecondaryType == this.Type2);
+```
+
+And wrap it with safety checks:
+```csharp
+if (this.Type1 != null && this.Type1.Length > 0)
+{
+    query = query.Where(p => p.PrimaryType == this.Type1 || p.SecondaryType == this.Type1);
+}
+else if (this.Type2 != null && this.Type2.Length > 0)
+{
+    query = query.Where(p => p.PrimaryType == this.Type2 || p.SecondaryType == this.Type2);
+}
+```
+
+### Ability
+Next, we incorporate filtering based on abilities. This allows users to search for Pokémon whose abilities match the specified criteria.
+
+In the database schema, the Pokemon table has three columns—PrimaryAbility, SecondaryAbility, and HiddenAbility—that reference the ID column in the Ability table. This relationship is defined by foreign keys, which establish a connection between the Pokémon's abilities and their corresponding entries in the Ability table.
+```csharp
+query = query.Where(p => context.Ability.Any(a => (a.ID == p.PrimaryAbility || a.ID == p.SecondaryAbility || a.ID == p.HiddenAbility) && a.Name.StartsWith(this.Ability)));
+```
+The Any method in LINQ determines if any element in the Ability collection satisfies the given condition. In this case, we check whether an Ability row with Ability.ID matches one of the Pokémon's abilities (PrimaryAbility, SecondaryAbility, or HiddenAbility). If a match is found, we further check if the Ability.Name starts with the provided search string (this.Ability).
+
+And, we will wrap this line with safety checks:
+```csharp
+if (this.Ability != null && this.Ability.Length > 0)
+{
+    query = query.Where(p => context.Ability.Any(a => (a.ID == p.PrimaryAbility || a.ID == p.SecondaryAbility || a.ID == p.HiddenAbility) && a.Name.StartsWith(this.Ability)));
+}
+```
+
+### Move
+This of code adds filtering based on Pokémon moves. It checks whether any move associated with a Pokémon matches the specified search string stored in this.Move.
+
+The PokemonMove table acts as a M:N relation between Pokemon and Move.
+```
+PokemonMove.Pokemon → Pokemon.ID
+PokemonMove.Move → Move.ID
+```
+Since we want to return a Pokémon object, we begin with the Pokemon table, identifying all entries in the PokemonMove table where the Pokemon column matches the Pokémon's ID. From there, we look for entries in the Move table where the Move.ID matches the Move column in the PokemonMove table and check if the Move.Name satisfies the search condition. This ensures we retrieve only Pokémon associated with moves that meet the specified criteria.
+```csharp
+query = query.Where(
+    p => context.PokemonMove.Any(
+        pm => pm.Pokemon == p.ID &&
+        context.Move.Any(
+            m => m.ID == pm.Move && m.Name.StartsWith(this.Move)
+        )
+    )
+);
+```
+
+### Generation
+
+### LegendaryStatus
+
+### Try it yourself
