@@ -2202,11 +2202,366 @@ private void SearchedType2Changed(object sender, SelectionChangedEventArgs e)
 private void SearchedGenerationChanged(object sender, SelectionChangedEventArgs e)
 {
     ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-    string str = selectedItem.Content.ToString();
+    string str = selectedItem.Tag.ToString();
     if (str.Equals("Any")) this.Search.Generation = null;
     else this.Search.Generation = int.Parse(str.ToLower());
 }
 private void SearchedMoveTextChanged(object sender, TextChangedEventArgs e)
+{
+    this.Search.Move = ((TextBox)sender).Text;
+
+}
+private void SearchedAbilityTextChanged(object sender, TextChangedEventArgs e)
+{
+    this.Search.Ability = ((TextBox)sender).Text;
+
+}
+private void SearchedLegendaryStatusSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.LegendaryStatus = null;
+    else this.Search.LegendaryStatus = str.ToLower();
+
+}
+private void SearchedAppearanceColorSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.AppearanceColor = null;
+    else this.Search.AppearanceColor = str.ToLower();
+
+}
+private void SearchedAppearanceShapeSelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+    string str = selectedItem.Content.ToString();
+    if (str.Equals("Any")) this.Search.AppearanceShape = null;
+    else this.Search.AppearanceShape = str.ToLower().Replace(" ", "-");
+
+}
+private void SearchedAppearanceHeightMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.AppearanceHeightMin = null;
+            return;
+        }
+        else this.Search.AppearanceHeightMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+        throw new Exception("", ex);
+    }
+}
+private void SearchedAppearanceHeightMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.AppearanceHeightMax = null;
+            return;
+        }
+        else this.Search.AppearanceHeightMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedAppearanceWeightMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.AppearanceWeightMin = null;
+            return;
+        }
+        else this.Search.AppearanceWeightMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedAppearanceWeightMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0) {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.AppearanceWeightMax = null;
+            return;
+        }
+        else this.Search.AppearanceWeightMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatHPMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatHPMin = null;
+            return;
+        }
+        else this.Search.StatHPMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatHPMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatHPMax = null;
+            return;
+        }
+        else this.Search.StatHPMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatAttackMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatAttackMin = null;
+            return;
+        }
+        else this.Search.StatAttackMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatAttackMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatAttackMax = null;
+            return;
+        }
+        else this.Search.StatAttackMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatDefenseMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatDefenseMin = null;
+            return;
+        }
+        else this.Search.StatDefenseMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+
+}
+private void SearchedStatDefenseMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatDefenseMax = null;
+            return;
+        }
+        else this.Search.StatDefenseMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+
+}
+private void SearchedStatSpecialAttackMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpecialAttackMin = null;
+            return;
+        }
+        else this.Search.StatSpecialAttackMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialAttackMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpecialAttackMax = null;
+            return;
+        }
+        else this.Search.StatSpecialAttackMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialDefenseMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpecialDefenseMin = null;
+            return;
+        }
+        else this.Search.StatSpecialDefenseMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpecialDefenseMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpecialDefenseMax = null;
+            return;
+        }
+        else this.Search.StatSpecialDefenseMax = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpeedMinChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpeedMin = null;
+            return;
+        }
+        else this.Search.StatSpeedMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}
+private void SearchedStatSpeedMaxChanged(object sender, TextChangedEventArgs e)
+{
+    try
+    {
+        string str = ((TextBox)sender).Text.ToString();
+        if (str != null && str.Length == 0)
+        {
+            ((TextBox)sender).BorderBrush = Brushes.Black;
+            this.Search.StatSpeedMin = null;
+            return;
+        }
+        else this.Search.StatSpeedMin = int.Parse(str.ToLower());
+
+        ((TextBox)sender).BorderBrush = Brushes.Black;
+    }
+    catch (Exception ex)
+    {
+        ((TextBox)sender).BorderBrush = Brushes.Red;
+    }
+}(object sender, TextChangedEventArgs e)
 {
     this.Search.Move = ((TextBox)sender).Text;
 
@@ -2691,8 +3046,165 @@ query = query.Where(
 );
 ```
 
-### Generation
-
-### LegendaryStatus
-
 ### Try it yourself
+Now, you can these this one yourself.
+#### Generation
+```
+Pokemon.Species → PokemmonSpecies.ID
+```
+We want to check if our `Generation` integer maatches the value `PokemonSpecies.Generation`.
+<details>
+    <summary>Code</code> (<i>click to reveal answer</i>)</summary>
+    
+```csharp
+if (this.Generation != null)
+{
+    query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Generation == this.Generation));
+}
+```
+</details>
+#### Legendary Status
+We are given a search parameter LegendaryStatus, that can have the values:
+```
+Any
+Legendary
+Mmythical
+None
+```
+The PokemonSpecies table has two boolean columns:
+
+```
+IsLegendary
+IsMythical
+```
+We want to check if our `LegendaryStatus` string maatches the values `PokemmonSpecies.IsLegendary` and `PokemmonSpecies.IsMythical`.
+<details>
+    <summary>Code</code> (<i>click to reveal answer</i>)</summary>
+    
+```csharp
+if (this.LegendaryStatus != null && this.LegendaryStatus.Length > 0 && !this.LegendaryStatus.Equals("Any"))
+{
+    bool isLegendary = this.LegendaryStatus.ToLower().Equals("Legendary");
+    bool isMythical= this.LegendaryStatus.ToLower().Equals("Mythical");
+
+    query = query.Where(p => context.PokemonSpecies.Any(ps => ps.IsLegendary == isLegendary && ps.IsMythical == isMythical));
+}
+```
+</details>
+#### Apearance: Color and Shape
+We are given a search parameters `PokemonSpecies.AppearanceColor` and `PokemonSpecies.AppearanceShape`, that have corresponding columns `PokemonSpecies.AppearanceColor` and `PokemonSpecies.AppearanceShape`.
+<details>
+    <summary>Code</code> (<i>click to reveal answer</i>)</summary>
+    
+```csharp
+if (this.AppearanceColor != null && this.AppearanceColor.Length > 0)
+{
+    query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Color == this.AppearanceColor));
+}
+
+if (this.AppearanceShape != null && this.AppearanceShape.Length > 0)
+{
+    query = query.Where(p => context.PokemonSpecies.Any(ps => ps.Shape == this.AppearanceShape));
+}
+```
+</details>
+
+
+#### Apearance: Height and Weight
+We are given a search parameters `AppearanceHeightMin`, `AppearanceHeightMax`, `AppearanceWeightMin` and `AppearanceWeightMax`, that have corresponding columns `Pokemon.AppearanceHeight` and `Pokemon.AppearanceWeight`.
+We want to check if:
+- A parameter is not null
+- The entry values in the Pokemon table are constrained by these parameters
+```
+AppearanceHeightMin < AppearanceHeightMax <= Pokemon.AppearanceHeight
+AppearanceWeightMin < AppearanceWeightMax <= Pokemon.AppearanceWeight
+```
+<details>
+    <summary>Code</code> (<i>click to reveal answer</i>)</summary>
+    
+```csharp
+if (this.AppearanceHeightMin != null)
+{
+    query = query.Where(p => p.Height >= this.AppearanceHeightMin);
+}
+if (this.AppearanceHeightMax != null)
+{
+    query = query.Where(p => p.Height <= this.AppearanceHeightMax);
+}
+
+if (this.AppearanceWeightMin != null)
+{
+    query = query.Where(p => p.Weight >= this.AppearanceWeightMin);
+}
+if (this.AppearanceWeightMax != null)
+{
+    query = query.Where(p => p.Weight <= this.AppearanceWeightMax);
+}
+```
+</details>
+
+#### Stats: HP, Attack, Defense, Special Attack, Special defense and Speed
+Finally, we want to check for ranges of stats.
+```
+StatHPMin < Pokemon.HP <= StatHPMax
+StatAttackMin < Pokemon.Attack <= StatAttackMax
+StatDefenseMin < Pokemon.Defense <= StatDefenseMax
+StatSpecialAttackMin < Pokemon.SpecialAttack <= StatSpecialAttackMax
+StatSpecialDefenseMin < Pokemon.SpecialDefense <= StatSpecialDefenseMax
+StatSpeedMin < Pokemon.Speed <= StatSpeedMax
+```
+<details>
+    <summary>Code</code> (<i>click to reveal answer</i>)</summary>
+    
+```csharp
+if (this.StatHPMin != null)
+{
+    query = query.Where(p => p.HP >= this.StatHPMin);
+}
+if (this.StatHPMax != null)
+{
+    query = query.Where(p => p.HP >= this.StatHPMax);
+}
+if (this.StatAttackMin != null)
+{
+    query = query.Where(p => p.Attack >= this.StatAttackMin);
+}
+if (this.StatAttackMax != null)
+{
+    query = query.Where(p => p.Attack >= this.StatAttackMax);
+}
+if (this.StatDefenseMin != null)
+{
+    query = query.Where(p => p.Defense >= this.StatDefenseMin);
+}
+if (this.StatDefenseMax != null)
+{
+    query = query.Where(p => p.Defense >= this.StatDefenseMax);
+}
+if (this.StatSpecialAttackMin != null)
+{
+    query = query.Where(p => p.SpecialAttack >= this.StatSpecialAttackMin);
+}
+if (this.StatSpecialAttackMax != null)
+{
+    query = query.Where(p => p.SpecialAttack >= this.StatSpecialAttackMax);
+}
+if (this.StatSpecialDefenseMin != null)
+{
+    query = query.Where(p => p.SpecialDefense >= this.StatSpecialDefenseMin);
+}
+if (this.StatSpecialDefenseMax != null)
+{
+    query = query.Where(p => p.SpecialDefense >= this.StatSpecialDefenseMax);
+}
+if (this.StatSpeedMin != null)
+{
+    query = query.Where(p => p.Speed >= this.StatSpeedMin);
+}
+if (this.StatSpeedMax != null)
+{
+    query = query.Where(p => p.Speed >= this.StatSpeedMax);
+}
+```
+</details>
+
