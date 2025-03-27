@@ -1,4 +1,4 @@
-# Zřeknutí se zodpovědnosti
+# Zřeknutí se odpovědnosti
 Tento projekt využívá zdroje třetích stran. Jedná se o studentský projekt vytvořený pro vzdělávací účely. Není spojen, schválen ani nijak spojen s Nintendo, The Pokémon Company nebo PokéAPI.
 ### Informace o licencování
 The Pokémon data in this project is sourced from PokéAPI, which is licensed under the BSD 3-Clause License. The full license can be found in the `LICENSE.txt` file.
