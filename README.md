@@ -16,9 +16,9 @@ This project demonstrates the use of Entity Framework with PostgreSQL through a 
 Entity Framework (EF) is an Object-Relational Mapper (ORM) for .NET applications. It simplifies database interactions by allowing developers to work with databases using C# objects instead of writing SQL queries manually. EF still allows to write SQL queries, so no functionality is lost.
 ### Why should you use Entity Framework?
 Without EF, developers typically use ADO.NET, where they have to:
-Write SQL queries manually
-Manage database connections explicitly
-Handle data conversions between SQL and C#
+- Write SQL queries manually
+- Manage database connections explicitly
+- Handle data conversions between SQL and C#
 ### Key Features of EF
 ORM Capabilities: Maps database tables to C# objects
 LINQ Support: Queries can be written using LINQ instead of SQL
@@ -186,10 +186,10 @@ Replace mydatabase with your preferred name for the database.
 
 
 ### Setting up a WPF and EF project
-Open Visual Studio (or install it with the WPF extension).
-Create a new WPF project. We will name it **PokedexExplorer**.
-Install the Npgsql and Entity Framework libraries using the NuGet Package Manager.
-In the Solution Explorer, under PokedexExplorer, create a new folder **Models**. We will write our tables here. Next, create a folder **Data**. We will put all our data-handling classes there. This step is not required, but it helps keep the project clean. Our tutorial will assume this step was taken.
+1. Open Visual Studio (or install it with the WPF extension).
+2. Create a new WPF project. We will name it **PokedexExplorer**.
+3. Install the Npgsql and Entity Framework libraries using the NuGet Package Manager.
+4. In the Solution Explorer, under PokedexExplorer, create a new folder **Models**. We will write our tables here. Next, create a folder **Data**. We will put all our data-handling classes there. This step is not required, but it helps keep the project clean. Our tutorial will assume this step was taken.
 
 # Code-First vs. Database-First Approach
 Object-Relational Mappers (ORMs) provide two common approaches for managing the relationship between your application code and the database: code-first and database-first.
