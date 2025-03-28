@@ -2,7 +2,7 @@
 Tento projekt využívá zdroje třetích stran. Jedná se o studentský projekt vytvořený pro vzdělávací účely. Není spojen, schválen ani nijak spojen s Nintendo, The Pokémon Company nebo PokéAPI.
 ### Informace o licencování
 The Pokémon data in this project is sourced from PokéAPI, which is licensed under the BSD 3-Clause License. The full license can be found in the `LICENSE.txt` file.
-Data o Pokémonech v tomto projektu pocházejí z PokéAPI, která jsou licencovány pod licencí BSD 3-Clause. Plné znění licence lze nalézt v souboru LICENSE.txt.
+Data o Pokémonech v tomto projektu pocházejí z PokéAPI, která jsou licencovány pod licencí BSD 3-Clause. Plné znění licence lze nalézt v souboru `LICENSE.txt`.
 ### Autorství spritů
 Sprite Pokémonů v tomto projektu jsou získávány v reálném čase z GitHub repozitáře PokéAPI. Tyto sprite jsou chráněným materiálem vlastněným společností Nintendo a jsou zde použity pouze pro vzdělávací účely.
 # Přehled
@@ -20,15 +20,11 @@ Bez EF vývojáři obvykle používají ADO.NET, kde musí:
 - Explicitně spravovat databázová připojení
 - Ručně konvertovat data mezi SQL a C#
 ### Klíčové vlastnosti EF
-ORM funkce: Mapuje databázové tabulky na C# objekty
-
-Podpora LINQ: Dotazy lze psát pomocí LINQ místo SQL
-
-Migrace: Snadná aktualizace databázového schématu při změně modelů
-
-Automatické sledování změn: Sleduje úpravy entit
-
-Nezávislost na databázi: Umí pracovat s různými databázemi jako SQL Server, MySQL, PostgreSQL atd.
+- ORM funkce: Mapuje databázové tabulky na C# objekty
+- Podpora LINQ: Dotazy lze psát pomocí LINQ místo SQL
+- Migrace: Snadná aktualizace databázového schématu při změně modelů
+- Automatické sledování změn: Sleduje úpravy entit
+- Nezávislost na databázi: Umí pracovat s různými databázemi jako SQL Server, MySQL, PostgreSQL atd.
 
 # EF vs. EF Core
 There are a few versions of Entity Framework. Let’s look at EF 6 and EF Core.
@@ -70,27 +66,22 @@ public class AppDbContext : DbContext
 # Začínáme
 V tomto tutoriálu budeme používat pro databázi PostgreSQL, PokéAPI jako zdroj dat a Entity Framework 6. Pojďme začít méně důležitými kroky.
 ## Nastavení PostgreSQL serveru
-*(Note: The Linux tutorial for setting up PostgreSQL was generated with the help of an AI model. While every effort was made to ensure accuracy, AI-generated content may occasionally contain errors. We recommend reviewing the [official PostgreSQL documentation](https://www.postgresql.org/docs/) or trusted resources for additional confirmation and guidance.)*
-(Poznámka: Návod pro Linux byl vygenerován s pomocí AI. Přestože byla vynaložena maximální snaha o přesnost, kontent vygenerovaný pomocí AI může občas obsahovat chyby. Doporučujeme ověřit informace v [oficiální PostgreSQL dokumentace]. (https://www.postgresql.org/docs/) nebo v jiných důvěryhodných zdrojích.)*
+*(Poznámka: Návod pro Linux byl vygenerován s pomocí AI. Přestože byla vynaložena maximální snaha o přesnost, kontent vygenerovaný pomocí AI může občas obsahovat chyby. Doporučujeme ověřit informace v [Official PostgreSQL documentation]. (https://www.postgresql.org/docs/) nebo v jiných důvěryhodných zdrojích pro dodatačn.)*
 ### Pro Windows
 
 ##### Stažení PostgreSQL
 
-Stáhněte PostgreSQL z [oficiálních stránek]. (https://www.postgresql.org/download/). Vyberte verzi odpovídající vašemu operačnímu systému a stáhněte instalační balíček.
+Stáhněte PostgreSQL z [oficiálních stránky]. (https://www.postgresql.org/download/). Vyberte verzi odpovídající vašemu operačnímu systému a stáhněte instalační balíček.
 
 ##### Instalace PostgreSQL
 
-Postupujte podle pokynů instalačního programu. Během instalace si poznamenejte cestu k instalaci (např. C:\Program Files\PostgreSQL\<verze>).
+Postupujte podle pokynů instalačního programu. Během instalace si poznamenejte cestu k instalaci (např. `C:\Program Files\PostgreSQL\<verze>`).
 
 Výchozí přihlašovací údaje jsou:
-
-Uživatelské jméno: postgres
-
-Heslo: postgres (Nebo heslo, které si nastavíte během instalace.)
+- Uživatelské jméno: postgres
+- Heslo: postgres (Nebo heslo, které si nastavíte během instalace.)
 
 ##### Post-Instalace
-
-PostgreSQL should start automatically as a service after installation. However, you can also start or stop it manually via the command line:
 PostgreSQL by se měl po instalaci automaticky spustit jako služba. Pokud ne, můžete jej také spustit nebo zastavit ručně pomocí příkazového řádku:
 
 ##### Spuštění služby PostgreSQL
@@ -175,6 +166,7 @@ Po instalaci spusťte PostgreSQL službu.:
 ##### Vytvoření nové databáze
 
 PostgreSQL služba je již inicializovaná, ale pokud potřebujete vytvořit novou databázi, můžete to udělat pomocí následujících příkazů.:
+
 Postupujte stejně jako u Ubuntu/Debian – přepněte na uživatele postgres, spusťte psql a vytvořte novou databázi.
 ##### Přepnutí na postgres uživatele
 
@@ -212,7 +204,6 @@ Příklad: ORM načte existující `Pokemon` tabulku a vygeneruje odpovídajíc�
 
 Použití: Vhodný pro práci s již existující databází nebo když databázové schéma je předdefinované a nelze výrazně měnit.
 
-
 ### Použitý přístup
 Tento projekt ukazuje použití code-first přístupu v ORM, kde je schéma databáze definováno přímo v kódu aplikace. Tento přístup zajišťuje snadnější správu schématu a integraci s obchodní logikou aplikace.
 
@@ -223,6 +214,7 @@ Nejdůležitější částí je připojení k databázi, aby bylo možné prová
 ### Connection string
 
 **Connection string** je řetězec, který definuje, jak se aplikace má připojit k databázi. Obsahuje informace, pomocí kterých potřebuje aplikace potřebuje vytvořit připojení jako adresa serveru, název databáze, přihlašovací údaje a další parametry:
+
 `Host=<server_address>;Port=<port>;Username=<user>;Password=<password>;Database=<database_name>;`
 
 V našem případě použijeme výchozí nastavení:
@@ -278,7 +270,7 @@ ForeignKey anotace se používá odkazování na jinou tabulku přes její prim�
 Required anotace se používá pro označení non-null hodnoty, že hodnota nesmí být null.
 
 ### Tabulky
-V tomto tutoriále použijeme následující tabulky Ability, Move, Pokemon, PokemonSpecies. Přičemž ke každé přidáme odkazy v PokemonDbContext třídě. Také si ukážeme něco o Pokémoních technikách v Pokémon hrách, ale nejsou důležité pro tento tutoriál.
+V tomto tutoriále použijeme následující tabulky `Ability`, `Move`, `Pokemon`, `PokemonSpecies`, `PokemonMove` a `EvolutionSpecies`. Přičemž ke každé přidáme odkazy v `PokemonDbContext` třídě. Také si ukážeme něco o Pokémoních technikách v Pokémon hrách, ale nejsou důležité pro tento tutoriál.
 
 #### Ability
 Ability je jednoduchá tabulka, která uchovává data o schopnostech Pokémonů.
@@ -427,7 +419,6 @@ namespace PokedexExplorer.Model
 ```
 #### PokemonSpecies
 PokemonSpecies tabulka obsahuje informace o druzích Pokémonů. Jeden druh může obsahovat více Pokémonů. Například Pikachu má různé verze, které se liší atributy a statistikami.
-
 ```csharp
 namespace PokedexExplorer.Model
 {
@@ -474,7 +465,7 @@ namespace PokedexExplorer.Model
 }
 ```
 #### EvolutionChain
-EvolutionChain tabulka obsahuje informace o evolučních řetězcích Pokémonů. Pokémon může evolvovat do různých forem, ale vždy jen z jednoho konkrétního Pokémona. Proto je primárním klíčem sloupec EvolvesTo
+EvolutionChain tabulka obsahuje informace o evolučních řetězcích Pokémonů. Pokémon může evolvovat do různých forem, ale vždy jen z jednoho konkrétního Pokémona. Proto je primárním klíčem sloupec `EvolvesTo`.
 
 ```csharp
 namespace PokedexExplorer.Model
@@ -535,7 +526,7 @@ namespace PokedexExplorer.Model
 }
 ```
 ### Indexy
-Pro účely vyhledávání je užitečné indexovat sloupce, protože to urychlí vyhledávání. Například při hledání podle jména schopnosti (Ability.Name) dává smysl přidat indexování, což umožní rychlejší vyhledávání. Můžeme k tomu použít anotaci:
+Pro účely vyhledávání je užitečné indexovat sloupce, protože to urychlí vyhledávání. Například při hledání podle jména schopnosti (`Ability.Name`) dává smysl přidat indexování, což umožní rychlejší vyhledávání. Můžeme k tomu použít anotaci:
 
 ```[Index(nameof(Ability.Name), IsUnique = true, Name = "IndexAbilityName")]```to the class.
 
@@ -613,7 +604,7 @@ namespace PokedexExplorer.Model
 ```
 
 ### Aktualizace třídy PokemonDbContext
-Nyní, když máme definované třídy, musíme aktualizovat PokemonDbContext třídu. Je důležité dávat pozor na cizí klíče, protože odpovídající(referencované) tabulky k nim musí být vytvořeny jako první. Z tohoto důvodu budeme tabulky vytvářet v následujícím pořadí:
+Nyní, když máme definované třídy, musíme aktualizovat PokemonDbContext třídu. Je důležité dávat pozor na cizí klíče, protože odpovídající(referencované) tabulky k nim musí být vytvořeny jako první. Z tohoto důvodu budeme tabulky vytvářet v následujícím pořadí.:
 1. Ability
 2. Move
 3. PokemonSpecies
@@ -656,7 +647,6 @@ Nyní budeme potřebovat vytvořit samotnou databázi na serveru. Dosud jsme pou
 
 #### Migrace
 Abychom synchronizovali náš databázový model s PostgreSQL, můžeme použít metodu `DbContext.Database.Migrate();`. Tato metoda aktualizuje tabulky. `Migrate()` si poradí s existujícími tabulkami, ale pokud tabulka existuje v jiné podobě, vyvolá výjimky.
-
 ```csharp
 public MainWindow()
 {
@@ -684,7 +674,6 @@ public MainWindow()
 ```
 #### MainWindow
 V naší třídě MainWindow, která se inicializuje při spuštění WPF aplikace, přidáme do ní následující kód, který se provede při startu aplikace.
-
 ```csharp
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -720,7 +709,7 @@ public partial class MainWindow : Window
 ```
 
 # Získávání dat z PokéAPI
-(Poznámka: Tato sekce předpokládá, že používáte code-first přístup zaměřený na kód. Tato sekce není důležitou součástí našeho tutoriálu, takže můžete jednoduše zkopírovat veškerý kód. Tento kód bude běžet pomalu. Také nedoporučujeme spouštět jej příliš často, protože se připojuje k serveru třetí strany. Nechceme způsobit žádné problémy týmu PokéAPI.)
+*(Poznámka: Tato sekce předpokládá, že používáte code-first přístup zaměřený na kód. Tato sekce není důležitou součástí našeho tutoriálu, takže můžete jednoduše zkopírovat veškerý kód. Tento kód bude běžet pomalu. Také nedoporučujeme spouštět jej příliš často, protože se připojuje k serveru třetí strany. Nechceme způsobit žádné problémy týmu PokéAPI.)*
 
 PokéAPI používá databázi typu NoSQL. Budeme ji muset přeformátovat tak, aby odpovídala naší struktuře tabulek v PostgreSQL. Nyní, když máme definované tabulky, vytvoříme speciální tříu pro získávání a přeformátování dat. Pro výstup budeme používat naše definované třídy.
 
@@ -729,7 +718,6 @@ Buďte opatrní, protože databáze PostgreSQL vyžaduje, aby primární klíč 
 
 ### Ověření správnosti
 V následujících sekcích vysvětíme, jak získat data. Prozatím můžete ke kontrole kódu použít nástroje jako pgAdmin, který je součástí PostgreSQL.
-
 
 ## Struktura třídy
 Tuto třídu rozdělíme na dvě části:
@@ -743,7 +731,7 @@ Vytvoříme třídu `PokeAPIFetcher` ve složce `Data`, která bude stahovat a z
 PokéAPI používá JSON formát s databází typu NoSQL. Tento formát je vhodný pro uchovávání komplexních dat o Pokémonech. My jej však zpracujeme a odstraníme data, která pro nás nejsou důležitá. Také si ukážeme, jak přidávat data do naší databáze.
 
 ##### Získání objektu JSON
-Použijeme tuto jednoduchou metodu pro získání JSON souboru. Využívá strukturu PokéAPI složek:
+Použijeme tuto jednoduchou metodu pro získání JSON souboru. Využívá strukturu PokéAPI složek.:
 `https://pokeapi.co/api/v2/<table>/[<id>]`
 
 ```csharp
@@ -805,7 +793,6 @@ static public List<int> GetEntries(string name)
 Dále přidáme metody pro analýzu(parsování) JSON dat.
 
 Metoda GetEnglishNode prochází(iteruje) jazykovou strukturou a vrátí anglickou verzi.
-
 ```csharp
 static private JsonNode GetEnglishNode(JsonNode node)
 {
@@ -1225,7 +1212,6 @@ namespace PokedexExplorer.Data
 #### Vkládání
 Vložení záznamu do tabulky je jednoduché. Potřebujeme jen objekt a tabulku, do které jej vložíme. K tomu použijeme metodu `Run()`.
 
-Inserting an entry is done by `context.Table.Add(entry);`. As an example, we can insert an ability in the Ability table with `context.Ability.Add(ability);`. We will also make use of the `AddRange(List<T>)` method, which adds multiple values at once. These changes only happen in our "# environment, so we will need to apply them using `context.SaveChanges();`.
 Vkládání záznamu se provádí pomocí `context.Table.Add(entry);`. Například schopnost můžeme do tabulky Ability vložit pomocí `context.Ability.Add(ability);`. Také využijeme metodu `AddRange(List<T>)`, která umožňuje vložit více hodnot najednou. Tyto změny se však projeví pouze v našem "# prostředí, takže je potřeba to potvrdit pomocí `context.SaveChanges();`.
 
 ##### Získání ID záznamů
@@ -1340,6 +1326,7 @@ this.context.SaveChanges();
 
 ### Přidání UI
 //TODO
+
 Do souboru MainWindow.xaml přidáme následující kód, který zobrazí průběh stahování dat z PokéAPI.:
 ```xaml
 <Grid Name="FetchGroup" Width="800" Height="600" Background="#DFFFFFFF" IsEnabled="{Binding Path=Handler.IsRunning, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}" Visibility="{Binding Path=Handler.UIVisibility, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}" MouseDown="FetchGroupMouseDown">
@@ -1350,7 +1337,7 @@ Do souboru MainWindow.xaml přidáme následující kód, který zobrazí průb�
     </StackPanel>
 </Grid>
 ```
-Dále aktualizujeme MainWindow.xaml.cs, kde přidáme instanci DatabaseInitHandler. Pokud je povolena inicializace tabulek (INITIALIZE_TABLES), pokusíme se je vytvořit. Pokud je povolena inicializace dat (INITIALIZE_DATA), spustíme inicializační proces.
+Dále aktualizujeme MainWindow.xaml.cs, kde přidáme instanci `DatabaseInitHandler`. Pokud je povolena inicializace tabulek (`INITIALIZE_TABLES`), pokusíme se je vytvořit. Pokud je povolena inicializace dat (`INITIALIZE_DATA`), spustíme inicializační proces.
 
 ```csharp
 public partial class MainWindow : Window
@@ -1394,7 +1381,7 @@ public partial class MainWindow : Window
     }
 }
 ```
-Také aktualizujeme DatabaseInitHandler třídu, aby byl veřejný a implementoval INotifyPropertyChanged, což umožní aktualizaci uživatelského rozhraní. 
+Také aktualizujeme `DatabaseInitHandler` třídu, aby byl veřejný a implementoval `INotifyPropertyChanged`, což umožní aktualizaci uživatelského rozhraní. 
 
 ```csharp
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -1636,11 +1623,9 @@ A nakonec spustíme aplikaci!
 
 Teď by se všechna data Pokémonů měla stáhnout a být vložena do PostgreSQL databáze.
 
-# Nastavení aplikace Pokédex Explorer 
-## 
+# Nastavení aplikace Pokédex Explorer
 ## Nastavení
 *Poznámka: Kód můžete zkopírovat a vložit, ale měli byste alespoň vědět, co dělá.*
-
 #### PokemonSearch
 Nyní vytvoříme nový soubor třídy: `Data/PokemonSearch`. Tato třída bude obsahovat všechny naše parametry pro hledání a bude se sama aktualizovat.
 
@@ -2915,7 +2900,7 @@ private void SearchedStatSpeedMaxChanged(object sender, TextChangedEventArgs e)
 # Vytváření dotazů
 *Poznámka: Tato část se bude zabývat obsahem metody `PokemonSearch.UpdateQuery()`.*
 
-Dotazy mají dvě fáze - vytvoření dotazu a jeho spuštění. Dotaz můžeme spustit pomocí metod jako FirstOrDefault() nebo ToList().
+Dotazy mají dvě fáze - vytvoření dotazu a jeho spuštění. Dotaz můžeme spustit pomocí metod jako `FirstOrDefault()` nebo `ToList()`.
 
 ## LINQ
 LINQ (Language Integrated Query) je silná funkce v Entity Frameworku, která usnadňuje práci s daty. Umožňuje snadnější vytváření dotazů.
@@ -2936,7 +2921,7 @@ private void UpdateQuery()
 ### Select
 Po definování základního dotazu ho nyní přizpůsobíme, aby získal pouze sloupce, které potřebujeme pro zobrazení v uživatelském rozhraní. Následující ukázka kódu ukazuje, jak transformujeme výsledky dotazu do strukturovaného formátu vhodného pro UI.
 
-Metoda Select() se používá k projekci dat do nové podoby nebo struktury. Místo toho, abychom získali celé objekty Pokémonů, tato projekce získává specifické vlastnosti: Name, PrimaryType, SecondaryType a SpriteFrontDefault.
+Metoda `Select()` se používá k projekci dat do nové podoby nebo struktury. Místo toho, abychom získali celé objekty Pokémonů, tato projekce získává specifické vlastnosti: `Name`, `PrimaryType`, `SecondaryType` a `SpriteFrontDefault`.
 
 ```csharp
 private void UpdateQuery()
@@ -2982,7 +2967,7 @@ To odpovídá naší definici UI:
 ```
 ### ToList
 V třídě MainWindow je ještě neobjasněná metoda `ToList()`. Ta spustí aktualní dotaz.
-Zde je odpovídající kód:
+Zde je odpovídající kód.:
 ```csharp
 public void OnQueryUpdated()
 {
@@ -3004,13 +2989,13 @@ query = query.Where(p => p.Name.StartsWith(Name));
 ```
 Metoda Where v LINQ se používá k filtrování datasetu na základě specifikované podmínky. Bere jako argument predikát (funkci, která vrací Booleovskou hodnotu), a pouze prvky, které tuto podmínku splní, jsou zahrnuty do výsledného seznamu.
 
-Tento jeden řádek LINQ kódu se přímo překládá do následujícího SQL dotazu:
+Tento jeden řádek LINQ kódu se přímo překládá do následujícího SQL dotazu.:
 ```sql
 SELECT * FROM "Pokemon"
 WHERE "Name" LIKE 'NamePrefix%';
 
 ```
-Před použitím filtru také zajistíme, že hledaný řetězec byl poskytnut (tzn. že není null a není prázdný):
+Před použitím filtru také zajistíme, že hledaný řetězec byl poskytnut (tzn. že není null a není prázdný).:
 ```csharp
 if (Name != null)
 {
@@ -3023,19 +3008,19 @@ Dále můžeme přidat filtrování podle typu. Uživatel si může vybrat typ, 
 query = query.Where(p => p.PrimaryType == this.Type1 || p.SecondaryType == this.Type1);
 ```
 
-Tento jeden řádek LINQ kódu se přímo překládá do následujícího SQL dotazu:
+Tento jeden řádek LINQ kódu se přímo překládá do následujícího SQL dotazu.:
 ```sql
 SELECT * FROM "Pokemon"
 WHERE "PrimaryType" = 'Type1' OR "SecondaryType" = 'Type1';
 
 ```
 
-Dále přidáme druhý vybraný typ:
+Dále přidáme druhý vybraný typ.:
 ```csharp
 query = query.Where(p => p.PrimaryType == this.Type2 || p.SecondaryType == this.Type2);
 ```
 
-A obalíme to kontrolami bezpečnosti:
+A obalíme to kontrolami bezpečnosti.:
 ```csharp
 if (this.Type1 != null && this.Type1.Length > 0)
 {
