@@ -286,7 +286,7 @@ namespace PokedexExplorer.Data
 
             if (this.Ability != null && this.Ability.Length > 0)
             {
-                query = query.Where(p => context.Ability.Any(a => (a.ID == p.PrimaryAbility || a.ID == p.SecondaryAbility || a.ID == p.HiddenAbility) && a.Name.StartsWith(this.Ability)));
+                query = query.Where(p => context.Ability.Any(a => (a.ID == p.PrimaryAbility || a.ID == p.SecondaryAbility || a.ID == p.HiddenAbility) && a.Name.ToLower().StartsWith(this.Ability)));
             }
 
             if (this.Move != null && this.Move.Length > 0)
@@ -295,7 +295,7 @@ namespace PokedexExplorer.Data
                     p => context.PokemonMove.Any(
                         pm => pm.Pokemon == p.ID &&
                         context.Move.Any(
-                            m => m.ID == pm.Move && m.Name.StartsWith(this.Move)
+                            m => m.ID == pm.Move && m.Name.ToLower().StartsWith(this.Move)
                         )
                     )
                 );

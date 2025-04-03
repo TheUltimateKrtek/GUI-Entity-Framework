@@ -100,12 +100,12 @@ public partial class MainWindow : Window
     }
     private void SearchedMoveTextChanged(object sender, TextChangedEventArgs e)
     {
-        this.Search.Move = ((TextBox)sender).Text;
+        this.Search.Move = ((TextBox)sender).Text.ToLower();
 
     }
     private void SearchedAbilityTextChanged(object sender, TextChangedEventArgs e)
     {
-        this.Search.Ability = ((TextBox)sender).Text;
+        this.Search.Ability = ((TextBox)sender).Text.ToLower();
 
     }
     private void SearchedLegendaryStatusSelectionChanged(object sender, SelectionChangedEventArgs e)
