@@ -99,6 +99,7 @@ To create a new database, you need to specify the name of the database during in
 
 `initdb -D <your_database_cluster_path>`
 
+##### Attention
 If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port.
 
 `port = 5433			# (change requires restart)`
@@ -120,6 +121,15 @@ PostgreSQL should start automatically after installation. If you need to manuall
 ##### Start PostgreSQL service
 
 `sudo systemctl start postgresql`
+
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port.
+
+`port = 5433			# (change requires restart)`
+
+Or specify the port in command line when you starting server.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
 
 ##### Stop PostgreSQL service
 
