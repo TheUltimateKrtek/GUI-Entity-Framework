@@ -171,6 +171,8 @@ After initialization, start the PostgreSQL service:
 
 `sudo systemctl start postgresql`
 
+##### Attention
+
 If some server already running on port 5432, you must change the port to avoid collision with that server.
 
 `sudo nano <your_database_cluster_path>/postgresql.conf`
