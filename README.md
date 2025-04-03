@@ -86,8 +86,11 @@ Password: postgres (or the password you choose during the installation)
 PostgreSQL should start automatically as a service after installation. However, you can also start or stop it manually via the command line:
 
 ##### Start the PostgreSQL service
-
 In the Command Prompt (navigate to the PostgreSQL bin directory):
+
+`cd C:\Program Files\PostgreSQL\<version>\bin`
+
+And launch the postgre, you can lauch the database from an existing folder in our project `pokemondb\` with already existing and installed database or you can your own database and app will automatically download the database from broswer, as you can see next.
 
 `pg_ctl start -D <your_database_cluster_path>`
 ##### Stop the PostgreSQL service
@@ -98,6 +101,16 @@ To stop the PostgreSQL server, use:
 To create a new database, you need to specify the name of the database during initialization. Run the following command from the PostgreSQL bin directory:
 
 `initdb -D <your_database_cluster_path>`
+
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
+
+`port = 5433			# (change requires restart)`
+
+Or specify the port in command line when you starting server.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
+
 ### For Ubuntu/Debian
 ##### Install PostgreSQL
 Open a terminal and run the following commands to install PostgreSQL:
@@ -137,6 +150,11 @@ PostgreSQL is already initialized, but if you need to create a new database, you
 `CREATE DATABASE mydatabase;`
 
 Replace mydatabase with your preferred name for the database.
+
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
+
+`port = 5433			# (change requires restart)`
 
 ### For CentOS/RHEL/Fedora
 
@@ -184,6 +202,10 @@ PostgreSQL is already initialized, but if you need to create a new database, you
 
 Replace mydatabase with your preferred name for the database.
 
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
+
+`port = 5433			# (change requires restart)`
 
 ### Setting up a WPF and EF project
 1. Open Visual Studio (or install it with the WPF extension).
@@ -225,7 +247,7 @@ We’ll be using the default options:
 
 ### DbContext class
 
-This class is used as a connection to the database. We will be referencing it a lot, whenever we try to interact with the database.
+This class is used as a connection to the database. We will be referencing it a lot, whenever we try to interact with the database. We are using port 5433 so you can change it to your own port of your database.
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -248,7 +270,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Username=postgres;Password=postgres;Database=postgres;");
         }
     }
 }

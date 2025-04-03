@@ -86,8 +86,12 @@ PostgreSQL by se měl po instalaci automaticky spustit jako služba. Pokud ne, m
 
 ##### Spuštění služby PostgreSQL
 V příkazovém řádku (přejděte do PostgreSQL bin adresáře):
+`cd C:\Program Files\PostgreSQL\<version>\bin`
+
+A spusťte postgre databázi z již existující složky v našem projektu `pokemondb\`, kde jež databáze nainstalována a nebo si můžete vytvořit svoji vlastní databázi a aplikace si po spuštění automaticky stáhne databázi z vyhledávače, To si ukážeme v následující části.
 
 `pg_ctl start -D <your_database_cluster_path>`
+
 ##### Zastavení služby PostgreSQL
 Pro zastavení PostgreSQL serveru, použijte:
 
@@ -96,6 +100,12 @@ Pro zastavení PostgreSQL serveru, použijte:
 Pro vytvoření nové databáze, potřebujete specifikovat název databáze během instalace. Zadejte následující příkaz v PostgreSQL bin adresáři:
 
 `initdb -D <your_database_cluster_path>`
+
+##### Pozor
+Pokud vám běží již jiný server s databází na portu 5432, tak změńte port databáze v souboru konfigurace `<your_database_cluster_path>/postgresql.conf`, abychom se vyhnuli kolizi s jiným serverem(např. na 5433 or 5434 port). Najděte řádek `port = 5432` a změňte ho na jiný port. V naší aplikaci použijeme port 5433.
+
+`port = 5433			# (change requires restart)`
+
 ### Pro Ubuntu/Debian
 ##### Instalace PostgreSQL
 Otevřete terminál a spusťte následující příkazy pro instalaci PostgreSQL:
@@ -135,6 +145,11 @@ PostgreSQL je po instalaci již inicializován, pokud potřebujete vytvořit nov
 
 Navraďte název mydatabase s vaším preferovaným názvem.
 
+##### Pozor
+Pokud vám běží již jiný server s databází na portu 5432, tak změńte port databáze v souboru konfigurace `<your_database_cluster_path>/postgresql.conf`, abychom se vyhnuli kolizi s jiným serverem(např. na 5433 or 5434 port). Najděte řádek `port = 5432` a změňte ho na jiný port. V naší aplikaci použijeme port 5433.
+
+`port = 5433			# (change requires restart)`
+
 ### Pro CentOS/RHEL/Fedora
 
 ##### Instalace PostgreSQL
@@ -143,7 +158,7 @@ Pro CentOS or RHEL je instalační proces odlišný. Použijte následující p�
 
 `sudo yum install postgresql-server postgresql-contrib`
 
-On Fedoře, použijte správce balíčků dnf:
+Na Fedoře, použijte správce balíčků dnf:
 
 `sudo dnf install postgresql-server postgresql-contrib`
 
@@ -181,6 +196,15 @@ Postupujte stejně jako u Ubuntu/Debian – přepněte na uživatele postgres, s
 `CREATE DATABASE mydatabase;`
 
 Navraďte název mydatabase s vaším preferovaným názvem.
+
+##### Pozor
+Pokud vám běží již jiný server s databází na portu 5432, tak změńte port databáze v souboru konfigurace `<your_database_cluster_path>/postgresql.conf`, abychom se vyhnuli kolizi s jiným serverem(např. na 5433 or 5434 port). Najděte řádek `port = 5432` a změňte ho na jiný port. V naší aplikaci použijeme port 5433.
+
+`port = 5433			# (change requires restart)`
+
+Nebo specifikujte port při špuštění serveru.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
 
 ### Nastavení WPF a EF projektu
 1. Otevřete Visual Studio (nebo jej nainstalujte s rozšířením pro WPF).
@@ -223,7 +247,7 @@ V našem případě použijeme výchozí nastavení:
 
 ### DbContext třída
 
-Tato třída slouží jako propojení k databázi a budeme ji používat, kdykolikov při práci s daty v databázi.
+Tato třída slouží jako propojení k databázi a budeme ji používat, kdykolikov při práci s daty v databázi. V tomto projektu používáme port databáze 5433, ale můžete si ho v kódu změnit na svůj vlastní port, kde máte vytvořenou db.
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -246,7 +270,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Username=postgres;Password=postgres;Database=postgres;");
         }
     }
 }
