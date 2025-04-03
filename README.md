@@ -101,7 +101,7 @@ To create a new database, you need to specify the name of the database during in
 
 If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port.
 
-`port = 5434			# (change requires restart)`
+`port = 5433			# (change requires restart)`
 
 Or specify the port in command line when you starting server.:
 
@@ -177,7 +177,7 @@ If some server already running on port 5432, you must change the port to avoid c
 
 Find the line `port = 5432` and change it (etc. to 5433 or 5434 port).:
 
-`port = 5434			# (change requires restart)`
+`port = 5433			# (change requires restart)`
 
 ##### Stop PostgreSQL service
 
