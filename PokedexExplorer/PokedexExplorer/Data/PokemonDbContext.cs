@@ -27,7 +27,7 @@ namespace PokedexExplorer.Data
         public DbSet<PokemonMove> PokemonMove { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=" + this.name + ";Password=" + password + ";Database=postgres;Client Encoding=UTF8;"); // TODO Mark Changes: Client Encoding=UTF8;
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Username=" + this.name + ";Password=" + password + ";Database=postgres;Client Encoding=UTF8;"); // TODO Mark Changes: Client Encoding=UTF8;
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
