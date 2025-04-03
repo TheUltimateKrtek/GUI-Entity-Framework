@@ -86,8 +86,11 @@ Password: postgres (or the password you choose during the installation)
 PostgreSQL should start automatically as a service after installation. However, you can also start or stop it manually via the command line:
 
 ##### Start the PostgreSQL service
-
 In the Command Prompt (navigate to the PostgreSQL bin directory):
+
+`cd C:\Program Files\PostgreSQL\<version>\bin`
+
+And launch the postgre, you can lauch the database from an existing folder in our project `pokemondb\` with already existing and installed database or you can your own database and app will automatically download the database from broswer, as you can see next.
 
 `pg_ctl start -D <your_database_cluster_path>`
 ##### Stop the PostgreSQL service
@@ -122,15 +125,6 @@ PostgreSQL should start automatically after installation. If you need to manuall
 
 `sudo systemctl start postgresql`
 
-##### Attention
-If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
-
-`port = 5433			# (change requires restart)`
-
-Or specify the port in command line when you starting server.:
-
-`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
-
 ##### Stop PostgreSQL service
 
 `sudo systemctl stop postgresql`
@@ -157,6 +151,15 @@ PostgreSQL is already initialized, but if you need to create a new database, you
 
 Replace mydatabase with your preferred name for the database.
 
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
+
+`port = 5433			# (change requires restart)`
+
+Or specify the port in command line when you starting server.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
+
 ### For CentOS/RHEL/Fedora
 
 ##### Install PostgreSQL
@@ -181,15 +184,6 @@ After initialization, start the PostgreSQL service:
 
 `sudo systemctl start postgresql`
 
-##### Attention
-If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
-
-`port = 5433			# (change requires restart)`
-
-Or specify the port in command line when you starting server.:
-
-`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
-
 ##### Stop PostgreSQL service
 
 `sudo systemctl stop postgresql`
@@ -212,6 +206,14 @@ PostgreSQL is already initialized, but if you need to create a new database, you
 
 Replace mydatabase with your preferred name for the database.
 
+##### Attention
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
+
+`port = 5433			# (change requires restart)`
+
+Or specify the port in command line when you starting server.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
 
 ### Setting up a WPF and EF project
 1. Open Visual Studio (or install it with the WPF extension).
