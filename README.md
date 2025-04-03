@@ -99,7 +99,7 @@ To create a new database, you need to specify the name of the database during in
 
 `initdb -D <your_database_cluster_path>`
 
-If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line port = 5432 and change it to another port.
+If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port.
 
 `port = 5434			# (change requires restart)`
 
