@@ -156,10 +156,6 @@ If you have already created some other database with port 5432. Chage it in `<yo
 
 `port = 5433			# (change requires restart)`
 
-Or specify the port in command line when you starting server.:
-
-`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
-
 ### For CentOS/RHEL/Fedora
 
 ##### Install PostgreSQL
@@ -210,10 +206,6 @@ Replace mydatabase with your preferred name for the database.
 If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
 
 `port = 5433			# (change requires restart)`
-
-Or specify the port in command line when you starting server.:
-
-`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
 
 ### Setting up a WPF and EF project
 1. Open Visual Studio (or install it with the WPF extension).
