@@ -103,6 +103,10 @@ If you have already created some other database with port 5432. Chage it in `<yo
 
 `port = 5434			# (change requires restart)`
 
+Or specify the port in command line when you starting server.:
+
+`pg_ctl -D <your_database_cluster_path> -o "-p 5433" start'`
+
 ### For Ubuntu/Debian
 ##### Install PostgreSQL
 Open a terminal and run the following commands to install PostgreSQL:
@@ -166,6 +170,14 @@ Before starting PostgreSQL for the first time, initialize the database:
 After initialization, start the PostgreSQL service:
 
 `sudo systemctl start postgresql`
+
+If some server already running on port 5432, you must change the port to avoid collision with that server.
+
+`sudo nano <your_database_cluster_path>/postgresql.conf`
+
+Find the line `port = 5432` and change it (etc. to 5433 or 5434 port).:
+
+`port = 5434			# (change requires restart)`
 
 ##### Stop PostgreSQL service
 
