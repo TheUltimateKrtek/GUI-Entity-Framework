@@ -247,7 +247,7 @@ We’ll be using the default options:
 
 ### DbContext class
 
-This class is used as a connection to the database. We will be referencing it a lot, whenever we try to interact with the database.
+This class is used as a connection to the database. We will be referencing it a lot, whenever we try to interact with the database. We are using port 5433 so you can change it to your own port of your database.
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -270,7 +270,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Username=postgres;Password=postgres;Database=postgres;");
         }
     }
 }
