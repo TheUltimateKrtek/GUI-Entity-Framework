@@ -99,7 +99,7 @@ Pro zastavení PostgreSQL serveru, použijte:
 ##### Vytvoření nové databáze
 Pro vytvoření nové databáze, potřebujete specifikovat název databáze během instalace. Zadejte následující příkaz v PostgreSQL bin adresáři:
 
-`initdb -D <your_database_cluster_path>`
+`initdb -D <your_database_cluster_path> -U skyre -A trust`
 
 ##### Pozor
 Pokud vám běží již jiný server s databází na portu 5432, tak změńte port databáze v souboru konfigurace `<your_database_cluster_path>/postgresql.conf`, abychom se vyhnuli kolizi s jiným serverem(např. na 5433 or 5434 port). Najděte řádek `port = 5432` a změňte ho na jiný port. V naší aplikaci použijeme port 5433.
