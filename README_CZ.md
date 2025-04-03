@@ -247,7 +247,7 @@ V našem případě použijeme výchozí nastavení:
 
 ### DbContext třída
 
-Tato třída slouží jako propojení k databázi a budeme ji používat, kdykolikov při práci s daty v databázi.
+Tato třída slouží jako propojení k databázi a budeme ji používat, kdykolikov při práci s daty v databázi. V tomto projektu používáme port databáze 5433, ale můžete si ho v kódu změnit na svůj vlastní port, kde máte vytvořenou db.
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -270,7 +270,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=postgres;");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Username=postgres;Password=postgres;Database=postgres;");
         }
     }
 }
