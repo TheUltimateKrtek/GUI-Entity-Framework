@@ -165,7 +165,7 @@ Pro CentOS or RHEL je instalační proces odlišný. Použijte následující p�
 
 `sudo yum install postgresql-server postgresql-contrib`
 
-On Fedoře, použijte správce balíčků dnf:
+Na Fedoře, použijte správce balíčků dnf:
 
 `sudo dnf install postgresql-server postgresql-contrib`
 
