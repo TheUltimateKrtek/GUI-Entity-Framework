@@ -18,20 +18,15 @@ using System.Diagnostics;
 using System.Runtime.InteropServices.JavaScript;
 using System.DirectoryServices;
 
-namespace PokedexExplorer.Data
-{
-    public class PokeAPIFetcher
-    {
-        static public JObject RetrieveJSON(string name, int? id = null)
-        {
+namespace PokedexExplorer.Data {
+    public class PokeAPIFetcher {
+        static public JObject RetrieveJSON(string name, int? id = null){
             string url = "https://pokeapi.co/api/v2/" + name;
             if (id != null) url += "/" + id + "/";
             else url += "?limit=10000&offset=0";
 
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
+            using (HttpClient client = new HttpClient()) {
+                try {
                     HttpResponseMessage response = client.GetAsync(url).Result;
                     Console.WriteLine($"Status Code: {response.StatusCode}");
                     response.EnsureSuccessStatusCode();
@@ -39,33 +34,25 @@ namespace PokedexExplorer.Data
 
                     return JObject.Parse(jsonResponse);
                 }
-                catch (HttpRequestException e)
-                {
+                catch (HttpRequestException e) {
                     Debug.WriteLine("HTTP Error: " + name + (id == null ? "" : " " + id));
                     return null;
                 }
             }
         }
-
-        static public List<int> GetEntries(string name)
-        {
+        static public List<int> GetEntries(string name) {
             JObject json = RetrieveJSON(name);
             if (json == null) return [];
             List<int> entries = [];
-            foreach (JToken t in json["results"])
-            {
+            foreach (JToken t in json["results"]) {
                 entries.Add((int)GetURLIntValue(t["url"].ToString()));
             }
             return entries;
-
         }
-
-        static public Ability ParseAbility(JObject node)
-        {
+        static public Ability ParseAbility(JObject node) {
             if (node == null) return null;
             string at = "";
-            try
-            {
+            try {
                 int id = node["id"]?.ToObject<int>() ?? - 1;
                 int generation = GetURLIntValue(node["generation"]["url"].ToString()) ?? 0;
                 
@@ -73,8 +60,7 @@ namespace PokedexExplorer.Data
                 JObject effectNode = GetEnglishNode(node["effect_entries"]?.ToObject<JArray>() ?? null);
                 string effect = "No effect description.";
                 string shortEffect = "No short effect description.";
-                if (effectNode != null)
-                {
+                if (effectNode != null) {
                     effect = effectNode["effect"]?.ToString() ?? "No effect description.";
                     shortEffect = effectNode["short_effect"]?.ToString() ?? "No short effect description.";
                 }
@@ -82,16 +68,14 @@ namespace PokedexExplorer.Data
                 at = "flavor_text_entries: " + node["flavor_text_entries"];
                 JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
                 string description = "No description.";
-                if (descriptionNode != null)
-                {
+                if (descriptionNode != null) {
                     description = descriptionNode["flavor_text"].ToObject<string>();
                 }
 
                 at = "names: " + node["names"];
                 JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
                 string name = node["name"]?.ToObject<string>() ?? "<unknown>";
-                if (nameNode != null)
-                {
+                if (nameNode != null) {
                     name = nameNode["name"].ToObject<string>();
                 }
 
@@ -104,14 +88,12 @@ namespace PokedexExplorer.Data
                 ability.Description = description;
                 return ability;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 throw new Exception(at, e);
                 return null;
             }
         }
-        static public Move ParseMove(JObject node)
-        {
+        static public Move ParseMove(JObject node) {
             if (node == null) return null;
 
             int? accuracy = node["accuracy"]?.ToObject<int?>() ?? null;
@@ -131,8 +113,7 @@ namespace PokedexExplorer.Data
             int? minHits = null;
             int? minTurns = null;
             int? statChance = null;
-            if (node["meta"] != null && node["meta"] is JObject)
-            {
+            if (node["meta"] != null && node["meta"] is JObject) {
                 if (node["meta"]["ailment"] == null && node["meta"]["ailment"] is JObject) ailment = (node["meta"]["ailment"] == null ? null : node["meta"]["ailment"]["name"].ToObject<string>());
                 ailmentChance = node["meta"] == null ? null : node["meta"]["ailment_chance"]?.ToObject<int?>() ?? null;
                 critRate = node["meta"] == null ? null : node["meta"]["crit_rate"]?.ToObject<int?>() ?? null;
@@ -147,8 +128,7 @@ namespace PokedexExplorer.Data
 
             JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
             string name = node["name"]?.ToObject<string>() ?? "<unknown>";
-            if (nameNode != null)
-            {
+            if (nameNode != null) {
                 name = nameNode["name"]?.ToObject<string>() ?? "<unknown>";
             }
 
@@ -160,8 +140,7 @@ namespace PokedexExplorer.Data
 
             JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
             string description = null;
-            if (descriptionNode != null)
-            {
+            if (descriptionNode != null) {
                 description = descriptionNode["flavor_text"]?.ToObject<string>() ?? null;
             }
 
@@ -191,13 +170,11 @@ namespace PokedexExplorer.Data
             move.Description = description;
             return move;
         }
-        static public Pokemon ParsePokemon(JObject node)
-        {
+        static public Pokemon ParsePokemon(JObject node) {
             if (node == null) return null;
 
             int?[] abilities = new int?[] { null, null, null };
-            if(node["abilities"] != null) foreach (JObject a in node["abilities"].ToObject<JArray>())
-            {
+            if(node["abilities"] != null) foreach (JObject a in node["abilities"].ToObject<JArray>()) {
                 int? value = GetURLIntValue(a["ability"]["url"]?.ToObject<string>() ?? null);
                 int index = a["slot"].ToObject<int>();
                 abilities[index - 1] = value;
@@ -280,8 +257,7 @@ namespace PokedexExplorer.Data
             pokemon.SecondaryType = secondaryType;
             return pokemon;
         }
-        static public PokemonSpecies ParsePokemonSpecies(JObject node)
-        {
+        static public PokemonSpecies ParsePokemonSpecies(JObject node) {
             if (node == null) return null;
 
             int baseHappiness = node["base_happiness"]?.ToObject<int?>() ?? -1;
@@ -311,33 +287,28 @@ namespace PokedexExplorer.Data
 
             JObject generaNode = GetEnglishNode(node["genera"]?.ToObject<JArray>() ?? null);
             string genera = "";
-            if (generaNode != null)
-            {
+            if (generaNode != null) {
                 genera = generaNode["genus"].ToObject<string>();
             }
             genera = genera.Replace(" Pokémon", "");
 
             int nationalPokedexNumber = -1;
-            foreach (JToken t in node["pokedex_numbers"])
-            {
-                if (t["pokedex"]["name"].Equals("national"))
-                {
+            foreach (JToken t in node["pokedex_numbers"]){
+                if (t["pokedex"]["name"].Equals("national")){
                     nationalPokedexNumber = (int)GetURLIntValue(t["url"].ToString());
                 }
             }
 
             JObject nameNode = GetEnglishNode(node["names"]?.ToObject<JArray>() ?? null);
             string name = node["name"].ToObject<string>();
-            if (nameNode != null)
-            {
+            if (nameNode != null){
                 name = nameNode["name"].ToObject<string>();
             }
             name = name.Replace("♀", "(female)").Replace("♂", "(male)");
 
             JObject descriptionNode = GetEnglishNode(node["flavor_text_entries"]?.ToObject<JArray>() ?? null);
             string? description = null;
-            if (descriptionNode != null)
-            {
+            if (descriptionNode != null){
                 description = descriptionNode["flavor_text"].ToObject<string>();
             }
             description = description.Replace("\u2212", "-");
@@ -363,20 +334,16 @@ namespace PokedexExplorer.Data
             species.HatchCounter = hatchCounter;
             return species;
         }
-        static public List<EvolutionChain> ParseEvolutionChain(JObject node, List<EvolutionChain> list = null)
-        {
+        static public List<EvolutionChain> ParseEvolutionChain(JObject node, List<EvolutionChain> list = null){
             if (node == null) return [];
-            if (list == null)
-            {
+            if (list == null){
                 list = new List<EvolutionChain>();
                 ParseEvolutionChain(node["chain"].ToObject<JObject>(), list);
                 return list;
             }
 
-            foreach (JObject evolution in node["evolves_to"]?.ToObject<JArray>() ?? null)
-            {
-                foreach (JObject details in evolution["evolution_details"]?.ToObject<JArray>())
-                {
+            foreach (JObject evolution in node["evolves_to"]?.ToObject<JArray>() ?? null){
+                foreach (JObject details in evolution["evolution_details"]?.ToObject<JArray>()){
                     if (details == null) continue;
                     int from = (int)GetURLIntValue(node["species"]["url"].ToObject<string>());
                     int to = (int)GetURLIntValue(evolution["species"]["url"].ToObject<string>());
@@ -414,19 +381,15 @@ namespace PokedexExplorer.Data
 
                     list.Add(chain);
                 }
-
                 ParseEvolutionChain(evolution, list);
             }
-
             return list;
         }
-        static public List<PokemonMove> ParsePokemonMove(JObject pokemonJson)
-        {
+        static public List<PokemonMove> ParsePokemonMove(JObject pokemonJson){
             List<PokemonMove> list = new List<PokemonMove>();
 
             int pokemon = pokemonJson["id"].ToObject<int>();
-            foreach (JObject m in pokemonJson["moves"]?.ToObject<JArray>())
-            {
+            foreach (JObject m in pokemonJson["moves"]?.ToObject<JArray>()){
                 int index = (m["version_group_details"]?.ToObject<JArray>().Count() ?? 1) - 1;
                 int move = (int)GetURLIntValue(m["move"]["url"].ToObject<string>());
                 int? levelLearnedAt = m["version_group_details"][index]["level_learned_at"].ToObject<int>();
@@ -444,17 +407,14 @@ namespace PokedexExplorer.Data
             return list;
         }
 
-        static private int? GetURLIntValue(string url)
-        {
+        static private int? GetURLIntValue(string url){
             if (url == null) return null;
             string[] split = url.Split('/');
             return int.Parse(split[split.Length - 2]);
         }
-        static private JObject GetEnglishNode(JArray node)
-        {
+        static private JObject GetEnglishNode(JArray node){
             if (node == null) return null;
-            foreach (JObject n in node)
-            {
+            foreach (JObject n in node){
                 if (n == null) continue;
                 if (n["language"] == null) continue;
                 if (n["language"]["name"] == null) continue;
@@ -462,6 +422,5 @@ namespace PokedexExplorer.Data
             }
             return null;
         }
-        
     }
 }

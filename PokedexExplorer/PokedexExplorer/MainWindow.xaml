@@ -8,7 +8,7 @@
         Title="MainWindow" Height="600" Width="800"
         ResizeMode="NoResize">
     <Grid Name="PokedexStage">
-        <StackPanel Name="PokedexGroup" Orientation="Horizontal" Width="800" Height="600">
+        <StackPanel Name="PokedexGroup" Orientation="Horizontal" Width="800">
             <ScrollViewer Name="FilteredDataGroup" Width="520">
                 <ItemsControl Name="PokemmonDataGrid" ItemsSource="{Binding Data.PokemonGridData}">
                     <ItemsControl.ItemsPanel>
