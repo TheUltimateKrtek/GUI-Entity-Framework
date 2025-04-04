@@ -100,7 +100,7 @@ To stop the PostgreSQL server, use:
 ##### Creating a New Database
 To create a new database, you need to specify the name of the database during initialization. Run the following command from the PostgreSQL bin directory:
 
-`initdb -D <your_database_cluster_path>`
+`initdb -D <your_database_cluster_path> -U skyre -A trust`
 
 ##### Attention
 If you have already created some other database with port 5432. Chage it in `<your_database_cluster_path>/postgresql.conf` file to avoid collision with another database(etc. on 5433 or 5434). Find the line `port = 5432` and change it to another port. In our database we will use port 5433.
@@ -136,6 +136,7 @@ PostgreSQL should start automatically after installation. If you need to manuall
 ##### Create a New Database
 
 PostgreSQL is already initialized, but if you need to create a new database, you can do so with the following steps:
+
 
 ##### Switch to the postgres user
 
