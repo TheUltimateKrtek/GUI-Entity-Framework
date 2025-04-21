@@ -37,8 +37,7 @@ namespace PokedexExplorer.Data {
 
         public IQueryable<PokemonGridData> Query { get; private set; }
 
-        private PokemonDbContext context;
-        private MainWindow window;
+        private PokemonDbContext context; private MainWindow window;
         public PokemonSearch(PokemonDbContext context, MainWindow window) { this.context = context; this.window = window; }
 
         public void Init() {

@@ -14,6 +14,8 @@ public partial class MainWindow : Window {
     private readonly PokemonDbContext context;
     public DatabaseInitHandler Handler { get; private set; }
     public PokemonSearch Search { get; private set; }
+    public PokemonData pokemonDetail { get; private set; }
+    
     public MainWindow() {
         InitializeComponent();
         context = new PokemonDbContext("skyre", "");
@@ -40,6 +42,52 @@ public partial class MainWindow : Window {
     private void SearchedNameTextChanged(object sender, TextChangedEventArgs e) { 
         this.Search.Name = ((TextBox)sender).Text.ToLower();
     }
+    private void Pokemon_MouseEnter(object sender, MouseEventArgs e){
+        Border border = (Border)sender;
+        border.Background = new SolidColorBrush(Colors.LightGreen);
+        border.BorderThickness = new Thickness(1);
+    }
+    private void Pokemon_MouseLeave(object sender, MouseEventArgs e){
+        Border border = (Border)sender;
+        border.Background = null;
+        border.BorderThickness = new Thickness(1);
+    }
+    private async void Pokemon_MouseLeftButtonClick(object sender, MouseButtonEventArgs e)
+    {
+        Border border = (Border)sender;
+        PokemonGridData pokemon = (PokemonGridData)border.DataContext;
+        Debug.WriteLine("Pokemon " + pokemon.Name + " clicked");
+
+        pokemonDetail = new PokemonData(context);
+        var pokemon_query = await pokemonDetail.Find(pokemon.Name);
+        ShowPokemonDetail pokemon_details = pokemon_query?.FirstOrDefault();
+
+        if (pokemon_details != null){
+            PokemonNameTextBlock.Text = pokemon_details.Name;
+            PokemonNameTextBlock.Foreground = (Brush)new BrushConverter().ConvertFromString(pokemon_details.PrimaryColor);
+
+            PokemonImage.Source = pokemon_details.SpriteImage;
+            PokemonTypeTextBlock.Text = pokemon_details.PrimaryType;
+            PokemonSecondaryTypeTextBlock.Text = pokemon_details.SecondaryType;
+            PokemonMoveTextBlock.Text = pokemon_details.Move;
+
+            PokemonHeightTextBlock.Text = pokemon_details.Height;
+            PokemonWeightTextBlock.Text = pokemon_details.Weight;
+            PokemonAbilitiesTextBlock.Text = pokemon_details.Abilities;
+            PokemonHPTextBlock.Text = pokemon_details.HP;
+            PokemonDefenseTextBlock.Text = pokemon_details.Defense;
+            PokemonAttackTextBlock.Text = pokemon_details.Attack;
+            PokemonSpeedTextBlock.Text = pokemon_details.Speed;
+            PokemonLegendaryStatusTextBlock.Text = pokemon_details.Legendary;
+            PokemonColorTextBlock.Text = pokemon_details.Color;
+            PokemonShapeTextBlock.Text = pokemon_details.Shape;
+
+            PokemonDescriptionTextBlock.Text = pokemon_details.Description;
+            
+            PokemonDetailsGrid.Visibility = Visibility.Visible;
+        }
+    }
+    private void CloseDetailsButton_Click(object sender, RoutedEventArgs e){ PokemonDetailsGrid.Visibility = Visibility.Collapsed; }
     private void SearchedType1Changed(object sender, SelectionChangedEventArgs e){
         ComboBoxItem selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
         string str = selectedItem.Content.ToString();
