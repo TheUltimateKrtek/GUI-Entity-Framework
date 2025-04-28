@@ -61,7 +61,6 @@ public partial class MainWindow : Window {
         pokemonDetail = new PokemonData(context);
         var pokemon_query = await pokemonDetail.Find(pokemon.Name);
         ShowPokemonDetail pokemon_details = pokemon_query?.FirstOrDefault();
-
         if (pokemon_details != null){
             PokemonNameTextBlock.Text = pokemon_details.Name;
             PokemonNameTextBlock.Foreground = (Brush)new BrushConverter().ConvertFromString(pokemon_details.PrimaryColor);
@@ -69,11 +68,12 @@ public partial class MainWindow : Window {
             PokemonImage.Source = pokemon_details.SpriteImage;
             PokemonTypeTextBlock.Text = pokemon_details.PrimaryType;
             PokemonSecondaryTypeTextBlock.Text = pokemon_details.SecondaryType;
-            PokemonMoveTextBlock.Text = pokemon_details.Move;
-
+            
+            PokemonMoveTextBlock.Text = string.Join(", ", pokemon_details.Moves);
             PokemonHeightTextBlock.Text = pokemon_details.Height;
             PokemonWeightTextBlock.Text = pokemon_details.Weight;
-            PokemonAbilitiesTextBlock.Text = pokemon_details.Abilities;
+            Debug.WriteLine(pokemon_details.Abilities.Count());
+            PokemonAbilitiesTextBlock.Text = string.Join(", ", pokemon_details.Abilities).Replace(" ,","");
             PokemonHPTextBlock.Text = pokemon_details.HP;
             PokemonDefenseTextBlock.Text = pokemon_details.Defense;
             PokemonAttackTextBlock.Text = pokemon_details.Attack;

@@ -57,10 +57,14 @@ namespace PokedexExplorer.Data {
 
                 if (Name != null) { query = query.Where(p => p.Name.ToLower().StartsWith(Name)); }
 
-                if (this.Type1 != null && this.Type1.Length > 0 || this.Type2 != null && this.Type2.Length > 0) {
+                if (this.Type1 != null && this.Type1.Length > 0){
                     query = query.Where(p =>
-                        (this.Type1 != null && (p.PrimaryType == this.Type1 || p.SecondaryType == this.Type1)) ||
-                        (this.Type2 != null && (p.PrimaryType == this.Type2 || p.SecondaryType == this.Type2))
+                        (p.PrimaryType == this.Type1 || p.SecondaryType == this.Type1)
+                    );
+                }
+                if (this.Type2 != null && this.Type2.Length > 0){
+                    query = query.Where(p =>
+                        (p.PrimaryType == this.Type2 || p.SecondaryType == this.Type2)
                     );
                 }
 

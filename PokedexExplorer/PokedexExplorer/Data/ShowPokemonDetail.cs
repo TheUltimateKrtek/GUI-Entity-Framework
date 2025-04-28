@@ -1,4 +1,9 @@
-﻿using System.Windows.Media.Imaging;
+﻿using Microsoft.EntityFrameworkCore;
+using PokedexExplorer.Model;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Media.Imaging;
 
 namespace PokedexExplorer.Data{
     public class ShowPokemonDetail{
@@ -7,8 +12,8 @@ namespace PokedexExplorer.Data{
         public string? SpriteFrontDefault { get; set; }
         public string? PrimaryType { get; set; }
         public string? SecondaryType { get; set; }
-        public string? Move { get; set; }
-        public string? Abilities { get; set; }
+        public List<string> Moves { get; set; }
+        public List<string> Abilities { get; set; }
         public string? Legendary { get; set; }
         public string? Color { get; set; }
         public string? Shape { get; set; }
@@ -35,18 +40,20 @@ namespace PokedexExplorer.Data{
             }
             return _imageCache[url];
         }
-        public ShowPokemonDetail(string name, string? spriteFrontDefault, string type, string secondaryType, string move, string abilitities, bool is_legendary, string color, string shape, string description,
+        public ShowPokemonDetail(string name, string? spriteFrontDefault, string type, string secondaryType, List<string> moves, List<string> abilities, 
+                                bool is_legendary, string color, string shape, string description,
                                 int height, int weight, int hp, int defense, int attack, int speed){
             Name = name?.ToUpper() ?? "UNKOWN";
             SpriteFrontDefault = spriteFrontDefault; SpriteImage = GetImage(spriteFrontDefault);
             PrimaryType = type.ToUpper();
             SecondaryType = secondaryType?.ToUpper() ?? "UNKOWN";
-            Move = move ?? "UNKOWN";
-            Abilities = abilitities ?? "UNKOWN";
+            Moves = moves != null && moves.Count > 0 ? moves : new List<string> { "UNKNOWN" };
+            Abilities = abilities != null && abilities.Count > 0 ? abilities : new List<string> { "UNKNOWN" };
+            Debug.WriteLine(is_legendary);
             Legendary = is_legendary == true ? "Yes" : "No";
             Color = color ?? "Unkown";
             Shape = shape ?? "Unkown";
-            Description = description ?? "Unkown";
+            Description = description?.Replace("\n", " ") ?? "Unkown";
             Height = height.ToString()?? "Unkown";
             Weight = weight.ToString() ?? "Unkown";
             HP = hp.ToString() ?? "Unkown";
@@ -59,33 +66,56 @@ namespace PokedexExplorer.Data{
     public class  PokemonData{
         public IQueryable<ShowPokemonDetail> Query { get; private set; }
         private PokemonDbContext context;
-        public PokemonData(PokemonDbContext context) { this.context = context; }
-        public async Task<IQueryable<ShowPokemonDetail>> Find(string name){
+        public PokemonData(PokemonDbContext context){ this.context = context; }
+        
+        public async Task<IQueryable<ShowPokemonDetail>>  Find(string name){
             if (string.IsNullOrEmpty(name)) return null;    
-            return await Task.Run(() =>{
+            return await Task.Run(() => {
                 return context.Pokemon
                     .Where(p => p.Name == name.ToLower())
-                    .Join(context.Ability, pokemon => pokemon.ID, ability => ability.ID, (pokemon, ability) => new { pokemon, ability } )
-                    .Join(context.Move, combined => combined.pokemon.ID, move => move.ID, (combined, move) => new { combined, move } )
-                    .Join(context.PokemonSpecies, combined => combined.combined.pokemon.ID, PokemonSpecie => PokemonSpecie.ID, (combined, PokemonSpecie) => new { combined, PokemonSpecie })
-                    .GroupBy(combined => combined.combined.combined.pokemon.ID)
+                    //.Join(context.PokemonSpecies, combined => combined.ID, PokemonSpecie => PokemonSpecie.ID, (combined, PokemonSpecie) => new { combined, PokemonSpecie })
                     .Select(p => new ShowPokemonDetail(
-                        p.First().combined.combined.pokemon.Name, 
-                        p.First().combined.combined.pokemon.SpriteFrontDefault,
-                        p.First().combined.combined.pokemon.PrimaryType,
-                        p.First().combined.combined.pokemon.SecondaryType,
-                        p.First().combined.move.Name,
-                        p.First().combined.combined.ability.Name,
-                        p.First().PokemonSpecie.IsLegendary,
-                        p.First().PokemonSpecie.Color,
-                        p.First().PokemonSpecie.Shape,
-                        p.First().combined.combined.ability.Description,
-                        p.First().combined.combined.pokemon.Height,
-                        p.First().combined.combined.pokemon.Weight,
-                        p.First().combined.combined.pokemon.HP,
-                        p.First().combined.combined.pokemon.Defense,
-                        p.First().combined.combined.pokemon.Attack,
-                        p.First().combined.combined.pokemon.Speed
+                        p.Name,
+                        p.SpriteFrontDefault,
+                        p.PrimaryType,
+                        p.SecondaryType,
+                        context.Move
+                            .Join(context.PokemonMove, m => m.ID, pm => pm.Move, (m, pm) => new { Move = m, PokemonMove = pm })
+                            .Where(x => x.PokemonMove.Pokemon == p.ID)
+                            .Select(x => x.Move.Name)
+                            .ToList(),
+                        new List<string> {
+                            context.Ability
+                                .Join(context.Ability, a => a.ID, pa => pa.ID, (a, pa) => new { Pokemon = a, Ability = pa })
+                                .Where(x => x.Ability.ID == p.PrimaryAbility)
+                                .Select( x => x.Ability.Name).FirstOrDefault(),
+                            context.Ability
+                                    .Join(context.Ability, a2 => a2.ID, pa2 => pa2.ID, (a2, pa2) => new { Pokemon = a2, Ability = pa2 })
+                                    .Where(x => x.Ability.ID == p.SecondaryAbility)
+                                    .Select(x => x.Ability.Name).FirstOrDefault(),
+                            context.PokemonSpecies
+                                .Join(context.Ability, a3 => a3.ID, pa3 => pa3.ID, (a3, pa3) => new { Pokemon = a3, Ability = pa3 })
+                                .Where(x => x.Ability.ID == p.HiddenAbility)
+                                .Select(x => x.Ability.Name).FirstOrDefault()
+                        },
+                        context.PokemonSpecies
+                            .Where(ps => ps.ID == p.ID)
+                            .Select(ps => ps.IsLegendary).FirstOrDefault(),
+                        context.PokemonSpecies
+                            .Where(ps => ps.ID == p.ID)
+                            .Select(ps => ps.Color).FirstOrDefault(),
+                        context.PokemonSpecies
+                            .Where(ps => ps.ID == p.ID)
+                            .Select(ps => ps.Shape).FirstOrDefault(),
+                        context.PokemonSpecies
+                            .Where(ps => ps.ID == p.ID)
+                            .Select(ps => ps.Description).FirstOrDefault(),
+                        p.Height,
+                        p.Weight,
+                        p.HP,
+                        p.Defense,
+                        p.Attack,
+                        p.Speed
                     ));
             });
         }
