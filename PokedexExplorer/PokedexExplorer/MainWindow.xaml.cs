@@ -34,9 +34,15 @@ public partial class MainWindow : Window {
         this.Search.Init();
     }
     public void OnQueryUpdated(){
-        Debug.WriteLine("Updated");
-        List<PokemonGridData> data = Search.Query.AsQueryable().ToList();
-        if (data != null) PokemmonDataGrid.ItemsSource = data;
+        try{
+            Debug.WriteLine("Updated");
+            List<PokemonGridData> data = Search.Query.AsQueryable().ToList();
+            if (data != null)
+                PokemmonDataGrid.ItemsSource = data;
+        }
+        catch (Exception ex){
+            Debug.WriteLine($"Chyba při aktualizaci dat: {ex.Message}");
+        }
     }
     private void FetchGroupMouseDown(object sender, MouseButtonEventArgs e){ }
     private void SearchedNameTextChanged(object sender, TextChangedEventArgs e) { 
@@ -348,10 +354,10 @@ public partial class MainWindow : Window {
             string str = ((TextBox)sender).Text.ToString();
             if (str != null && str.Length == 0) {
                 ((TextBox)sender).BorderBrush = Brushes.Black;
-                this.Search.StatSpeedMin = null;
+                this.Search.StatSpeedMax = null;
                 return;
             }
-            else this.Search.StatSpeedMin = int.Parse(str.ToLower());
+            else this.Search.StatSpeedMax = int.Parse(str.ToLower());
 
             ((TextBox)sender).BorderBrush = Brushes.Black;
         }
